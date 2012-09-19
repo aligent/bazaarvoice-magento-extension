@@ -1,0 +1,51 @@
+<?php
+    $bvUrl = Bazaarvoice_Helper_Data::getBvUrl(true, "reviews");
+?>
+<div id="BVSubmissionContainer">
+    <img src="<?php echo $bvUrl; ?>/bv_sub_loading_60.gif" id="BVLoaderImage" width="60" height="60" alt="Loading..."/>
+</div>
+<script type="text/javascript" language="javascript">
+   function getSubmissionDisplayType() {
+        //Mobile displayType is only supported for RR submission
+        if ("<?php echo (isset($_GET["bvcontenttype"])? $_GET["bvcontenttype"] : ""); ?>" !== "REVIEW_SUBMISSION") {
+            return "";
+        }
+
+        try {
+            <?php echo Mage::getStoreConfig("bazaarvoice/General/SubmissionDisplayTypeJavascript"); ?>
+        } catch (e) {
+            //The JS in the try-catch above is user-definable.  Catch and suppress any errors and just return a default.
+        }
+        return "";
+   }
+   function getSubmissionDisplayCode() {
+        try {
+            var bvcontenttype = "<?php echo (isset($_GET["bvcontenttype"]) ? $_GET["bvcontenttype"] : "unknown"); ?>".toUpperCase();
+
+            if (bvcontenttype.search("REVIEW") > -1) {
+                <?php echo Bazaarvoice_Helper_Data::getConfigPropertyForBVProduct("reviews", "DisplayCodeJavascript"); ?>
+                return "<?php echo Bazaarvoice_Helper_Data::getDisplayCodeForBVProduct("reviews"); ?>";
+            } else if (bvcontenttype.search("PROFILE") > -1) {
+                <?php echo Bazaarvoice_Helper_Data::getConfigPropertyForBVProduct("activeprofiles", "DisplayCodeJavascript"); ?>
+                return "<?php echo Bazaarvoice_Helper_Data::getDisplayCodeForBVProduct("activeprofiles"); ?>";
+            } else if (bvcontenttype.search("QUESTION") > -1 || bvcontenttype.search("ANSWER") > -1) {
+                <?php echo Bazaarvoice_Helper_Data::getConfigPropertyForBVProduct("questions", "DisplayCodeJavascript"); ?>
+                return "<?php echo Bazaarvoice_Helper_Data::getDisplayCodeForBVProduct("questions"); ?>";
+            } else if (bvcontenttype.search("STORY") > -1) {
+                <?php echo Bazaarvoice_Helper_Data::getConfigPropertyForBVProduct("stories", "DisplayCodeJavascript"); ?>
+                return "<?php echo Bazaarvoice_Helper_Data::getDisplayCodeForBVProduct("stories"); ?>";
+            }
+
+        }catch(e){
+            //The JS in the try-catch above is user-definable.  Catch and suppress any errors and just return a default.
+        }
+        return "<?php echo Bazaarvoice_Helper_Data::getDefaultDisplayCode(); ?>";
+   }
+
+   var configData = {};
+   configData.displayCode = getSubmissionDisplayCode();
+   if (getSubmissionDisplayType() !== "") {
+       configData.displayType = getSubmissionDisplayType();
+   }
+   $BV.ui("submission_container", configData);
+</script>

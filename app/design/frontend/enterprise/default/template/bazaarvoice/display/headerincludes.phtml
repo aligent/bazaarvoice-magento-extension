@@ -1,0 +1,27 @@
+<?php
+$bvApiUrl = Bazaarvoice_Helper_Data::getBvApiHostUrl(true);
+
+// Determine if we should set the submissionContainerUrl (we should if this is not a profile container page display)
+// Active Profiles display container will use a different submission container than the one used for other BV products (to allow for customized styling)
+$submissionContainerUrl = null;
+if (strpos($_SERVER["REQUEST_URI"], "bazaarvoice/profile/display") === false) {
+    // Determine if we are rendering on a product or category page.
+    $bvSubject = Bazaarvoice_Helper_Data::getExternalSubjectForPage($this);
+
+    // This is not a profile display page request
+    $submissionContainerUrl = Mage::getStoreConfig("bazaarvoice/General/SubmissionURL") . "?";
+    $submissionContainerUrl .= ($bvSubject[Bazaarvoice_Helper_Data::BV_SUBJECT_TYPE] == "product") ? "pid=" : "cid=";
+    $submissionContainerUrl .= $bvSubject[Bazaarvoice_Helper_Data::BV_EXTERNAL_SUBJECT_ID];
+}
+?>
+
+<script type="text/javascript" src="<?php echo $bvApiUrl ?>/bvapi.js"></script>
+<script type="text/javascript" language="javascript">
+
+    var profileDisplayContainerPageName = "bazaarvoice/profile/display";
+    var configData = {};
+    <?php if (!empty($submissionContainerUrl)) {
+        echo "    configData.submissionContainerUrl = \"".$submissionContainerUrl."\";\n";
+    } ?>
+    $BV.configure("global", configData);
+</script>

@@ -1,0 +1,48 @@
+<?php
+    $profileId = isset($_REQUEST["user"]) ? $_REQUEST["user"] : "";
+
+    // Is link render enabled?
+    $renderEditProfileLink = Bazaarvoice_Helper_Data::getConfigPropertyForBVProduct("activeprofiles", "RenderEditProfileLink");
+
+    // Is current visitor logged in?
+    $customerSession = Mage::getSingleton('customer/session');
+    $isLoggedIn = $customerSession->isLoggedIn();
+
+    //Is current visitor viewing their own profile page?
+    $viewingOwnPage = (($isLoggedIn === true) && ($profileId == $customerSession->getCustomer()->getId()));
+
+    // Display the edit profile link, if necessary
+    if ($renderEditProfileLink == 1 && $viewingOwnPage) {
+        $editProfileHref = Bazaarvoice_Helper_Data::getActiveProfilesEditProfileLink($profileId);
+
+        // If the text of the link needs to be translated, then the appropriate translations will need to be added for Mage_Catalog.csv
+        // See /var/www/magento/app/locale/en_US/Mage_Catalog.csv
+        echo "<div id='bveditmyprofile'>\n";
+        echo "    <a href='$editProfileHref'>".$this->__('Edit My Profile')."</a>\n";
+        echo "</div>";
+    }
+?>
+
+<div id="BVCPHeaderContainer"></div>
+<div id="BVCPBodyAContainer"></div>
+<div id="BVCPBodyBContainer"></div>
+<div id="BVCPFooterContainer"></div>
+
+<script type="text/javascript" language="javascript">
+    function getCPDisplayCode() {
+        try {
+            <?php echo Bazaarvoice_Helper_Data::getConfigPropertyForBVProduct("activeprofiles", "DisplayCodeJavascript"); ?>
+        }catch(e){
+            //The JS in the try-catch above is user-definable.  Catch and suppress any errors and just return a default.
+        }
+        return "<?php echo Bazaarvoice_Helper_Data::getDisplayCodeForBVProduct("activeprofiles"); ?>";
+   }
+
+    var configData = {};
+    configData.displayCode = getCPDisplayCode();
+    configData.profileId = "<?php echo $profileId; ?>";
+    configData.onEvent = function(json) {
+        <?php echo Bazaarvoice_Helper_Data::getConfigPropertyForBVProduct("activeprofiles", "OnEventJavascript"); ?>
+    };
+    $BV.ui("cp", "show_profile", configData);
+</script>
