@@ -63,6 +63,7 @@ class Bazaarvoice_Model_ExportProductFeed extends Mage_Core_Model_Abstract {
 
                 $ioObject->streamWrite("<?xml version=\"1.0\" encoding=\"UTF-8\"?>".
                         "<Feed xmlns=\"http://www.bazaarvoice.com/xs/PRR/ProductFeed/4.5\"".
+                        " generator=\"Magento Extension r5.1.2\"".
                         "  name=\"".Mage::getStoreConfig("bazaarvoice/General/CustomerName")."\"".
                         "  incremental=\"true\"".
                         "  extractDate=\"".date('Y-m-d')."T".date('H:i:s').".000000\">\n");
@@ -153,14 +154,14 @@ class Bazaarvoice_Model_ExportProductFeed extends Mage_Core_Model_Abstract {
                                    "    <Name>".htmlspecialchars($product->getName(), ENT_QUOTES, "UTF-8")."</Name>\n".
                                    "    <Description>".htmlspecialchars($product->getShortDescription(), ENT_QUOTES, "UTF-8")."</Description>\n");
 
+            if (!is_null($brand) && !empty($brand)) {
+                $ioObject->streamWrite("    <Brand><ExternalId>" . $brand . "</ExternalId></Brand>\n");
+            }
             $parentCategories = $productId->getCategoryIds();
             if (!is_null($parentCategories) && count($parentCategories) > 0 && !empty($parentCategories[0])) {
                 $parentCategory = $categoryModel->load($parentCategories[0]);
                 $categoryExternalId = Bazaarvoice_Helper_Data::getCategoryId($parentCategory);
                 $ioObject->streamWrite("    <CategoryExternalId>" . $categoryExternalId . "</CategoryExternalId>\n");
-            }
-            if (!is_null($brand) && !empty($brand)) {
-                $ioObject->streamWrite("    <Brand><ExternalId>" . $brand . "</ExternalId></Brand>\n");
             }
             $ioObject->streamWrite("    <ProductPageUrl>".$product->getProductUrl()."</ProductPageUrl>\n".
                                    "    <ImageUrl>".$product->getImageUrl()."</ImageUrl>\n".
