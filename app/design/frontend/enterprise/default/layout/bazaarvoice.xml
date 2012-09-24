@@ -15,10 +15,10 @@
             <action method="setTemplate"><template>page/1column.phtml</template></action>
         </reference>
         <reference name="head">
-            <block type="Bazaarvoice/bazaarvoice" name="headerincludes" template="bazaarvoice/submit/headerincludes.phtml" after="-" />
+            <block type="bazaarvoice/bazaarvoice" name="headerincludes" template="bazaarvoice/submit/headerincludes.phtml" after="-" />
         </reference>
         <reference name="content">
-            <block type="Bazaarvoice/bazaarvoice" name="submissioncontainer" template="bazaarvoice/submit/other/submissioncontainer.phtml" />
+            <block type="bazaarvoice/bazaarvoice" name="submissioncontainer" template="bazaarvoice/submit/other/submissioncontainer.phtml" />
         </reference>
     </bazaarvoice_index_index>
 
@@ -34,10 +34,10 @@
             <action method="setTemplate"><template>page/1column.phtml</template></action>
         </reference>
         <reference name="head">
-            <block type="Bazaarvoice/bazaarvoice" name="headerincludes" template="bazaarvoice/submit/headerincludes.phtml" after="-" />
+            <block type="bazaarvoice/bazaarvoice" name="headerincludes" template="bazaarvoice/submit/headerincludes.phtml" after="-" />
         </reference>
         <reference name="content">
-            <block type="Bazaarvoice/bazaarvoice" name="submissioncontainer" template="bazaarvoice/submit/cp/submissioncontainer.phtml" />
+            <block type="bazaarvoice/bazaarvoice" name="submissioncontainer" template="bazaarvoice/submit/cp/submissioncontainer.phtml" />
         </reference>
     </bazaarvoice_profile_edit>
 
@@ -53,10 +53,10 @@
             <action method="setTemplate"><template>page/1column.phtml</template></action>
         </reference>
         <reference name="head">
-            <block type="Bazaarvoice/bazaarvoice" name="headerincludes" template="bazaarvoice/display/headerincludes.phtml" after="-" />
+            <block type="bazaarvoice/bazaarvoice" name="headerincludes" template="bazaarvoice/display/headerincludes.phtml" after="-" />
         </reference>
         <reference name="content">
-            <block type="Bazaarvoice/bazaarvoice" name="displaycontainer" template="bazaarvoice/display/cp/profile.phtml" />
+            <block type="bazaarvoice/bazaarvoice" name="displaycontainer" template="bazaarvoice/display/cp/profile.phtml" />
         </reference>
     </bazaarvoice_profile_display>
 
@@ -66,35 +66,35 @@
     -->
     <catalog_product_view>
         <reference name="head">
-            <block type="Bazaarvoice/bazaarvoice" name="headerincludes" template="bazaarvoice/display/headerincludes.phtml" after="-" />
+            <block type="bazaarvoice/bazaarvoice" name="headerincludes" template="bazaarvoice/display/headerincludes.phtml" after="-" />
         </reference>
         <reference name="content">
             <reference name="product.info">
-                <block type="Bazaarvoice/bazaarvoice" name="reviewsummary" as="bv_reviewsummary" template="bazaarvoice/display/rr/reviewsummary.phtml" />
-                <block type="Bazaarvoice/bazaarvoice" name="reviews" as="bv_reviews" template="bazaarvoice/display/rr/reviews.phtml" />
+                <block type="bazaarvoice/bazaarvoice" name="reviewsummary" as="bv_reviewsummary" template="bazaarvoice/display/rr/reviewsummary.phtml" />
+                <block type="bazaarvoice/bazaarvoice" name="reviews" as="bv_reviews" template="bazaarvoice/display/rr/reviews.phtml" />
 
-                <block type="Bazaarvoice/bazaarvoice" name="questionsummary" as="bv_questionsummary" template="bazaarvoice/display/qa/questionsummary.phtml" />
-                <block type="Bazaarvoice/bazaarvoice" name="questions" as="bv_questions" template="bazaarvoice/display/qa/questions.phtml" />
+                <block type="bazaarvoice/bazaarvoice" name="questionsummary" as="bv_questionsummary" template="bazaarvoice/display/qa/questionsummary.phtml" />
+                <block type="bazaarvoice/bazaarvoice" name="questions" as="bv_questions" template="bazaarvoice/display/qa/questions.phtml" />
 
-                <block type="Bazaarvoice/bazaarvoice" name="storysummary" as="bv_storysummary" template="bazaarvoice/display/sy/storysummary.phtml" />
-                <block type="Bazaarvoice/bazaarvoice" name="stories" as="bv_stories" template="bazaarvoice/display/sy/stories.phtml" />
+                <block type="bazaarvoice/bazaarvoice" name="storysummary" as="bv_storysummary" template="bazaarvoice/display/sy/storysummary.phtml" />
+                <block type="bazaarvoice/bazaarvoice" name="stories" as="bv_stories" template="bazaarvoice/display/sy/stories.phtml" />
             </reference>
         </reference>
     </catalog_product_view>
 
     <catalog_category_view>
         <reference name="head">
-            <block type="Bazaarvoice/bazaarvoice" name="headerincludes" template="bazaarvoice/display/headerincludes.phtml" after="-" />
+            <block type="bazaarvoice/bazaarvoice" name="headerincludes" template="bazaarvoice/display/headerincludes.phtml" after="-" />
         </reference>
         <reference name="content">
             <reference name="category.products">
                 <reference name="product_list" >
                     <!-- Review Summary and List blocks intentionally omitted here.  RR is not supported on categories.  -->
-                    <block type="Bazaarvoice/bazaarvoice" name="questionsummary" as="bv_questionsummary" template="bazaarvoice/display/qa/questionsummary.phtml" />
-                    <block type="Bazaarvoice/bazaarvoice" name="questions" as="bv_questions" template="bazaarvoice/display/qa/questions.phtml" />
+                    <block type="bazaarvoice/bazaarvoice" name="questionsummary" as="bv_questionsummary" template="bazaarvoice/display/qa/questionsummary.phtml" />
+                    <block type="bazaarvoice/bazaarvoice" name="questions" as="bv_questions" template="bazaarvoice/display/qa/questions.phtml" />
 
-                    <block type="Bazaarvoice/bazaarvoice" name="storysummary" as="bv_storysummary" template="bazaarvoice/display/sy/storysummary.phtml" />
-                    <block type="Bazaarvoice/bazaarvoice" name="stories" as="bv_stories" template="bazaarvoice/display/sy/stories.phtml" />
+                    <block type="bazaarvoice/bazaarvoice" name="storysummary" as="bv_storysummary" template="bazaarvoice/display/sy/storysummary.phtml" />
+                    <block type="bazaarvoice/bazaarvoice" name="stories" as="bv_stories" template="bazaarvoice/display/sy/stories.phtml" />
                 </reference>
             </reference>
         </reference>
