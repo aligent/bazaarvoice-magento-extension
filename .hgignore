@@ -5,3 +5,6 @@
 ^media.*/cache/.*
 ^\.buildpath$
 ^\.project$
+
+syntax: regexp
+^\.settings$
