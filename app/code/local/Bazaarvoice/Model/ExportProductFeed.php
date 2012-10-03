@@ -62,7 +62,7 @@ class Bazaarvoice_Model_ExportProductFeed extends Mage_Core_Model_Abstract {
             if($ioObject->streamOpen($productFeedFileName)) {
 
                 $ioObject->streamWrite("<?xml version=\"1.0\" encoding=\"UTF-8\"?>".
-                        "<Feed xmlns=\"http://www.bazaarvoice.com/xs/PRR/ProductFeed/4.5\"".
+                        "<Feed xmlns=\"http://www.bazaarvoice.com/xs/PRR/ProductFeed/5.2\"".
                         " generator=\"Magento Extension r5.1.2\"".
                         "  name=\"".Mage::getStoreConfig("bazaarvoice/General/CustomerName")."\"".
                         "  incremental=\"true\"".
