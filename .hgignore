@@ -1,4 +1,11 @@
-^var/.*
+^var/cache.*
+^var/export.*
+^var/full.*
+^var/import.*
+^var/log.*
+^var/session.*
+^var/connect.*\.tgz.*
+^var/package/tmp.*
 ^app/etc/local\.xml
 ^cache\.cfg
 ^connect\.cfg
