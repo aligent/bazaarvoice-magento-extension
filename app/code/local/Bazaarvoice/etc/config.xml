@@ -147,19 +147,19 @@
     </frontend>
     <global>
         <models>
-            <Bazaarvoice>
+            <bazaarvoice>
                 <class>Bazaarvoice_Model</class>
-            </Bazaarvoice>
+            </bazaarvoice>
         </models>
         <blocks>
-            <Bazaarvoice>
+            <bazaarvoice>
                 <class>Bazaarvoice_Block</class>
-            </Bazaarvoice>
+            </bazaarvoice>
         </blocks>
         <helpers>
-            <Bazaarvoice>
+            <bazaarvoice>
                 <class>Bazaarvoice_Helper</class>
-            </Bazaarvoice>
+            </bazaarvoice>
         </helpers>
         <template>
             <email>
