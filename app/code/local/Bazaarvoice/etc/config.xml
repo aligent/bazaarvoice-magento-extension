@@ -48,7 +48,8 @@
                     var isMobileDevice = (userAgent.search("iphone") > -1 || userAgent.search("android") > -1 || userAgent.search("blackberry") > -1);
                     return (isMobileDevice ? "mobile" : "");
                 ]]></DisplayTypeJavascript>
-                <DoShowContentJavascript><![CDATA[// code to execute when read reviews is clicked]]></DoShowContentJavascript>
+                <DoShowContentJavascript><![CDATA[// code to execute when read reviews is clicked
+                ]]></DoShowContentJavascript>
             </RR>
             <AA>
                 <SubDomain>answers</SubDomain>

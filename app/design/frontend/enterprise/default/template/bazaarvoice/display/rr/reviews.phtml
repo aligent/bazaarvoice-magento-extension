@@ -38,11 +38,14 @@ if(Mage::getStoreConfig("bazaarvoice/RR/EnableRR") === "1") {
     configData.summaryContainerDiv = "BVCustomerRatings";
     configData.contentContainerDiv = "BVReviewsContainer";
     configData.onEvent = function(json) {
-        <?php echo Bazaarvoice_Helper_Data::getConfigPropertyForBVProduct("reviews", "OnEventJavascript"); ?>
+        <?php echo Bazaarvoice_Helper_Data::getConfigPropertyForBVProduct("reviews", "OnEventJavascript") . "\n"; ?>
     };
     if (getRRDisplayType() != "") {
         configData.displayType = getRRDisplayType();
     }
+    configData.doShowContent = function () {
+    	<?php echo Bazaarvoice_Helper_Data::getConfigPropertyForBVProduct("reviews", "DoShowContentJavascript") . "\n"; ?>
+    };
 
     $BV.ui("rr", "show_reviews", configData);
 </script>
