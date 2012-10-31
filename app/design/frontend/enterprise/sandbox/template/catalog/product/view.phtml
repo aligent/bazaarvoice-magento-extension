@@ -159,29 +159,24 @@
     }.bind(productAddToCartForm);
 //]]>
 </script>
-<script>
+<script type="text/javascript">
 (function ($) {
-	var self = this;
-	
-	self.tabs = new Enterprise.Tabs('collateral-tabs');
 
-	self.scrollToElement = function (id) {
-		$('html,body').animate({
-			scrollTop: $('#'+id).offset().top
-		}, 'slow');
-	};
+    var TabHelper = window.TabHelper || (window.TabHelper = {});
 
-	self.registerTab = function (linkSelector, tabId) {
-		$(linkSelector).live('click', function (e) {
-			e.preventDefault();
-			self.tabs.activeTab = document.getElementById(tabId);
-			self.tabs.select();
-			self.scrollToElement(tabId);
-		});
-	};
+    TabHelper.tabs = new Enterprise.Tabs('collateral-tabs');
 
-	self.registerTab('#BVRRRatingSummaryLinkReadID > a','tab-reviews');
-	self.registerTab('#BVQASummaryBoxViewQuestionsID > a','tab-questions');
-	self.registerTab('#BVSYSummaryBoxLinkReadID > a','tab-stories');
+    TabHelper.scrollToElement = function (id) {
+        $('html,body').animate({
+            scrollTop: $('#' + id).offset().top
+        }, 'slow');
+    };
+
+    TabHelper.setActiveTab = function (id) {
+        this.tabs.activeTab = document.getElementById(id);
+        this.tabs.select();
+        this.scrollToElement(id);
+    };
+
 }(jQuery));
 </script>
