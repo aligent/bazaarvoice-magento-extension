@@ -29,7 +29,10 @@ if(Mage::getStoreConfig("bazaarvoice/AA/EnableAA") === "1") {
     configData.summaryContainerDiv = "BVQASummaryContainer";
     configData.contentContainerDiv = "BVQAContainer";
     configData.onEvent = function(json) {
-        <?php echo Bazaarvoice_Helper_Data::getConfigPropertyForBVProduct("questions", "OnEventJavascript"); ?>
+        <?php echo Bazaarvoice_Helper_Data::getConfigPropertyForBVProduct("questions", "OnEventJavascript") . "\n"; ?>
+    };
+    configData.doShowContent = function () {
+    	<?php echo Bazaarvoice_Helper_Data::getConfigPropertyForBVProduct("questions", "DoShowContentJavascript") . "\n"; ?>
     };
     $BV.ui("qa", "show_questions", configData);
 </script>

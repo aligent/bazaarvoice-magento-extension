@@ -38,8 +38,11 @@ if(Mage::getStoreConfig("bazaarvoice/SY/EnableSY") === "1") {
     configData.summaryContainerDiv = "BVSYSummaryContainer";
     configData.contentContainerDiv = "BVSYContainer";
     configData.onEvent = function(json) {
-        <?php echo Bazaarvoice_Helper_Data::getConfigPropertyForBVProduct("stories", "OnEventJavascript"); ?>
+        <?php echo Bazaarvoice_Helper_Data::getConfigPropertyForBVProduct("stories", "OnEventJavascript") . "\n"; ?>
     };
-    $BV.ui("sy", getStoriesDisplayFormat(), configData);
+    configData.doShowContent = function () {
+    	<?php echo Bazaarvoice_Helper_Data::getConfigPropertyForBVProduct("stories", "DoShowContentJavascript") . "\n"; ?>
+    };
+	$BV.ui("sy", getStoriesDisplayFormat(), configData);
 </script>
 <?php } ?>
