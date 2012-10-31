@@ -198,7 +198,7 @@
                             <show_in_store>1</show_in_store>
                         </DisplayTypeJavascript>
                         <DoShowContentJavascript>
-                            <label>Read Reviews Callback Javascript Function</label>
+                            <label>DoShowContent Javascript Function</label>
                             <frontend_type>textarea</frontend_type>
                             <comment><![CDATA[This preference value is expected to be valid client-side javascript.  This Bazaarvoice extension
                                 will wrap this javascript in a function(){...} block.  Your code must return a value of "mobile" or an empty string, "", depending
@@ -273,6 +273,19 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </OnEventJavascript>
+                        <DoShowContentJavascript>
+                            <label>DoShowContent Javascript Function</label>
+                            <frontend_type>textarea</frontend_type>
+                            <comment><![CDATA[This preference value is expected to be valid client-side javascript.  This Bazaarvoice extension
+                                will wrap this javascript in a function(){...} block.  Your code must return a value of "mobile" or an empty string, "", depending
+                                on whether or not you want to set the displayType for R&amp;R display to a mobile device or for a full browser client.
+                                This preference exists so that you may customize which displayType is used based upon data available client-side.  Contact your Bazaarvoice
+                                Implementation Engineer for further information on the displayType configuration parameter.]]></comment>
+                            <sort_order>70</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </DoShowContentJavascript>
                     </fields>
                 </AA>
                 <SY translate="label">
@@ -348,12 +361,25 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </OnEventJavascript>
+                        <DoShowContentJavascript>
+                            <label>DoShowContent Javascript Function</label>
+                            <frontend_type>textarea</frontend_type>
+                            <comment><![CDATA[This preference value is expected to be valid client-side javascript.  This Bazaarvoice extension
+                                will wrap this javascript in a function(){...} block.  Your code must return a value of "mobile" or an empty string, "", depending
+                                on whether or not you want to set the displayType for R&amp;R display to a mobile device or for a full browser client.
+                                This preference exists so that you may customize which displayType is used based upon data available client-side.  Contact your Bazaarvoice
+                                Implementation Engineer for further information on the displayType configuration parameter.]]></comment>
+                            <sort_order>70</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </DoShowContentJavascript>
                         <SmartSEOPageFormat>
                             <label>Bazaarvoice Stories SmartSEO Page Format</label>
                             <frontend_type>text</frontend_type>
                             <comment><![CDATA[If you have enabled SmartSEO, this preference determines which type of pre-rendered content will be injected
                                 into the page.  Valid options are "stories" and "storiesgrid", corresponding to the list and grid views of stories, respectively.]]></comment>
-                            <sort_order>70</sort_order>
+                            <sort_order>80</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>

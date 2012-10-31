@@ -48,7 +48,8 @@
                     var isMobileDevice = (userAgent.search("iphone") > -1 || userAgent.search("android") > -1 || userAgent.search("blackberry") > -1);
                     return (isMobileDevice ? "mobile" : "");
                 ]]></DisplayTypeJavascript>
-                <DoShowContentJavascript><![CDATA[// code to execute when read reviews is clicked
+                <DoShowContentJavascript><![CDATA[
+                	// code to execute when read reviews link is clicked
                 ]]></DoShowContentJavascript>
             </RR>
             <AA>
@@ -65,6 +66,9 @@
                         }
                     }
                 ]]></OnEventJavascript>
+                <DoShowContentJavascript><![CDATA[
+                	// code to execute when read answers link is clicked
+                ]]></DoShowContentJavascript>
             </AA>
             <SY>
                 <SubDomain>stories</SubDomain>
@@ -83,6 +87,9 @@
                 <DisplayFormatJavascript><![CDATA[
                     return "show_grid";
                 ]]></DisplayFormatJavascript>
+                <DoShowContentJavascript><![CDATA[
+                	// code to execute when read stories link is clicked
+                ]]></DoShowContentJavascript>
                 <SmartSEOPageFormat>storiesgrid</SmartSEOPageFormat>
             </SY>
             <CP>
