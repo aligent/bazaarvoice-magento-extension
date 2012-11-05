@@ -198,13 +198,11 @@
                             <show_in_store>1</show_in_store>
                         </DisplayTypeJavascript>
                         <DoShowContentJavascript>
-                            <label>DoShowContent Javascript Function</label>
+                            <label>DoShowContent Javascript Callback</label>
                             <frontend_type>textarea</frontend_type>
-                            <comment><![CDATA[This preference value is expected to be valid client-side javascript.  This Bazaarvoice extension
-                                will wrap this javascript in a function(){...} block.  Your code must return a value of "mobile" or an empty string, "", depending
-                                on whether or not you want to set the displayType for R&amp;R display to a mobile device or for a full browser client.
-                                This preference exists so that you may customize which displayType is used based upon data available client-side.  Contact your Bazaarvoice
-                                Implementation Engineer for further information on the displayType configuration parameter.]]></comment>
+                            <comment><![CDATA[The Bazaarvoice doShowContent javascript callback is triggered when the "read all reviews" link in the review summary is clicked.
+                            	You may provide code here that you wish to execute on said click event.  For example, you may want to activate a specific tab on the page.  This
+                            	code will be wrapped in a javascript function(){...} block. See your Bazaarvoice Implementation manual for further information.]]></comment>
                             <sort_order>70</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
@@ -274,13 +272,11 @@
                             <show_in_store>1</show_in_store>
                         </OnEventJavascript>
                         <DoShowContentJavascript>
-                            <label>DoShowContent Javascript Function</label>
+                            <label>DoShowContent Javascript Callback</label>
                             <frontend_type>textarea</frontend_type>
-                            <comment><![CDATA[This preference value is expected to be valid client-side javascript.  This Bazaarvoice extension
-                                will wrap this javascript in a function(){...} block.  Your code must return a value of "mobile" or an empty string, "", depending
-                                on whether or not you want to set the displayType for R&amp;R display to a mobile device or for a full browser client.
-                                This preference exists so that you may customize which displayType is used based upon data available client-side.  Contact your Bazaarvoice
-                                Implementation Engineer for further information on the displayType configuration parameter.]]></comment>
+                            <comment><![CDATA[The Bazaarvoice doShowContent javascript callback is triggered when the "read all Q&A" link in the question/answer summary is clicked.
+                            		You may provide code here that you wish to execute on said click event.  For example, you may want to activate a specific tab on the page.  This
+                            		code will be wrapped in a javascript function(){...} block. See your Bazaarvoice Implementation manual for further information.]]></comment>
                             <sort_order>70</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
@@ -362,13 +358,11 @@
                             <show_in_store>1</show_in_store>
                         </OnEventJavascript>
                         <DoShowContentJavascript>
-                            <label>DoShowContent Javascript Function</label>
+                            <label>DoShowContent Javascript Callback</label>
                             <frontend_type>textarea</frontend_type>
-                            <comment><![CDATA[This preference value is expected to be valid client-side javascript.  This Bazaarvoice extension
-                                will wrap this javascript in a function(){...} block.  Your code must return a value of "mobile" or an empty string, "", depending
-                                on whether or not you want to set the displayType for R&amp;R display to a mobile device or for a full browser client.
-                                This preference exists so that you may customize which displayType is used based upon data available client-side.  Contact your Bazaarvoice
-                                Implementation Engineer for further information on the displayType configuration parameter.]]></comment>
+                            <comment><![CDATA[The Bazaarvoice doShowContent javascript callback is triggered when the "read all stories" link in the story summary is clicked.
+                            	You may provide code here that you wish to execute on said click event.  For example, you may want to activate a specific tab on the page.  This
+                            	code will be wrapped in a javascript function(){...} block. See your Bazaarvoice Implementation manual for further information.]]></comment>
                             <sort_order>70</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
