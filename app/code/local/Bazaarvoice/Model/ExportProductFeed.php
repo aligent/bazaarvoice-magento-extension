@@ -137,6 +137,8 @@ class Bazaarvoice_Model_ExportProductFeed extends Mage_Core_Model_Abstract {
             $ioObject->streamWrite("<Products>\n");
         }
         foreach ($productIds as $productId) {
+        	// Reset product model to prevent model data persisting between loop iterations.
+        	$productModel->reset();
             $product = $productModel->load($productId->getId()); //Load product object
             $productExternalId = Bazaarvoice_Helper_Data::getProductId($product);
             $brand = htmlspecialchars($product->getAttributeText("manufacturer"));
