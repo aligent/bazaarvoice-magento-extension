@@ -1,6 +1,7 @@
 <?php
 class Bazaarvoice_Block_Roi_Beacon extends Mage_Core_Block_Template
 {
+	// set in admin
 	private $_isEnabled;
 	
 	public function _construct()
@@ -30,7 +31,6 @@ class Bazaarvoice_Block_Roi_Beacon extends Mage_Core_Block_Template
             $order = Mage::getModel('sales/order')->load($orderId);
             if ($order->getId())
             {
-            	// Mage::log($order->debug(), null, "order.log", true);
             	$orderDetails["orderId"] = $order->getId();
             	$orderDetails["tax"] = number_format($order->getTaxAmount(), 2, ".", "");
             	$orderDetails["shipping"] = number_format($order->getShippingAmount(), 2, ".", "");
@@ -39,10 +39,11 @@ class Bazaarvoice_Block_Roi_Beacon extends Mage_Core_Block_Template
             	$orderDetails["userId"] = $order->getCustomerId();
             	$orderDetails["email"] = $order->getCustomerEmail();
             	$orderDetails["nickname"] = $order->getCustomerEmail();
-            	
+            	$orderDetails["locale"] = Mage::getStoreConfig("general/locale/code", $order->getStoreId());
+            	 
             	$address = $order->getShippingAddress();
             	$orderDetails["city"] = $address->getCity();
-            	$orderDetails["state"] = $address->getRegion();
+            	$orderDetails["state"] = Mage::getModel("directory/region")->load($address->getRegionId())->getCode();
             	$orderDetails["country"] = $address->getCountryId();
             	
             	$orderDetails["items"] = array();
