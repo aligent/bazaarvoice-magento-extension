@@ -126,6 +126,10 @@
     </bazaarvoice_feed_smartseo>
     -->
 
-
+	<checkout_onepage_success>
+        <reference name="head">
+            <block type="Bazaarvoice/roi_beacon" name="headerincludes" template="bazaarvoice/submit/roi_beacon.phtml" after="-" />
+        </reference>
+	</checkout_onepage_success>
 
 </layout> 
