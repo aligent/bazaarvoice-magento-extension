@@ -41,7 +41,7 @@ class Bazaarvoice_Block_Roi_Beacon extends Mage_Core_Block_Template
             	$orderDetails["nickname"] = $order->getCustomerEmail();
             	$orderDetails["locale"] = Mage::getStoreConfig("general/locale/code", $order->getStoreId());
             	 
-            	$address = $order->getShippingAddress();
+            	$address = $order->getBillingAddress();
             	$orderDetails["city"] = $address->getCity();
             	$orderDetails["state"] = Mage::getModel("directory/region")->load($address->getRegionId())->getCode();
             	$orderDetails["country"] = $address->getCountryId();
