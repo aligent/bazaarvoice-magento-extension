@@ -128,6 +128,7 @@
 
 	<checkout_onepage_success>
         <reference name="head">
+        	<block type="Bazaarvoice/bazaarvoice" name="headerincludes" template="bazaarvoice/submit/headerincludes.phtml" after="-" />
             <block type="Bazaarvoice/roi_beacon" name="headerincludes" template="bazaarvoice/submit/roi_beacon.phtml" after="-" />
         </reference>
 	</checkout_onepage_success>
