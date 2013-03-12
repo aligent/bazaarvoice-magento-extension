@@ -1,12 +1,12 @@
 <?php
 class Bazaarvoice_Block_Roi_Beacon extends Mage_Core_Block_Template
 {
-	// set in admin
 	private $_isEnabled;
 	
 	public function _construct()
 	{
-		$this->_isEnabled = true;		
+		// enabled/disabled in admin
+		$this->_isEnabled = Mage::getStoreConfig("bazaarvoice/ROIBeacon/EnableROIBeacon") === "1";
 	}
 
 	/**
@@ -65,6 +65,6 @@ class Bazaarvoice_Block_Roi_Beacon extends Mage_Core_Block_Template
         }
         
         $orderDetailsJson = Mage::helper("core")->jsonEncode($orderDetails);
-        return urldecode(stripslashes(Zend_Json::prettyPrint($orderDetailsJson, array("indent" => "  "))));
+        return urldecode(stripslashes($orderDetailsJson));
 	}
 }
