@@ -634,7 +634,27 @@
                         </NumDaysLookback>
                     </fields>
                 </PurchaseFeed>
-            </groups>
+                <ROIBeacon translate="label">
+                    <label>ROI Beacon</label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>190</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <fields>
+                        <EnableROIBeacon>
+                            <label>Enable ROI Beacon</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <comment><![CDATA[Turn on Bazaarvoice ROI Beacon. This will enable transmission of order details to Bazaarvoice on the order confirmation page.]]></comment>
+                            <sort_order>10</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </EnableROIBeacon>
+                    </fields>
+                </ROIBeacon>
+			</groups>
         </bazaarvoice>
     </sections>
 </config>

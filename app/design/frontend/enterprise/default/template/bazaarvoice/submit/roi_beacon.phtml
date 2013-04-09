@@ -1,0 +1,5 @@
+<?php if ($this->getIsEnabled()):?>
+<script type="text/javascript">
+$BV.SI.trackTransactionPageView(<?php echo $this->getOrderDetails(); ?>); 
+</script>
+<?php endif;?>
