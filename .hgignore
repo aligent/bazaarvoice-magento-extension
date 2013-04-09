@@ -2,7 +2,9 @@
 ^var/export.*
 ^var/full.*
 ^var/import.*
+^var/lock.*
 ^var/log.*
+^var/report.*
 ^var/session.*
 ^var/connect.*\.tgz.*
 ^var/package/tmp.*
