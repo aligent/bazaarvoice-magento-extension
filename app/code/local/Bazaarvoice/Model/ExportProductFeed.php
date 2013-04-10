@@ -8,6 +8,8 @@ class Bazaarvoice_Model_ExportProductFeed extends Mage_Core_Model_Abstract {
 
     protected function _construct() {}
     
+    private $_categoryIdList = array();
+    
     public function exportDailyProductFeed() {
         Mage::log("Start Bazaarvoice product feed generation");
         if(Mage::getStoreConfig("bazaarvoice/ProductFeed/EnableProductFeed") === "1") {
@@ -80,13 +82,13 @@ class Bazaarvoice_Model_ExportProductFeed extends Mage_Core_Model_Abstract {
 
                 $destinationFile = "/" . Mage::getStoreConfig("bazaarvoice/ProductFeed/ExportPath") . "/" . Mage::getStoreConfig("bazaarvoice/ProductFeed/ExportFileName");
                 $sourceFile = $productFeedFilePath . DS . $productFeedFileName;
-                $upload = Bazaarvoice_Helper_Data::uploadFile($sourceFile, $destinationFile);
+                // $upload = Bazaarvoice_Helper_Data::uploadFile($sourceFile, $destinationFile);
 
                 if (!$upload) {
                     Mage::log("    Bazaarvoice FTP upload failed! [filename = " . $productFeedFileName . "]");
                 } else {
                     Mage::log("    Bazaarvoice FTP upload success! [filename = " . $productFeedFileName . "]");
-                    $ioObject->rm($productFeedFileName);
+                    // $ioObject->rm($productFeedFileName);
                 }
             }
         }
@@ -115,6 +117,8 @@ class Bazaarvoice_Model_ExportProductFeed extends Mage_Core_Model_Abstract {
             if (!is_null($parentCategory) && $parentCategory->getLevel() != 1) { //if parent category is the root category, then ignore it
                 $parentExtId = "    <ParentExternalId>" . Bazaarvoice_Helper_Data::getCategoryId($parentCategory) . "</ParentExternalId>\n";
             }
+            
+            array_push($this->_categoryIdList, $categoryExternalId);
 
             $ioObject->streamWrite("<Category>\n".
                          "    <ExternalId>".$categoryExternalId."</ExternalId>\n".
@@ -122,7 +126,9 @@ class Bazaarvoice_Model_ExportProductFeed extends Mage_Core_Model_Abstract {
                          "    <Name>".$categoryName."</Name>\n".
                          "    <CategoryPageUrl>".$categoryPageUrl."</CategoryPageUrl>\n".
                          "</Category>\n");
+            
         }
+        
         if(count($categoryIds) > 0) {
             $ioObject->streamWrite("</Categories>\n");
         }
@@ -159,12 +165,22 @@ class Bazaarvoice_Model_ExportProductFeed extends Mage_Core_Model_Abstract {
             if (!is_null($brand) && !empty($brand)) {
                 $ioObject->streamWrite("    <Brand><ExternalId>" . $brand . "</ExternalId></Brand>\n");
             }
+            
+            /* Make sure that CategoryExternalId is one written to Category section */
             $parentCategories = $productId->getCategoryIds();
-            if (!is_null($parentCategories) && count($parentCategories) > 0 && !empty($parentCategories[0])) {
-                $parentCategory = $categoryModel->load($parentCategories[0]);
-                $categoryExternalId = Bazaarvoice_Helper_Data::getCategoryId($parentCategory);
-                $ioObject->streamWrite("    <CategoryExternalId>" . $categoryExternalId . "</CategoryExternalId>\n");
+            if (!is_null($parentCategories) && count($parentCategories) > 0) {
+            	foreach ($parentCategories as $parentCategoryId) {
+            		$parentCategory = Mage::getModel("catalog/category")->load($parentCategoryId);
+            		if ($parentCategory != null) {
+            			$categoryExternalId = Bazaarvoice_Helper_Data::getCategoryId($parentCategory);
+            			if (in_array($categoryExternalId, $this->_categoryIdList)) {
+							$ioObject->streamWrite("    <CategoryExternalId>" . $categoryExternalId . "</CategoryExternalId>\n");
+							break;
+            			}
+            		}
+            	}            	
             }
+            
             $ioObject->streamWrite("    <ProductPageUrl>".$product->getProductUrl()."</ProductPageUrl>\n".
                                    "    <ImageUrl>".$product->getImageUrl()."</ImageUrl>\n".
                                    "</Product>\n");
