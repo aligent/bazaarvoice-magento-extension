@@ -63,9 +63,9 @@ class Bazaarvoice_Model_ExportProductFeed extends Mage_Core_Model_Abstract {
 
                 $ioObject->streamWrite("<?xml version=\"1.0\" encoding=\"UTF-8\"?>".
                         "<Feed xmlns=\"http://www.bazaarvoice.com/xs/PRR/ProductFeed/5.2\"".
-                        " generator=\"Magento Extension r5.1.3\"".
+                        " generator=\"Magento Extension r5.1.4\"".
                         "  name=\"".Mage::getStoreConfig("bazaarvoice/General/CustomerName")."\"".
-                        "  incremental=\"true\"".
+                        "  incremental=\"false\"".
                         "  extractDate=\"".date('Y-m-d')."T".date('H:i:s').".000000\">\n");
 
 
