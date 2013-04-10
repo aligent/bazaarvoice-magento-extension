@@ -438,6 +438,30 @@ class Bazaarvoice_Helper_Data extends Mage_Core_Helper_Abstract {
 
             $emailTemplate->send($toEmail,'Bazaarvoice Admin', $emailTemplateVariables);
         }
-
+    }
+    
+    /**
+     * Returns the product unless the product visibility is
+     * set to not visible.  In this case, it will try and pull
+     * the parent/associated product from the order item.
+     * 
+     * @param Mage_Sales_Model_Order_Item $item
+     * @return Mage_Catalog_Model_Product
+     */
+    public static function getReviewableProductFromOrderItem($item)
+    {
+    	$product = Mage::getModel("catalog/product")->load($item->getProductId());
+    	if ($product->getVisibility() == Mage_Catalog_Model_Product_Visibility::VISIBILITY_NOT_VISIBLE)
+    	{
+    		$options = $item->getProductOptions();
+    		try
+    		{
+    			$parentId = $options["super_product_config"]["product_id"];
+    			$product = Mage::getModel("catalog/product")->load($parentId);
+    		}
+    		catch (Exception $ex) {}
+    	}
+    	
+    	return $product;
     }
 }
