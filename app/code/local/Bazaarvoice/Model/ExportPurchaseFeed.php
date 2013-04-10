@@ -78,7 +78,7 @@ class Bazaarvoice_Model_ExportPurchaseFeed extends Mage_Core_Model_Abstract {
                                 . ", NumDaysLookback: " . $numDaysLookback
                                 . ", NumDaysLookbackStartDate: " . $this->getNumDaysLookbackStartDate($numDaysLookback)
                                 . ", DelayDaysSinceEvent: " . $delayDaysSinceEvent
-                                . ", DelayDaysThreshold: " . date(DateTime::ISO8601, $this->getDelayDaysThresholdTimestamp($delayDaysSinceEvent)) . "}");
+                                . ", DelayDaysThreshold: " . date("c", $this->getDelayDaysThresholdTimestamp($delayDaysSinceEvent)) . "}");
 
         // Initialize references to the object model accessors
         $productModel = Mage::getModel("catalog/product"); //Getting product model for access to product related functions
@@ -146,9 +146,9 @@ class Bazaarvoice_Model_ExportPurchaseFeed extends Mage_Core_Model_Abstract {
                     . "\n\tCustomerId: " . $order->getCustomerId()
                     . "\n\tStatus: " . $order->getStatus()
                     . "\n\tState: " . $order->getState()
-                    . "\n\tDate: " . date(DateTime::ISO8601,strtotime($order->getCreatedAtDate()))
+                    . "\n\tDate: " . date("c",strtotime($order->getCreatedAtDate()))
                     . "\n\tHasShipped: " . $this->hasOrderCompletelyShipped($order)
-                    . "\n\tLatestShipmentDate: " . date(DateTime::ISO8601,$this->getLatestShipmentDate($order))
+                    . "\n\tLatestShipmentDate: " . date("c",$this->getLatestShipmentDate($order))
                     . "\n\tNumItems: " . count($order->getAllItems())
                     . "\n\tSentInBVPPEFeed: " . $order->getData(self::ALREADY_SENT_IN_FEED_FLAG)
                     //. "\n\tCustomerEmail: " . $order->getCustomerEmail()    //Don't put CustomerEmail in the logs - could be considered PII
@@ -162,7 +162,7 @@ class Bazaarvoice_Model_ExportPurchaseFeed extends Mage_Core_Model_Abstract {
             $timestamp = $this->getLatestShipmentDate($order);
         }
 
-        return date(DateTime::ISO8601, $timestamp);
+        return date("c", $timestamp);
     }
 
     private function getNumDaysLookbackStartDate($numDaysLookback) {
@@ -208,7 +208,7 @@ class Bazaarvoice_Model_ExportPurchaseFeed extends Mage_Core_Model_Abstract {
             $latestItemShipDateTimestamp = $this->getLatestShipmentDate($order);
             if ($latestItemShipDateTimestamp > $thresholdTimestamp) {
                 // Latest ship date for the fully shipped order is still within the delay period
-                Mage::log("    BV - Skipping Order.  Ship date not outside the threshold of " . date(DateTime::ISO8601, $thresholdTimestamp) . ". " . $this->orderToString($order));
+                Mage::log("    BV - Skipping Order.  Ship date not outside the threshold of " . date("c", $thresholdTimestamp) . ". " . $this->orderToString($order));
                 return false;
             }
         } else if ($triggeringEvent === self::TRIGGER_EVENT_PURCHASE) {
@@ -216,7 +216,7 @@ class Bazaarvoice_Model_ExportPurchaseFeed extends Mage_Core_Model_Abstract {
             $orderPlacementTimestamp = strtotime($order->getCreatedAtDate());
             if ($orderPlacementTimestamp > $thresholdTimestamp) {
                 // Order placement date is still within the delay period
-                Mage::log("    BV - Skipping Order.  Order date not outside the threshold of " . date(DateTime::ISO8601, $thresholdTimestamp) . ". " . $this->orderToString($order));
+                Mage::log("    BV - Skipping Order.  Order date not outside the threshold of " . date("c", $thresholdTimestamp) . ". " . $this->orderToString($order));
                 return false;
             }
         }
