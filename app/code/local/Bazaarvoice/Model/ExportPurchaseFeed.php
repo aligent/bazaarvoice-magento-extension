@@ -118,8 +118,8 @@ class Bazaarvoice_Model_ExportPurchaseFeed extends Mage_Core_Model_Abstract {
             $ioObject->streamWrite("    <UserID>" . $order->getCustomerId() . "</UserID>\n");
             $ioObject->streamWrite("    <TransactionDate>" . $this->getTriggeringEventDate($order, $triggeringEvent) . "</TransactionDate>\n");
             $ioObject->streamWrite("    <Products>\n");
-            foreach($order->getAllItems() as $item) {
-                $product = $productModel->load($item->getProductId());
+            foreach($order->getAllVisibleItems() as $item) {
+            	$product = Bazaarvoice_Helper_Data::getReviewableProductFromOrderItem($item);
                 if (!is_null($product)) {
                     $ioObject->streamWrite("        <Product>\n");
                     $ioObject->streamWrite("            <ExternalId>" . Bazaarvoice_Helper_Data::getProductId($product) . "</ExternalId>\n");
