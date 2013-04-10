@@ -82,13 +82,13 @@ class Bazaarvoice_Model_ExportProductFeed extends Mage_Core_Model_Abstract {
 
                 $destinationFile = "/" . Mage::getStoreConfig("bazaarvoice/ProductFeed/ExportPath") . "/" . Mage::getStoreConfig("bazaarvoice/ProductFeed/ExportFileName");
                 $sourceFile = $productFeedFilePath . DS . $productFeedFileName;
-                // $upload = Bazaarvoice_Helper_Data::uploadFile($sourceFile, $destinationFile);
+                $upload = Bazaarvoice_Helper_Data::uploadFile($sourceFile, $destinationFile);
 
                 if (!$upload) {
                     Mage::log("    Bazaarvoice FTP upload failed! [filename = " . $productFeedFileName . "]");
                 } else {
                     Mage::log("    Bazaarvoice FTP upload success! [filename = " . $productFeedFileName . "]");
-                    // $ioObject->rm($productFeedFileName);
+                    $ioObject->rm($productFeedFileName);
                 }
             }
         }
