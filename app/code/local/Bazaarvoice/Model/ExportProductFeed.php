@@ -4,51 +4,65 @@
  *
  * @author Bazaarvoice, Inc.
  */
-class Bazaarvoice_Model_ExportProductFeed extends Mage_Core_Model_Abstract {
 
-    protected function _construct() {}
+/**
+ *
+ * BazaarVoice product feed should be in the following format:
+ *
+ * <?xml version="1.0" encoding="UTF-8"?>
+ * <Feed xmlns="http://www.bazaarvoice.com/xs/PRR/ProductFeed/3.3"
+ * 		  name="SiteName"
+ * 		  incremental="false"
+ *		  extractDate="2007-01-01T12:00:00.000000">
+ *		<Categories>
+ *			<Category>
+ *				<ExternalId>1010</ExternalId>
+ *				<Name>First Category</Name>
+ *				<CategoryPageUrl>http://www.site.com/category.htm?cat=1010</CategoryPageUrl>
+ *			</Category>
+ *			..... 0-n categories
+ *		</Categories>
+ *		<Products>
+ *			<Product>
+ *				<ExternalId>2000001</ExternalId>
+ *				<Name>First Product</Name>
+ *				<Description>First Product Description Text</Description>
+ *	TODO			<Brand>ProductBrand</Brand>
+ *				<CategoryExternalId>1010</CategoryExternalId>
+ *				<ProductPageUrl>http://www.site.com/product.htm?prod=2000001</ProductPageUrl>
+ *				<ImageUrl>http://images.site.com/prodimages/2000001.gif</ImageUrl>
+ *	TODO			<ManufacturerPartNumber>26-12345-8Z</ManufacturerPartNumber>
+ *	TODO			<EAN>0213354752286</EAN>
+ *			</Product>
+ *			....... 0-n products
+ *		</Products>
+ *</Feed>
+ */
+
+/**
+ * Product Feed Export Class
+ */
+class Bazaarvoice_Model_ExportProductFeed extends Mage_Core_Model_Abstract
+{
+
+    private $_categoryIdList = array();    
+
+    protected function _construct()
+    {
+    }
     
-    private $_categoryIdList = array();
-    
-    public function exportDailyProductFeed() {
+    /**
+     *
+     * process daily feed for the BazaarVoice. The feed will be FTPed to the BV FTP server
+     *
+     * Product & Catalog Feed to BV
+     *
+     */
+    public function exportDailyProductFeed()
+    {
         Mage::log("Start Bazaarvoice product feed generation");
         if(Mage::getStoreConfig("bazaarvoice/ProductFeed/EnableProductFeed") === "1") {
-            /**
-            *
-            * process feed for the BazaarVoice. The feed will be FTPed to the BV FTP server
-            *
-            * Product & Catalog Feed to BV
-            *
-            * <?xml version="1.0" encoding="UTF-8"?>
-            * <Feed xmlns="http://www.bazaarvoice.com/xs/PRR/ProductFeed/3.3"
-            * 		  name="SiteName"
-            * 		  incremental="false"
-            *		  extractDate="2007-01-01T12:00:00.000000">
-            *		<Categories>
-            *			<Category>
-            *				<ExternalId>1010</ExternalId>
-            *				<Name>First Category</Name>
-            *				<CategoryPageUrl>http://www.site.com/category.htm?cat=1010</CategoryPageUrl>
-            *			</Category>
-            *			..... 0-n categories
-            *		</Categories>
-            *		<Products>
-            *			<Product>
-            *				<ExternalId>2000001</ExternalId>
-            *				<Name>First Product</Name>
-            *				<Description>First Product Description Text</Description>
-            *	TODO			<Brand>ProductBrand</Brand>
-            *				<CategoryExternalId>1010</CategoryExternalId>
-            *				<ProductPageUrl>http://www.site.com/product.htm?prod=2000001</ProductPageUrl>
-            *				<ImageUrl>http://images.site.com/prodimages/2000001.gif</ImageUrl>
-            *	TODO			<ManufacturerPartNumber>26-12345-8Z</ManufacturerPartNumber>
-            *	TODO			<EAN>0213354752286</EAN>
-            *			</Product>
-            *			....... 0-n products
-            *		</Products>
-            *</Feed>
-            */
-
+            
             $productFeedFilePath = Mage::getBaseDir("var") . DS . 'export' . DS . 'bvfeeds';
             $productFeedFileName = 'productFeed-' . date('U') . '.xml';
 
@@ -95,7 +109,8 @@ class Bazaarvoice_Model_ExportProductFeed extends Mage_Core_Model_Abstract {
         Mage::log("End Bazaarvoice product feed generation");
     }
 
-    private function processCategories($ioObject) {
+    private function processCategories($ioObject)
+    {
         $categoryModel = Mage::getModel('catalog/category');
         $categoryIds = $categoryModel->getCollection();
         if(count($categoryIds) > 0) {
@@ -134,23 +149,26 @@ class Bazaarvoice_Model_ExportProductFeed extends Mage_Core_Model_Abstract {
         }
     }
 
-
-    private function processProducts($ioObject) {
+    private function processProducts($ioObject)
+    {
         $categoryModel = Mage::getModel('catalog/category');
-        $productModel = Mage::getModel('catalog/product'); //Getting product model for access to product related functions
-        $productIds = $productModel->getCollection(); //  *FROM MEMORY*  this should get all the products
+        // Getting product model for access to product related functions
+        $productModel = Mage::getModel('catalog/product');
+        // *FROM MEMORY*  this should get all the products
+        $productIds = $productModel->getCollection();
         if(count($productIds) > 0) {
             $ioObject->streamWrite("<Products>\n");
         }
         foreach ($productIds as $productId) {
             // Reset product model to prevent model data persisting between loop iterations.
             $productModel->reset();
-            $product = $productModel->load($productId->getId()); //Load product object
+            // Load product object
+            $product = $productModel->load($productId->getId());
             $productExternalId = Bazaarvoice_Helper_Data::getProductId($product);
             $brand = htmlspecialchars($product->getAttributeText("manufacturer"));
 
 
-            //A status of 1 means enabled, 0 means disabled
+            // A status of 1 means enabled, 0 means disabled
             if ($product->getStatus() != 1 || empty($productExternalId) || is_null($productExternalId)) {
                 Mage::log("        BV - Skipping product: " . $product->getSku());
                 continue;
