@@ -1,9 +1,11 @@
 <?php
+// @codingStandardsIgnoreStart
 /**
  * Event observer and indexer running application
  *
  * @author Bazaarvoice, Inc.
  */
+// @codingStandardsIgnoreEnd
 
 /**
  *
@@ -11,31 +13,31 @@
  *
  * <?xml version="1.0" encoding="UTF-8"?>
  * <Feed xmlns="http://www.bazaarvoice.com/xs/PRR/ProductFeed/3.3"
- * 		  name="SiteName"
- * 		  incremental="false"
- *		  extractDate="2007-01-01T12:00:00.000000">
- *		<Categories>
- *			<Category>
- *				<ExternalId>1010</ExternalId>
- *				<Name>First Category</Name>
- *				<CategoryPageUrl>http://www.site.com/category.htm?cat=1010</CategoryPageUrl>
- *			</Category>
- *			..... 0-n categories
- *		</Categories>
- *		<Products>
- *			<Product>
- *				<ExternalId>2000001</ExternalId>
- *				<Name>First Product</Name>
- *				<Description>First Product Description Text</Description>
- *	TODO			<Brand>ProductBrand</Brand>
- *				<CategoryExternalId>1010</CategoryExternalId>
- *				<ProductPageUrl>http://www.site.com/product.htm?prod=2000001</ProductPageUrl>
- *				<ImageUrl>http://images.site.com/prodimages/2000001.gif</ImageUrl>
- *	TODO			<ManufacturerPartNumber>26-12345-8Z</ManufacturerPartNumber>
- *	TODO			<EAN>0213354752286</EAN>
- *			</Product>
- *			....... 0-n products
- *		</Products>
+ *           name="SiteName"
+ *           incremental="false"
+ *          extractDate="2007-01-01T12:00:00.000000">
+ *        <Categories>
+ *            <Category>
+ *                <ExternalId>1010</ExternalId>
+ *                <Name>First Category</Name>
+ *                <CategoryPageUrl>http://www.site.com/category.htm?cat=1010</CategoryPageUrl>
+ *            </Category>
+ *            ..... 0-n categories
+ *        </Categories>
+ *        <Products>
+ *            <Product>
+ *                <ExternalId>2000001</ExternalId>
+ *                <Name>First Product</Name>
+ *                <Description>First Product Description Text</Description>
+ *    TODO            <Brand>ProductBrand</Brand>
+ *                <CategoryExternalId>1010</CategoryExternalId>
+ *                <ProductPageUrl>http://www.site.com/product.htm?prod=2000001</ProductPageUrl>
+ *                <ImageUrl>http://images.site.com/prodimages/2000001.gif</ImageUrl>
+ *    TODO            <ManufacturerPartNumber>26-12345-8Z</ManufacturerPartNumber>
+ *    TODO            <EAN>0213354752286</EAN>
+ *            </Product>
+ *            ....... 0-n products
+ *        </Products>
  *</Feed>
  */
 
@@ -61,7 +63,7 @@ class Bazaarvoice_Model_ExportProductFeed extends Mage_Core_Model_Abstract
     public function exportDailyProductFeed()
     {
         Mage::log("Start Bazaarvoice product feed generation");
-        if(Mage::getStoreConfig("bazaarvoice/ProductFeed/EnableProductFeed") === "1") {
+        if (Mage::getStoreConfig("bazaarvoice/ProductFeed/EnableProductFeed") === "1") {
             
             $productFeedFilePath = Mage::getBaseDir("var") . DS . 'export' . DS . 'bvfeeds';
             $productFeedFileName = 'productFeed-' . date('U') . '.xml';
@@ -75,7 +77,7 @@ class Bazaarvoice_Model_ExportProductFeed extends Mage_Core_Model_Abstract
             }
 
 
-            if($ioObject->streamOpen($productFeedFileName)) {
+            if ($ioObject->streamOpen($productFeedFileName)) {
 
                 $ioObject->streamWrite("<?xml version=\"1.0\" encoding=\"UTF-8\"?>".
                         "<Feed xmlns=\"http://www.bazaarvoice.com/xs/PRR/ProductFeed/5.2\"".
@@ -94,7 +96,9 @@ class Bazaarvoice_Model_ExportProductFeed extends Mage_Core_Model_Abstract
                 $ioObject->streamWrite("</Feed>\n");
                 $ioObject->streamClose();
 
-                $destinationFile = "/" . Mage::getStoreConfig("bazaarvoice/ProductFeed/ExportPath") . "/" . Mage::getStoreConfig("bazaarvoice/ProductFeed/ExportFileName");
+                $destinationFile = 
+                    "/" . Mage::getStoreConfig("bazaarvoice/ProductFeed/ExportPath") . 
+                    "/" . Mage::getStoreConfig("bazaarvoice/ProductFeed/ExportFileName");
                 $sourceFile = $productFeedFilePath . DS . $productFeedFileName;
                 $upload = Bazaarvoice_Helper_Data::uploadFile($sourceFile, $destinationFile);
 
@@ -113,11 +117,12 @@ class Bazaarvoice_Model_ExportProductFeed extends Mage_Core_Model_Abstract
     {
         $categoryModel = Mage::getModel('catalog/category');
         $categoryIds = $categoryModel->getCollection();
-        if(count($categoryIds) > 0) {
+        if (count($categoryIds) > 0) {
             $ioObject->streamWrite("<Categories>\n");
         }
         foreach ($categoryIds as $categoryId) {
-            $category = $categoryModel->load($categoryId->getId()); //Load category object
+            // Load category object
+            $category = $categoryModel->load($categoryId->getId());
             $categoryExternalId = Bazaarvoice_Helper_Data::getCategoryId($category);
             $categoryName = htmlspecialchars($category->getName(), ENT_QUOTES, "UTF-8");
             $categoryPageUrl = htmlspecialchars($category->getCategoryIdUrl(), ENT_QUOTES, "UTF-8");
@@ -129,7 +134,8 @@ class Bazaarvoice_Model_ExportProductFeed extends Mage_Core_Model_Abstract
 
             $parentExtId = "";
             $parentCategory = Mage::getModel('catalog/category')->load($categoryId->getParentId());
-            if (!is_null($parentCategory) && $parentCategory->getLevel() != 1) { //if parent category is the root category, then ignore it
+            // If parent category is the root category, then ignore it
+            if (!is_null($parentCategory) && $parentCategory->getLevel() != 1) {
                 $parentExtId = "    <ParentExternalId>" . Bazaarvoice_Helper_Data::getCategoryId($parentCategory) . "</ParentExternalId>\n";
             }
             
@@ -144,7 +150,7 @@ class Bazaarvoice_Model_ExportProductFeed extends Mage_Core_Model_Abstract
             
         }
         
-        if(count($categoryIds) > 0) {
+        if (count($categoryIds) > 0) {
             $ioObject->streamWrite("</Categories>\n");
         }
     }
@@ -156,7 +162,7 @@ class Bazaarvoice_Model_ExportProductFeed extends Mage_Core_Model_Abstract
         $productModel = Mage::getModel('catalog/product');
         // *FROM MEMORY*  this should get all the products
         $productIds = $productModel->getCollection();
-        if(count($productIds) > 0) {
+        if (count($productIds) > 0) {
             $ioObject->streamWrite("<Products>\n");
         }
         foreach ($productIds as $productId) {
@@ -183,27 +189,27 @@ class Bazaarvoice_Model_ExportProductFeed extends Mage_Core_Model_Abstract
             if (!is_null($brand) && !empty($brand)) {
                 $ioObject->streamWrite("    <Brand><ExternalId>" . $brand . "</ExternalId></Brand>\n");
             }
-            
+                
             /* Make sure that CategoryExternalId is one written to Category section */
             $parentCategories = $productId->getCategoryIds();
             if (!is_null($parentCategories) && count($parentCategories) > 0) {
-            	foreach ($parentCategories as $parentCategoryId) {
-            		$parentCategory = Mage::getModel("catalog/category")->load($parentCategoryId);
-            		if ($parentCategory != null) {
-            			$categoryExternalId = Bazaarvoice_Helper_Data::getCategoryId($parentCategory);
-            			if (in_array($categoryExternalId, $this->_categoryIdList)) {
-							$ioObject->streamWrite("    <CategoryExternalId>" . $categoryExternalId . "</CategoryExternalId>\n");
-							break;
-            			}
-            		}
-            	}            	
+                foreach ($parentCategories as $parentCategoryId) {
+                    $parentCategory = Mage::getModel("catalog/category")->load($parentCategoryId);
+                    if ($parentCategory != null) {
+                        $categoryExternalId = Bazaarvoice_Helper_Data::getCategoryId($parentCategory);
+                        if (in_array($categoryExternalId, $this->_categoryIdList)) {
+                            $ioObject->streamWrite("    <CategoryExternalId>" . $categoryExternalId . "</CategoryExternalId>\n");
+                            break;
+                        }
+                    }
+                }                
             }
             
             $ioObject->streamWrite("    <ProductPageUrl>".$product->getProductUrl()."</ProductPageUrl>\n".
                                    "    <ImageUrl>".$product->getImageUrl()."</ImageUrl>\n".
                                    "</Product>\n");
         }
-        if(count($productIds) > 0) {
+        if (count($productIds) > 0) {
             $ioObject->streamWrite("</Products>\n");
         }
     }
