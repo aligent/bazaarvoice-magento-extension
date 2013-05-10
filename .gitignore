@@ -14,7 +14,6 @@
 !/js/
 !/lib/
 !/var/
-!/includes/
 !/shell/
 !/.gitignore
 
@@ -80,7 +79,9 @@
 
 /app/design/frontend/*
 !/app/design/frontend/enterprise/
+/app/design/frontend/enterprise/iphone/
 /app/design/frontend/enterprise/default/etc/
+/app/design/frontend/enterprise/default/locale/
 /app/design/frontend/enterprise/default/template/*
 !/app/design/frontend/enterprise/default/template/bazaarvoice/
 /app/design/frontend/enterprise/default/layout/*
