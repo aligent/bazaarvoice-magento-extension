@@ -200,11 +200,11 @@ class Bazaarvoice_Helper_Data extends Mage_Core_Helper_Abstract {
     }
 
 
-    public static function uploadFile($localFileName, $remoteFile) {
+    public static function uploadFile($localFileName, $remoteFile, $store = null) {
         Mage::log("    BV - starting upload to Bazaarvoice server");
 
-        $connection = ftp_connect(Mage::getStoreConfig("bazaarvoice/General/FTPHost"));
-        $login = ftp_login($connection, Mage::getStoreConfig("bazaarvoice/General/CustomerName"), Mage::getStoreConfig("bazaarvoice/General/FTPPassword"));
+        $connection = ftp_connect(Mage::getStoreConfig("bazaarvoice/General/FTPHost", $store->getId()));
+        $login = ftp_login($connection, Mage::getStoreConfig("bazaarvoice/General/CustomerName", $store->getId()), Mage::getStoreConfig("bazaarvoice/General/FTPPassword", $store->getId()));
         ftp_pasv($connection, true);
         if (!$connection || !$login) {
             Mage::log("    BV - FTP connection attempt failed!");

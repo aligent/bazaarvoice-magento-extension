@@ -62,11 +62,44 @@ class Bazaarvoice_Model_ExportProductFeed extends Mage_Core_Model_Abstract
      */
     public function exportDailyProductFeed()
     {
+        // Log
         Mage::log("Start Bazaarvoice product feed generation");
-        if (Mage::getStoreConfig("bazaarvoice/ProductFeed/EnableProductFeed") === "1") {
+        // Iterate through all stores / views in this instance
+        // (Not the 'admin' store view, which represents admin panel)
+		$stores = Mage::app()->getStores(false);
+		foreach($stores as $store) {
+		    try {
+                if (Mage::getStoreConfig('bazaarvoice/ProductFeed/EnableProductFeed', $store->getId()) === '1') {
+                    Mage::log("    BV - Exporting product feed for store: " . $store->getCode(), Zend_Log::INFO);
+		            $this->exportDailyProductFeedForStore($store);
+		        }
+		        else {
+                    Mage::log("    BV - Product feed disabled for store: " . $store->getCode(), Zend_Log::INFO);
+		        }
+            } catch (Exception $e) {
+                Mage::log("    BV - Failed to export daily product feed for store: " . $store->getCode(), Zend_Log::ERR);
+                Mage::log("    BV - Error message: " . $e->getMessage(), Zend_Log::ERR);
+                Mage::logException($e);
+                // Continue processing other stores
+		    }
+		}
+        // Log
+        Mage::log("End Bazaarvoice product feed generation");
+    }
+
+    /**
+     *
+     * process daily feed for the BazaarVoice. The feed will be FTPed to the BV FTP server
+     *
+     * Product & Catalog Feed to BV
+     *
+     */
+    public function exportDailyProductFeedForStore($store)
+    {
+        if (Mage::getStoreConfig("bazaarvoice/ProductFeed/EnableProductFeed", $store->getId()) === "1") {
             
             $productFeedFilePath = Mage::getBaseDir("var") . DS . 'export' . DS . 'bvfeeds';
-            $productFeedFileName = 'productFeed-' . date('U') . '.xml';
+            $productFeedFileName = 'productFeed-' . $store->getCode() . '-' . date('U') . '.xml';
 
             $ioObject = new Varien_Io_File();
             try {
@@ -82,23 +115,23 @@ class Bazaarvoice_Model_ExportProductFeed extends Mage_Core_Model_Abstract
                 $ioObject->streamWrite("<?xml version=\"1.0\" encoding=\"UTF-8\"?>".
                         "<Feed xmlns=\"http://www.bazaarvoice.com/xs/PRR/ProductFeed/5.2\"".
                         " generator=\"Magento Extension r5.1.4\"".
-                        "  name=\"".Mage::getStoreConfig("bazaarvoice/General/CustomerName")."\"".
+                        "  name=\"".Mage::getStoreConfig("bazaarvoice/General/CustomerName", $store->getId())."\"".
                         "  incremental=\"false\"".
                         "  extractDate=\"".date('Y-m-d')."T".date('H:i:s').".000000\">\n");
 
 
                 Mage::log("    BV - processing all categories");
-                $this->processCategories($ioObject);
+                $this->processCategories($ioObject, $store);
                 Mage::log("    BV - completed categories, beginning products");
-                $this->processProducts($ioObject);
+                $this->processProducts($ioObject, $store);
                 Mage::log("    BV - completed processing all products");
 
                 $ioObject->streamWrite("</Feed>\n");
                 $ioObject->streamClose();
 
                 $destinationFile = 
-                    "/" . Mage::getStoreConfig("bazaarvoice/ProductFeed/ExportPath") . 
-                    "/" . Mage::getStoreConfig("bazaarvoice/ProductFeed/ExportFileName");
+                    "/" . Mage::getStoreConfig("bazaarvoice/ProductFeed/ExportPath", $store->getId()) . 
+                    "/" . Mage::getStoreConfig("bazaarvoice/ProductFeed/ExportFileName", $store->getId());
                 $sourceFile = $productFeedFilePath . DS . $productFeedFileName;
                 $upload = Bazaarvoice_Helper_Data::uploadFile($sourceFile, $destinationFile);
 
@@ -110,13 +143,24 @@ class Bazaarvoice_Model_ExportProductFeed extends Mage_Core_Model_Abstract
                 }
             }
         }
-        Mage::log("End Bazaarvoice product feed generation");
     }
 
-    private function processCategories($ioObject)
+    private function processCategories($ioObject, $store)
     {
+		// Lookup category path for root category
+		// Assume only 1 store per website
+		$rootCategoryId = $store->getRootCategoryId();
+		$rootCategory = Mage::getModel('catalog/category')->load($rootCategoryId);
+		$rootCategoryPath = $rootCategory->getPath();
+		// Get category collection
         $categoryModel = Mage::getModel('catalog/category');
         $categoryIds = $categoryModel->getCollection();
+        // Filter category collection based on Magento store
+		// Do this by filtering on 'path' attribute, based on root category path found above
+		// Include the root category itself in the feed
+		$categoryIds
+			->addAttributeToFilter('path', array('like' => $rootCategoryPath . '%') );        
+        // Check count of categories
         if (count($categoryIds) > 0) {
             $ioObject->streamWrite("<Categories>\n");
         }
@@ -155,21 +199,31 @@ class Bazaarvoice_Model_ExportProductFeed extends Mage_Core_Model_Abstract
         }
     }
 
-    private function processProducts($ioObject)
+    private function processProducts($ioObject, $store)
     {
+        // Category model instance
         $categoryModel = Mage::getModel('catalog/category');
         // Getting product model for access to product related functions
-        $productModel = Mage::getModel('catalog/product');
+        $product = Mage::getModel('catalog/product');
+            
         // *FROM MEMORY*  this should get all the products
-        $productIds = $productModel->getCollection();
+        $productIds = $product->getCollection();
+        // Filter collection for the specific store
+        $productIds->addStoreFilter($store);
+        // Filter collection for product status
+        $productIds->addAttributeToFilter('status', Mage_Catalog_Model_Product_Status::STATUS_ENABLED);
+            
+        // Output tag only if more than 1 product
         if (count($productIds) > 0) {
             $ioObject->streamWrite("<Products>\n");
         }
         foreach ($productIds as $productId) {
             // Reset product model to prevent model data persisting between loop iterations.
-            $productModel->reset();
+            $product->reset();
+            // Set store id before load, to get attribs for this particular store / view
+            $product->setStoreId($store->getId());
             // Load product object
-            $product = $productModel->load($productId->getId());
+            $product->load($productId->getId());
             $productExternalId = Bazaarvoice_Helper_Data::getProductId($product);
             $brand = htmlspecialchars($product->getAttributeText("manufacturer"));
 
