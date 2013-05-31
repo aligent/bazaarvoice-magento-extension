@@ -10,32 +10,35 @@ class Bazaarvoice_Connector_FeedController extends Mage_Core_Controller_Front_Ac
     }
 
     public function inlineratingsAction() {
-    	$rerf = new Bazaarvoice_Connector_Model_RetrieveInlineRatingsFeed();
+    	$rerf = Mage::getModel('bazaarvoice/retrieveInlineRatingsFeed');
         $rerf->retrieveInlineRatingsFeed();
 
         $this->loadLayout();
-	$this->renderLayout();
+	    $this->renderLayout();
     }
+    
     public function productAction() {
-    	$epf = new Bazaarvoice_Connector_Model_ExportProductFeed();
+    	$epf = Mage::getModel('bazaarvoice/exportProductFeed');
         $epf->exportDailyProductFeed();
 
         $this->loadLayout();
-	$this->renderLayout();
+	    $this->renderLayout();
     }
+    
     public function smartseoAction() {
-    	$seo = new Bazaarvoice_Connector_Model_RetrieveSmartSEOPackage();
+    	$seo = Mage::getModel('bazaarvoice/retrieveSmartSEOPackage');
         $seo->retrieveSmartSEOPackage();
 
         $this->loadLayout();
-	$this->renderLayout();
+	    $this->renderLayout();
     }
+    
     public function ppeAction() {
-    	$ppe = new Bazaarvoice_Connector_Model_ExportPurchaseFeed();
+    	$ppe = Mage::getModel('bazaarvoice/exportPurchaseFeed');
         $ppe->exportPurchaseFeed();
 
         $this->loadLayout();
-	$this->renderLayout();
+	    $this->renderLayout();
     }
 
 }
