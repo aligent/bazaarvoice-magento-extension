@@ -113,11 +113,11 @@ class Bazaarvoice_Connector_Model_ExportProductFeed extends Mage_Core_Model_Abst
             if ($ioObject->streamOpen($productFeedFileName)) {
 
                 $ioObject->streamWrite("<?xml version=\"1.0\" encoding=\"UTF-8\"?>".
-                        "<Feed xmlns=\"http://www.bazaarvoice.com/xs/PRR/ProductFeed/5.2\"".
-                        " generator=\"Magento Extension r5.1.5\"".
-                        "  name=\"".Mage::getStoreConfig("bazaarvoice/General/CustomerName", $store->getId())."\"".
-                        "  incremental=\"false\"".
-                        "  extractDate=\"".date('Y-m-d')."T".date('H:i:s').".000000\">\n");
+                    "<Feed xmlns=\"http://www.bazaarvoice.com/xs/PRR/ProductFeed/5.2\"".
+                    " generator=\"Magento Extension r5.1.5\"".
+                    "  name=\"".Mage::getStoreConfig("bazaarvoice/General/CustomerName", $store->getId())."\"".
+                    "  incremental=\"false\"".
+                    "  extractDate=\"".date('Y-m-d')."T".date('H:i:s').".000000\">\n");
 
 
                 Mage::log("    BV - processing all categories");
@@ -186,11 +186,11 @@ class Bazaarvoice_Connector_Model_ExportProductFeed extends Mage_Core_Model_Abst
             array_push($this->_categoryIdList, $categoryExternalId);
 
             $ioObject->streamWrite("<Category>\n".
-                         "    <ExternalId>".$categoryExternalId."</ExternalId>\n".
-                         $parentExtId .
-                         "    <Name>".$categoryName."</Name>\n".
-                         "    <CategoryPageUrl>".$categoryPageUrl."</CategoryPageUrl>\n".
-                         "</Category>\n");
+                "    <ExternalId>".$categoryExternalId."</ExternalId>\n".
+                $parentExtId .
+                "    <Name>".$categoryName."</Name>\n".
+                "    <CategoryPageUrl>".$categoryPageUrl."</CategoryPageUrl>\n".
+                "</Category>\n");
             
         }
         
@@ -236,9 +236,9 @@ class Bazaarvoice_Connector_Model_ExportProductFeed extends Mage_Core_Model_Abst
 
 
             $ioObject->streamWrite("<Product>\n".
-                                   "    <ExternalId>".$productExternalId."</ExternalId>\n".
-                                   "    <Name>".htmlspecialchars($product->getName(), ENT_QUOTES, "UTF-8")."</Name>\n".
-                                   "    <Description>".htmlspecialchars($product->getShortDescription(), ENT_QUOTES, "UTF-8")."</Description>\n");
+                "    <ExternalId>".$productExternalId."</ExternalId>\n".
+                "    <Name>".htmlspecialchars($product->getName(), ENT_QUOTES, "UTF-8")."</Name>\n".
+                "    <Description>".htmlspecialchars($product->getShortDescription(), ENT_QUOTES, "UTF-8")."</Description>\n");
 
             if (!is_null($brand) && !empty($brand)) {
                 $ioObject->streamWrite("    <Brand><ExternalId>" . $brand . "</ExternalId></Brand>\n");
@@ -260,8 +260,8 @@ class Bazaarvoice_Connector_Model_ExportProductFeed extends Mage_Core_Model_Abst
             }
             
             $ioObject->streamWrite("    <ProductPageUrl>".$product->getProductUrl()."</ProductPageUrl>\n".
-                                   "    <ImageUrl>".$product->getImageUrl()."</ImageUrl>\n".
-                                   "</Product>\n");
+                "    <ImageUrl>".$product->getImageUrl()."</ImageUrl>\n".
+                "</Product>\n");
         }
         if (count($productIds) > 0) {
             $ioObject->streamWrite("</Products>\n");

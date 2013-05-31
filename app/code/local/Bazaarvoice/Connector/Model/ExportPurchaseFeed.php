@@ -80,10 +80,10 @@ class Bazaarvoice_Connector_Model_ExportPurchaseFeed extends Mage_Core_Model_Abs
         $numDaysLookback = Mage::getStoreConfig("bazaarvoice/PurchaseFeed/NumDaysLookback");
         $delayDaysSinceEvent = Mage::getStoreConfig("bazaarvoice/PurchaseFeed/DelayDaysSinceEvent");
         Mage::log("    BV - Config {TriggeringEvent: " . $triggeringEvent
-                                . ", NumDaysLookback: " . $numDaysLookback
-                                . ", NumDaysLookbackStartDate: " . $this->getNumDaysLookbackStartDate($numDaysLookback)
-                                . ", DelayDaysSinceEvent: " . $delayDaysSinceEvent
-                                . ", DelayDaysThreshold: " . date("c", $this->getDelayDaysThresholdTimestamp($delayDaysSinceEvent)) . "}");
+            . ", NumDaysLookback: " . $numDaysLookback
+            . ", NumDaysLookbackStartDate: " . $this->getNumDaysLookbackStartDate($numDaysLookback)
+            . ", DelayDaysSinceEvent: " . $delayDaysSinceEvent
+            . ", DelayDaysThreshold: " . date("c", $this->getDelayDaysThresholdTimestamp($delayDaysSinceEvent)) . "}");
 
         // Initialize references to the object model accessors
         $productModel = Mage::getModel("catalog/product"); // Getting product model for access to product related functions
