@@ -79,7 +79,7 @@
                                 will wrap this javascript in a function(){...} block.  Your code must return a value of "mobile" or an empty string, "", depending
                                 on whether or not you want to set the displayType for the reviews submission container to a mobile device or for a full browser client.
                                 This preference exists so that you may customize which displayType is used based upon data available client-side.  See your Bazaarvoice
-                                Implementation manual for further information on the displayType configuration parameter.]]></comment>
+                            Implementation manual for further information on the displayType configuration parameter.]]></comment>
                             <sort_order>70</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
@@ -157,7 +157,7 @@
                                 will wrap this javascript in a function(){...} block.  Your code must return a valid Bazaarvoice DisplayCode to be used for display and submission of Reviews.
                                 This preference exists so that you may customize which DisplayCode is used based upon data available client-side.  Typically this is used to select
                                 a locale-specific DisplayCode.  In the event of an error processing this javascript or that it returns nothing, the default display code specified
-                                above will be used.]]></comment>
+                            above will be used.]]></comment>
                             <sort_order>30</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
@@ -178,7 +178,7 @@
                             <comment><![CDATA[The Bazaarvoice javascript onEvent callback enables you to track certain actions that occur with
                                 Bazaarvoice UI components. For example, the event callback can be used to pass tracking information into your web analytics system or otherwise change
                                 the behavior of your page depending on the information it passes back about the user-generated content available on the page. This code will be wrapped
-                                in a javascript function(json){...} block.  See your Bazaarvoice Implementation manual for further information.]]></comment>
+                            in a javascript function(json){...} block.  See your Bazaarvoice Implementation manual for further information.]]></comment>
                             <sort_order>50</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
@@ -191,7 +191,7 @@
                                 will wrap this javascript in a function(){...} block.  Your code must return a value of "mobile" or an empty string, "", depending
                                 on whether or not you want to set the displayType for R&amp;R display to a mobile device or for a full browser client.
                                 This preference exists so that you may customize which displayType is used based upon data available client-side.  Contact your Bazaarvoice
-                                Implementation Engineer for further information on the displayType configuration parameter.]]></comment>
+                            Implementation Engineer for further information on the displayType configuration parameter.]]></comment>
                             <sort_order>60</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
@@ -201,8 +201,8 @@
                             <label>DoShowContent Javascript Callback</label>
                             <frontend_type>textarea</frontend_type>
                             <comment><![CDATA[The Bazaarvoice doShowContent javascript callback is triggered when the "read all reviews" link in the review summary is clicked.
-                            	You may provide code here that you wish to execute on said click event.  For example, you may want to activate a specific tab on the page.  This
-                            	code will be wrapped in a javascript function(){...} block. See your Bazaarvoice Implementation manual for further information.]]></comment>
+                                You may provide code here that you wish to execute on said click event.  For example, you may want to activate a specific tab on the page.  This
+                            code will be wrapped in a javascript function(){...} block. See your Bazaarvoice Implementation manual for further information.]]></comment>
                             <sort_order>70</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
@@ -244,7 +244,7 @@
                                 will wrap this javascript in a function(){...} block.  Your code must return a valid Bazaarvoice DisplayCode to be used for display and submission of A&amp;A.
                                 This preference exists so that you may customize which DisplayCode is used based upon data available client-side.  Typically this is used to select
                                 a locale-specific DisplayCode.  In the event of an error processing this javascript or that it returns nothing, the default display code specified
-                                above will be used.]]></comment>
+                            above will be used.]]></comment>
                             <sort_order>30</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
@@ -265,7 +265,7 @@
                             <comment><![CDATA[The Bazaarvoice javascript onEvent callback enables you to track certain actions that occur with
                                 Bazaarvoice UI components. For example, the event callback can be used to pass tracking information into your web analytics system or otherwise change
                                 the behavior of your page depending on the information it passes back about the user-generated content available on the page. This code will be wrapped
-                                in a javascript function(json){...} block.  See your Bazaarvoice Implementation manual for further information.]]></comment>
+                            in a javascript function(json){...} block.  See your Bazaarvoice Implementation manual for further information.]]></comment>
                             <sort_order>50</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
@@ -275,8 +275,8 @@
                             <label>DoShowContent Javascript Callback</label>
                             <frontend_type>textarea</frontend_type>
                             <comment><![CDATA[The Bazaarvoice doShowContent javascript callback is triggered when the "read all Q&A" link in the question/answer summary is clicked.
-                            		You may provide code here that you wish to execute on said click event.  For example, you may want to activate a specific tab on the page.  This
-                            		code will be wrapped in a javascript function(){...} block. See your Bazaarvoice Implementation manual for further information.]]></comment>
+                                You may provide code here that you wish to execute on said click event.  For example, you may want to activate a specific tab on the page.  This
+                            code will be wrapped in a javascript function(){...} block. See your Bazaarvoice Implementation manual for further information.]]></comment>
                             <sort_order>70</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
@@ -318,7 +318,7 @@
                                 will wrap this javascript in a function(){...} block.  Your code must return a valid Bazaarvoice DisplayCode to be used for display and submission of Stories.
                                 This preference exists so that you may customize which DisplayCode is used based upon data available client-side.  Typically this is used to select
                                 a locale-specific DisplayCode.  In the event of an error processing this javascript or that it returns nothing, the default display code specified
-                                above will be used.]]></comment>
+                            above will be used.]]></comment>
                             <sort_order>30</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
@@ -339,7 +339,7 @@
                             <comment><![CDATA[This preference value is expected to be valid client-side javascript.  This Bazaarvoice extension
                                 will wrap this javascript in a function(){...} block, therefore your code must return a value of "show_grid" or "show_stories" depending
                                 on whether or not you want to display the Stories grid or list views.  This preference exists so that you may customize which view is
-                                displayed based upon other data in the browser. "show_grid" is the default display type if nothing is provided here.]]></comment>
+                            displayed based upon other data in the browser. "show_grid" is the default display type if nothing is provided here.]]></comment>
                             <sort_order>50</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
@@ -351,7 +351,7 @@
                             <comment><![CDATA[The Bazaarvoice javascript onEvent callback enables you to track certain actions that occur with
                                 Bazaarvoice UI components. For example, the event callback can be used to pass tracking information into your web analytics system or otherwise change
                                 the behavior of your page depending on the information it passes back about the user-generated content available on the page. This code will be wrapped
-                                in a javascript function(json){...} block.  See your Bazaarvoice Implementation manual for further information.]]></comment>
+                            in a javascript function(json){...} block.  See your Bazaarvoice Implementation manual for further information.]]></comment>
                             <sort_order>60</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
@@ -361,8 +361,8 @@
                             <label>DoShowContent Javascript Callback</label>
                             <frontend_type>textarea</frontend_type>
                             <comment><![CDATA[The Bazaarvoice doShowContent javascript callback is triggered when the "read all stories" link in the story summary is clicked.
-                            	You may provide code here that you wish to execute on said click event.  For example, you may want to activate a specific tab on the page.  This
-                            	code will be wrapped in a javascript function(){...} block. See your Bazaarvoice Implementation manual for further information.]]></comment>
+                                You may provide code here that you wish to execute on said click event.  For example, you may want to activate a specific tab on the page.  This
+                            code will be wrapped in a javascript function(){...} block. See your Bazaarvoice Implementation manual for further information.]]></comment>
                             <sort_order>70</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
@@ -372,7 +372,7 @@
                             <label>Bazaarvoice Stories SmartSEO Page Format</label>
                             <frontend_type>text</frontend_type>
                             <comment><![CDATA[If you have enabled SmartSEO, this preference determines which type of pre-rendered content will be injected
-                                into the page.  Valid options are "stories" and "storiesgrid", corresponding to the list and grid views of stories, respectively.]]></comment>
+                            into the page.  Valid options are "stories" and "storiesgrid", corresponding to the list and grid views of stories, respectively.]]></comment>
                             <sort_order>80</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
@@ -404,7 +404,7 @@
                                 will wrap this javascript in a function(){...} block.  Your code must return a valid Bazaarvoice DisplayCode to be used for display and submission of ActiveProfiles.
                                 This preference exists so that you may customize which DisplayCode is used based upon data available client-side.  Typically this is used to select
                                 a locale-specific DisplayCode.  In the event of an error processing this javascript or that it returns nothing, the default display code specified
-                                above will be used.]]></comment>
+                            above will be used.]]></comment>
                             <sort_order>20</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
@@ -425,7 +425,7 @@
                             <comment><![CDATA[The Bazaarvoice javascript onEvent callback enables you to track certain actions that occur with
                                 Bazaarvoice UI components. For example, the event callback can be used to pass tracking information into your web analytics system or otherwise change
                                 the behavior of your page depending on the information it passes back about the user-generated content available on the page. This code will be wrapped
-                                in a javascript function(json){...} block.  See your Bazaarvoice Implementation manual for further information.]]></comment>
+                            in a javascript function(json){...} block.  See your Bazaarvoice Implementation manual for further information.]]></comment>
                             <sort_order>40</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
@@ -439,7 +439,7 @@
                                 page, regardless of whether or not the current visitor is logged in or whether or not they are viewing their own profile page.  Enabling this option will render
                                 a link on the container page outside of the injected code that will only be visible if the current visitor is logged in and viewing their own profile page. When
                                 this option is enabled, it is advised that the "Edit My Profile" link that is injected by Bazaarvoice be disabled.  Contact your Implementation Engineer
-                                to have the link removed.]]></comment>
+                            to have the link removed.]]></comment>
                             <sort_order>50</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
@@ -654,7 +654,7 @@
                         </EnableROIBeacon>
                     </fields>
                 </ROIBeacon>
-			</groups>
+            </groups>
         </bazaarvoice>
     </sections>
 </config>
