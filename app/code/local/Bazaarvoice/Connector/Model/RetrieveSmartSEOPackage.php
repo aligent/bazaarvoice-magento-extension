@@ -8,7 +8,7 @@ class Bazaarvoice_Connector_Model_RetrieveSmartSEOPackage extends Mage_Core_Mode
 
     public function retrieveSmartSEOPackage() {
         Mage::log("Start Bazaarvoice Smart SEO feed import");
-        if(Mage::getStoreConfig("bazaarvoice/SmartSEOFeed/EnableSmartSEO") === "1") {
+        if (Mage::getStoreConfig("bazaarvoice/SmartSEOFeed/EnableSmartSEO") === "1") {
 
             $localFilePath = Mage::getBaseDir("var") . DS . "import" . DS . "bvfeeds";
             $localExtractsPath = $localFilePath . DS . "bvsmartseo";

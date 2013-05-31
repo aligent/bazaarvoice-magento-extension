@@ -67,7 +67,7 @@ class Bazaarvoice_Connector_Model_ExportProductFeed extends Mage_Core_Model_Abst
         // Iterate through all stores / views in this instance
         // (Not the 'admin' store view, which represents admin panel)
         $stores = Mage::app()->getStores(false);
-        foreach($stores as $store) {
+        foreach ($stores as $store) {
             try {
                 if (Mage::getStoreConfig('bazaarvoice/ProductFeed/EnableProductFeed', $store->getId()) === '1') {
                     Mage::log("    BV - Exporting product feed for store: " . $store->getCode(), Zend_Log::INFO);

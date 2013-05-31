@@ -13,7 +13,7 @@ class Bazaarvoice_Connector_Model_ExportPurchaseFeed extends Mage_Core_Model_Abs
         Mage::log("Start Bazaarvoice purchase feed generation");
 
         // Short-circuit if the purchase feed export is not enabled
-        if(Mage::getStoreConfig("bazaarvoice/PurchaseFeed/EnablePurchaseFeed") !== "1") {
+        if (Mage::getStoreConfig("bazaarvoice/PurchaseFeed/EnablePurchaseFeed") !== "1") {
             Mage::log("    BV - purchase feed generation is disabled ");
             Mage::log("End Bazaarvoice purchase feed generation");
             return;
@@ -33,7 +33,7 @@ class Bazaarvoice_Connector_Model_ExportPurchaseFeed extends Mage_Core_Model_Abs
         }
 
 
-        if($ioObject->streamOpen($purchaseFeedFileName)) {
+        if ($ioObject->streamOpen($purchaseFeedFileName)) {
 
             $ioObject->streamWrite("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Feed xmlns=\"http://www.bazaarvoice.com/xs/PRR/PostPurchaseFeed/4.9\">\n");
 
@@ -98,7 +98,7 @@ class Bazaarvoice_Connector_Model_ExportPurchaseFeed extends Mage_Core_Model_Abs
 
         $numOrdersExported = 0; // Keep track of how many orders we include in the feed
 
-        foreach($orders->getAllIds() as $orderId) {
+        foreach ($orders->getAllIds() as $orderId) {
 
             $order = $orderModel->load($orderId);
             $store = $order->getStore();
@@ -118,7 +118,7 @@ class Bazaarvoice_Connector_Model_ExportPurchaseFeed extends Mage_Core_Model_Abs
             $ioObject->streamWrite("    <UserID>" . $order->getCustomerId() . "</UserID>\n");
             $ioObject->streamWrite("    <TransactionDate>" . $this->getTriggeringEventDate($order, $triggeringEvent) . "</TransactionDate>\n");
             $ioObject->streamWrite("    <Products>\n");
-            foreach($order->getAllVisibleItems() as $item) {
+            foreach ($order->getAllVisibleItems() as $item) {
                 $product = Mage::helper('bazaarvoice')->getReviewableProductFromOrderItem($item);
                 if (!is_null($product)) {
                     $ioObject->streamWrite("        <Product>\n");
@@ -247,7 +247,7 @@ class Bazaarvoice_Connector_Model_ExportPurchaseFeed extends Mage_Core_Model_Abs
     private function hasOrderCompletelyShipped($order) {
         $hasOrderCompletelyShipped = true;
         $items = $order->getAllItems();
-        foreach($items as $item) {
+        foreach ($items as $item) {
             // See /var/www/magento/app/code/core/Mage/Sales/Model/Order/Item.php
             if ($item->getQtyToShip() > 0 && !$item->getIsVirtual() && !$item->getLockedDoShip()) {
                 // This item still has qty that needs to ship
@@ -261,7 +261,7 @@ class Bazaarvoice_Connector_Model_ExportPurchaseFeed extends Mage_Core_Model_Abs
         $latestShipmentTimestamp = 0;
 
         $shipments = $order->getShipmentsCollection();
-        foreach($shipments as $shipment) {
+        foreach ($shipments as $shipment) {
             $latestShipmentTimestamp = max(strtotime($shipment->getCreatedAtDate()), $latestShipmentTimestamp);
         }
 

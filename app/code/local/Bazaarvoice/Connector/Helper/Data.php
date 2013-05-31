@@ -246,7 +246,7 @@ class Bazaarvoice_Connector_Helper_Data extends Mage_Core_Helper_Abstract {
     public function getSmartSEOContent($bvProduct, $bvSubjectArr, $pageFormat) {
         $ret = "";
 
-        if(Mage::getStoreConfig("bazaarvoice/SmartSEOFeed/EnableSmartSEO") === "1") {
+        if (Mage::getStoreConfig("bazaarvoice/SmartSEOFeed/EnableSmartSEO") === "1") {
             $displayCode = $this->getDisplayCodeForBVProduct($bvProduct);
             if ($pageFormat != "") {
                 $pageFormat += "/";

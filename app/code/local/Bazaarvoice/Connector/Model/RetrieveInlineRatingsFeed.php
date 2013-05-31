@@ -8,7 +8,7 @@ class Bazaarvoice_Connector_Model_RetrieveInlineRatingsFeed extends Mage_Core_Mo
 
     public function retrieveInlineRatingsFeed() {
         Mage::log("Start Bazaarvoice Inline Ratings feed import");
-        if(Mage::getStoreConfig("bazaarvoice/InlineRatingFeed/EnableInlineRatings") === "1") {
+        if (Mage::getStoreConfig("bazaarvoice/InlineRatingFeed/EnableInlineRatings") === "1") {
             $localFilePath = Mage::getBaseDir("var") . DS . "import" . DS . "bvfeeds";
             $localFileName = "inline-ratings-" . date("U") . ".xml";
             $gzLocalFilename = $localFileName . ".gz";
@@ -70,7 +70,7 @@ class Bazaarvoice_Connector_Model_RetrieveInlineRatingsFeed extends Mage_Core_Mo
         $productRatingRange = 5;
 
 
-        while(!$endOfProduct && $xmlReader->read()) {
+        while (!$endOfProduct && $xmlReader->read()) {
             if ($xmlReader->nodeType == XMLReader::ELEMENT) {
 
                 if ($xmlReader->localName == "AverageOverallRating") {
@@ -115,7 +115,7 @@ class Bazaarvoice_Connector_Model_RetrieveInlineRatingsFeed extends Mage_Core_Mo
 
         $customAttributes = array("bv_average_rating", "bv_review_count", "bv_rating_range");
 
-        foreach($customAttributes as $customAttribute) {
+        foreach ($customAttributes as $customAttribute) {
             $attribute = $attributeModel->loadByCode($entityTypeId, $customAttribute);
             if (!$attribute->getId()) {
                 $this->createProductAttribute($customAttribute);
