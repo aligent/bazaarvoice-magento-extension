@@ -1,5 +1,5 @@
 <?php
-class Bazaarvoice_Block_Bazaarvoice extends Mage_Core_Block_Template {
+class Bazaarvoice_Connector_Block_Bazaarvoice extends Mage_Core_Block_Template {
 
     /**
      *  NOTE:  This class isn't used by the current Bazaarvoice integration, but is left

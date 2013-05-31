@@ -2,7 +2,7 @@
  /**
   * Source model for purchase feed triggering event
   */
-class Bazaarvoice_Model_Source_TriggeringEvent {
+class Bazaarvoice_Connector_Model_Source_TriggeringEvent {
 
     const PURCHASE = "purchase";
     const SHIPPING = "shipping";

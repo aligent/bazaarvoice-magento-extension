@@ -2,7 +2,7 @@
 /**
  * @author Bazaarvoice, Inc.
  */
-class Bazaarvoice_Model_RetrieveInlineRatingsFeed extends Mage_Core_Model_Abstract {
+class Bazaarvoice_Connector_Model_RetrieveInlineRatingsFeed extends Mage_Core_Model_Abstract {
 
     protected function _construct() {}
 

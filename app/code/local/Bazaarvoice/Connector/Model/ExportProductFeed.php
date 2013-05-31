@@ -44,7 +44,7 @@
 /**
  * Product Feed Export Class
  */
-class Bazaarvoice_Model_ExportProductFeed extends Mage_Core_Model_Abstract
+class Bazaarvoice_Connector_Model_ExportProductFeed extends Mage_Core_Model_Abstract
 {
 
     private $_categoryIdList = array();    

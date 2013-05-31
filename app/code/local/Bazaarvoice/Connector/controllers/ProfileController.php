@@ -1,5 +1,5 @@
 <?php
-class Bazaarvoice_ProfileController extends Mage_Core_Controller_Front_Action {
+class Bazaarvoice_Connector_ProfileController extends Mage_Core_Controller_Front_Action {
     public function preDispatch() {
         parent::preDispatch();
         if($this->getRequest()->getParam('bvauthenticateuser') == "true") {

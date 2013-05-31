@@ -10,7 +10,7 @@ $installer->startSetup();
 **/
 
 Mage::log("BV: Installing v0.1.0");
-$installer->addAttribute('order', Bazaarvoice_Model_ExportPurchaseFeed::ALREADY_SENT_IN_FEED_FLAG, array('type'=>'int'));
+$installer->addAttribute('order', Bazaarvoice_Connector_Model_ExportPurchaseFeed::ALREADY_SENT_IN_FEED_FLAG, array('type'=>'int'));
 
 $installer->endSetup();
 

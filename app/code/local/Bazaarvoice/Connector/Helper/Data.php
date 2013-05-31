@@ -1,6 +1,6 @@
 <?php
 
-class Bazaarvoice_Helper_Data extends Mage_Core_Helper_Abstract {
+class Bazaarvoice_Connector_Helper_Data extends Mage_Core_Helper_Abstract {
 
     const BV_SUBJECT_TYPE = "bvSubjectType";
     const BV_EXTERNAL_SUBJECT_NAME = "bvExternalSubjectName";
@@ -296,11 +296,11 @@ class Bazaarvoice_Helper_Data extends Mage_Core_Helper_Abstract {
      */
     public function getActiveProfilesEditProfileLink($userID) {
         $protocol = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != "") ? "https" : "http";
-        $hostSubdomain = Bazaarvoice_Helper_Data::getSubDomainForBVProduct("activeprofiles") . "/";
+        $hostSubdomain = Bazaarvoice_Connector_Helper_Data::getSubDomainForBVProduct("activeprofiles") . "/";
         $hostDomain = Mage::getStoreConfig("bazaarvoice/General/HostDomain");
-        $bvStaging = Bazaarvoice_Helper_Data::getBvStaging();
-        $bvDisplayCode = Bazaarvoice_Helper_Data::getDisplayCodeForBVProduct("activeprofiles");
-        $bvUAS = Bazaarvoice_Helper_Data::encryptReviewerId($userID);
+        $bvStaging = Bazaarvoice_Connector_Helper_Data::getBvStaging();
+        $bvDisplayCode = Bazaarvoice_Connector_Helper_Data::getDisplayCodeForBVProduct("activeprofiles");
+        $bvUAS = Bazaarvoice_Connector_Helper_Data::encryptReviewerId($userID);
 
         return $protocol . "://" . $hostSubdomain . $hostDomain . $bvStaging . "profiles/" . $bvDisplayCode . "/editprofile.htm?user=" . $bvUAS;
     }
@@ -325,10 +325,10 @@ class Bazaarvoice_Helper_Data extends Mage_Core_Helper_Abstract {
      */
     public function getBvUrl($isStatic, $bvProduct) {
         $protocol = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != "") ? "https" : "http";
-        $hostSubdomain = Bazaarvoice_Helper_Data::getSubDomainForBVProduct($bvProduct);
+        $hostSubdomain = Bazaarvoice_Connector_Helper_Data::getSubDomainForBVProduct($bvProduct);
         $hostDomain = Mage::getStoreConfig("bazaarvoice/General/HostDomain");
-        $bvStaging = Bazaarvoice_Helper_Data::getBvStaging();
-        $bvDisplayCode = Bazaarvoice_Helper_Data::getDisplayCodeForBVProduct($bvProduct);
+        $bvStaging = Bazaarvoice_Connector_Helper_Data::getBvStaging();
+        $bvDisplayCode = Bazaarvoice_Connector_Helper_Data::getDisplayCodeForBVProduct($bvProduct);
         $stat = ($isStatic === 1) ? "static/" : "";
 
         return $protocol . "://" . $hostSubdomain . "." . $hostDomain . $bvStaging . $stat . $bvDisplayCode;
@@ -342,8 +342,8 @@ class Bazaarvoice_Helper_Data extends Mage_Core_Helper_Abstract {
     public function getBvApiHostUrl($isStatic) {
         $protocol = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != "") ? "https" : "http";
         $apiHostname = Mage::getStoreConfig("bazaarvoice/General/APIHostname");
-        $bvStaging = Bazaarvoice_Helper_Data::getBvStaging();
-        $bvDisplayCode = Bazaarvoice_Helper_Data::getDefaultDisplayCode();
+        $bvStaging = Bazaarvoice_Connector_Helper_Data::getBvStaging();
+        $bvDisplayCode = Bazaarvoice_Connector_Helper_Data::getDefaultDisplayCode();
 
         return $protocol . "://" . $apiHostname . $bvStaging . "static/" . $bvDisplayCode;
     }
@@ -367,15 +367,15 @@ class Bazaarvoice_Helper_Data extends Mage_Core_Helper_Abstract {
      * @return string representing the default display code to be used across all available BV products
      */
     public function getDefaultDisplayCode() {
-        $dc = Bazaarvoice_Helper_Data::getDisplayCodeForBVProduct("reviews");
+        $dc = Bazaarvoice_Connector_Helper_Data::getDisplayCodeForBVProduct("reviews");
         if (empty($dc)) {
-            $dc = Bazaarvoice_Helper_Data::getDisplayCodeForBVProduct("questions");
+            $dc = Bazaarvoice_Connector_Helper_Data::getDisplayCodeForBVProduct("questions");
         }
         if (empty($dc)) {
-            $dc = Bazaarvoice_Helper_Data::getDisplayCodeForBVProduct("stories");
+            $dc = Bazaarvoice_Connector_Helper_Data::getDisplayCodeForBVProduct("stories");
         }
         if (empty($dc)) {
-            $dc = Bazaarvoice_Helper_Data::getDisplayCodeForBVProduct("activeprofiles");
+            $dc = Bazaarvoice_Connector_Helper_Data::getDisplayCodeForBVProduct("activeprofiles");
         }
         return $dc;
     }
@@ -386,7 +386,7 @@ class Bazaarvoice_Helper_Data extends Mage_Core_Helper_Abstract {
      * @return string
      */
     public function getDisplayCodeForBVProduct($bvProduct) {
-        return Bazaarvoice_Helper_Data::getConfigPropertyForBVProduct($bvProduct, "DefaultDisplayCode");
+        return Bazaarvoice_Connector_Helper_Data::getConfigPropertyForBVProduct($bvProduct, "DefaultDisplayCode");
     }
 
     /**
@@ -395,7 +395,7 @@ class Bazaarvoice_Helper_Data extends Mage_Core_Helper_Abstract {
      * @return string
      */
     public function getSubDomainForBVProduct($bvProduct) {
-        return Bazaarvoice_Helper_Data::getConfigPropertyForBVProduct($bvProduct, "SubDomain");
+        return Bazaarvoice_Connector_Helper_Data::getConfigPropertyForBVProduct($bvProduct, "SubDomain");
     }
 
     //=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-

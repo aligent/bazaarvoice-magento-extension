@@ -7,28 +7,28 @@
 -->
 <config>
     <modules>
-        <Bazaarvoice>
+        <Bazaarvoice_Connector>
             <version>5.1.5</version>
             <depends>
                 <!-- no dependencies -->
             </depends>
-        </Bazaarvoice>
+        </Bazaarvoice_Connector>
     </modules>
 
     <global>
         <models>
             <Bazaarvoice>
-                <class>Bazaarvoice_Model</class>
+                <class>Bazaarvoice_Connector_Model</class>
             </Bazaarvoice>
         </models>
         <blocks>
             <Bazaarvoice>
-                <class>Bazaarvoice_Block</class>
+                <class>Bazaarvoice_Connector_Block</class>
             </Bazaarvoice>
         </blocks>
         <helpers>
             <Bazaarvoice>
-                <class>Bazaarvoice_Helper</class>
+                <class>Bazaarvoice_Connector_Helper</class>
             </Bazaarvoice>
         </helpers>
         <template>
@@ -44,7 +44,7 @@
             <bazaarvoice_setup>
                 <setup>
                     <module>Bazaarvoice</module>
-                    <class>Bazaarvoice_Model_Mysql4_Setup</class>
+                    <class>Bazaarvoice_Connector_Model_Mysql4_Setup</class>
                 </setup>
                 <connection>
                     <use>core_setup</use>

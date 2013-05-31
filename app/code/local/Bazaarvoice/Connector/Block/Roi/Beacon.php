@@ -1,5 +1,5 @@
 <?php
-class Bazaarvoice_Block_Roi_Beacon extends Mage_Core_Block_Template
+class Bazaarvoice_Connector_Block_Roi_Beacon extends Mage_Core_Block_Template
 {
 	private $_isEnabled;
 

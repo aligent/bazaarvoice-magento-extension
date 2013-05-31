@@ -1,5 +1,5 @@
 <?php
-class Bazaarvoice_Model_ExportPurchaseFeed extends Mage_Core_Model_Abstract {
+class Bazaarvoice_Connector_Model_ExportPurchaseFeed extends Mage_Core_Model_Abstract {
 
     const ALREADY_SENT_IN_FEED_FLAG = "sent_in_bv_postpurchase_feed";
     const TRIGGER_EVENT_PURCHASE = "purchase";
@@ -71,7 +71,7 @@ class Bazaarvoice_Model_ExportPurchaseFeed extends Mage_Core_Model_Abstract {
     private function processOrders($ioObject) {
 
         // Gather settings for how this feed should be generated
-        $triggeringEvent = Mage::getStoreConfig("bazaarvoice/PurchaseFeed/TriggeringEvent") === Bazaarvoice_Model_Source_TriggeringEvent::SHIPPING? self::TRIGGER_EVENT_SHIP : self::TRIGGER_EVENT_PURCHASE;
+        $triggeringEvent = Mage::getStoreConfig("bazaarvoice/PurchaseFeed/TriggeringEvent") === Bazaarvoice_Connector_Model_Source_TriggeringEvent::SHIPPING? self::TRIGGER_EVENT_SHIP : self::TRIGGER_EVENT_PURCHASE;
         $numDaysLookback = Mage::getStoreConfig("bazaarvoice/PurchaseFeed/NumDaysLookback");
         $delayDaysSinceEvent = Mage::getStoreConfig("bazaarvoice/PurchaseFeed/DelayDaysSinceEvent");
         Mage::log("    BV - Config {TriggeringEvent: " . $triggeringEvent

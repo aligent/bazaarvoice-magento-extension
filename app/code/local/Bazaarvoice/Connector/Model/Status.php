@@ -1,6 +1,6 @@
 <?php
 
-class Bazaarvoice_Model_Status extends Varien_Object
+class Bazaarvoice_Connector_Model_Status extends Varien_Object
 {
     const STATUS_ENABLED	= 1;
     const STATUS_DISABLED	= 2;
