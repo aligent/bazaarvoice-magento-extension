@@ -56,9 +56,9 @@ class Bazaarvoice_Connector_Helper_Data extends Mage_Core_Helper_Abstract {
 
         $rawProductId = $product->getSku();
 
-        //>> Customizations go here
+        // >> Customizations go here
         //
-        //<< No further customizations after this
+        // << No further customizations after this
 
         return $this->replaceIllegalCharacters($rawProductId);
 
@@ -83,7 +83,7 @@ class Bazaarvoice_Connector_Helper_Data extends Mage_Core_Helper_Abstract {
 
 
         foreach ($productCollection as $product) {
-            //return the first one
+            // return the first one
             return $product;
         }
 
@@ -105,9 +105,9 @@ class Bazaarvoice_Connector_Helper_Data extends Mage_Core_Helper_Abstract {
 
         $rawCategoryId = $category->getUrlKey();
 
-        //>> Customizations go here
+        // >> Customizations go here
         //
-        //<< No further customizations after this
+        // << No further customizations after this
 
         return $this->replaceIllegalCharacters($rawCategoryId);
 
@@ -126,8 +126,8 @@ class Bazaarvoice_Connector_Helper_Data extends Mage_Core_Helper_Abstract {
      */
     public function replaceIllegalCharacters($rawId) {
         // We need to use a reversible replacement so that we can reconstruct the original ID later.
-        //  Example rawId = qwerty$%@#asdf
-        //  Example encoded = qwerty_bv36__bv37__bv64__bv35_asdf
+        // Example rawId = qwerty$%@#asdf
+        // Example encoded = qwerty_bv36__bv37__bv64__bv35_asdf
 
         return preg_replace_callback('/[^\w\d\*-\._]/s', create_function('$match','return "_bv".ord($match[0])."_";'), $rawId);
     }
@@ -150,25 +150,25 @@ class Bazaarvoice_Connector_Helper_Data extends Mage_Core_Helper_Abstract {
     public function downloadFile($localFilePath, $localFileName, $remoteFile) {
         Mage::log("    BV - starting download from Bazaarvoice server");
 
-        //Create the directory if it doesn't already exist.
+        // Create the directory if it doesn't already exist.
         $ioObject = new Varien_Io_File();
         try {
             if (!$ioObject->fileExists($localFilePath, false)) {
                 $ioObject->mkdir($localFilePath, 0777, true);
             }
         } catch (Exception $e) {
-            //Most likely not enough permissions.
+            // Most likely not enough permissions.
             Mage::log("    BV - failed attempting to create local directory '".$localFilePath."' to download feed.  Error trace follows: " . $e->getTraceAsString());
             return false;
         }
 
-        //Make sure directory is writable
+        // Make sure directory is writable
         if (!$ioObject->isWriteable($localFilePath)) {
             Mage::log("    BV - local directory '".$localFilePath."' is not writable.");
             return false;
         }
 
-        //Establish a connection to the FTP host
+        // Establish a connection to the FTP host
         Mage::log("    BV - beginning file download");
         $connection = ftp_connect(Mage::getStoreConfig("bazaarvoice/General/FTPHost"));
         $login = ftp_login($connection, Mage::getStoreConfig("bazaarvoice/General/CustomerName"), Mage::getStoreConfig("bazaarvoice/General/FTPPassword"));
@@ -178,19 +178,19 @@ class Bazaarvoice_Connector_Helper_Data extends Mage_Core_Helper_Abstract {
             return false;
         }
 
-        //Remove the local file if it already exists
+        // Remove the local file if it already exists
         if (file_exists($localFilePath . DS . $localFileName)) {
             unlink($localFilePath . DS . $localFileName);
         }
 
         try {
-            //Download the file
+            // Download the file
             ftp_get($connection, $localFilePath . DS . $localFileName, $remoteFile, FTP_BINARY);
         } catch (Exception $ex) {
             Mage::log("    BV - Exception downloading file: " . $ex->getTraceAsString());
         }
 
-        //Validate file was downloaded
+        // Validate file was downloaded
         if (!$ioObject->fileExists($localFilePath . DS . $localFileName, true)) {
             Mage::log("    BV - unable to download file '" . $localFilePath . DS . $localFileName . "'");
             return false;
@@ -226,7 +226,7 @@ class Bazaarvoice_Connector_Helper_Data extends Mage_Core_Helper_Abstract {
 
         // Getting the product/category reference from the registry doesn't make any extra DB calls since we're relying
         // upon the product/category template page to set this registry entry.  By default this is the case.
-        //    See: http://fishpig.co.uk/the-magento-registry/
+        //  See: http://fishpig.co.uk/the-magento-registry/
         $category = Mage::registry("current_category");
         $product = Mage::registry("product");
 
@@ -398,8 +398,8 @@ class Bazaarvoice_Connector_Helper_Data extends Mage_Core_Helper_Abstract {
         return $this->getConfigPropertyForBVProduct($bvProduct, "SubDomain");
     }
 
-    //=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
-    //=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+    // =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+    // =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 
     public function getConfigPropertyForBVProduct($bvProduct, $propertyName) {
         $code = "RR";
@@ -416,7 +416,7 @@ class Bazaarvoice_Connector_Helper_Data extends Mage_Core_Helper_Abstract {
 
     public function sendNotificationEmail($subject, $text) {
         $toEmail = Mage::getStoreConfig("bazaarvoice/General/AdminEmail");
-        $fromEmail = Mage::getStoreConfig('trans_email/ident_general/email');   //The "General" contact identity is a default setting in Magento
+        $fromEmail = Mage::getStoreConfig('trans_email/ident_general/email');   // The "General" contact identity is a default setting in Magento
         if (empty($fromEmail)) {
             $fromEmail = $toEmail;
         }
@@ -428,7 +428,7 @@ class Bazaarvoice_Connector_Helper_Data extends Mage_Core_Helper_Abstract {
              */
             $emailTemplate  = Mage::getModel('core/email_template')->loadDefault('bazaarvoice_notification_template');
 
-            //Create an array of variables to assign to template
+            // Create an array of variables to assign to template
             $emailTemplateVariables = array();
             $emailTemplateVariables['text'] = $text;
 

@@ -19,20 +19,20 @@ class Bazaarvoice_Connector_Model_RetrieveInlineRatingsFeed extends Mage_Core_Mo
                 die("    BV - unable to process feed.  Check the Magento log for further information.");
             }
 
-            //Unpack the file
+            // Unpack the file
             if (file_exists($localFilePath . DS . $localFileName)) {
                 unlink($localFilePath . DS . $localFileName);
             }
             $gzInterface = new Mage_Archive_Gz();
             $gzInterface->unpack($localFilePath . DS . $gzLocalFilename, $localFilePath . DS . $localFileName);
 
-            //Create custom product attributes
+            // Create custom product attributes
             $this->createProductAttributesIfNecessary();
 
-            //Parse the XML
+            // Parse the XML
             $this->parseFeed($localFilePath . DS . $localFileName);
 
-            //Cleanup
+            // Cleanup
             if (file_exists($localFilePath . DS . $localFileName)) {
                 unlink($localFilePath . DS . $localFileName);
             }
@@ -45,8 +45,8 @@ class Bazaarvoice_Connector_Model_RetrieveInlineRatingsFeed extends Mage_Core_Mo
 
 
     private function parseFeed($fileName) {
-        //Use XMLReader to parse the feed.  Should be available in all PHP5 environments, which is a pre-req of Magento
-        //http://devzone.zend.com/article/2387
+        // Use XMLReader to parse the feed.  Should be available in all PHP5 environments, which is a pre-req of Magento
+        // http://devzone.zend.com/article/2387
 
         $reader = new XMLReader();
         $reader->open($fileName);
@@ -93,7 +93,7 @@ class Bazaarvoice_Connector_Model_RetrieveInlineRatingsFeed extends Mage_Core_Mo
             }
         }
 
-        //Persist data for this product
+        // Persist data for this product
         $product = Mage::helper('bazaarvoice')->getProductFromProductExternalId($bvProductExternalId);
         if (!is_null($product)) {
             $product->setBvAverageRating($productAverageRating);
@@ -137,7 +137,7 @@ class Bazaarvoice_Connector_Model_RetrieveInlineRatingsFeed extends Mage_Core_Mo
             'default_value_textarea' => '',
             'is_unique' => '0',
             'is_required' => '0',
-            //'apply_to' => array(),     // Apply to everything
+            // 'apply_to' => array(),     // Apply to everything
             'is_configurable' => '0',
             'is_filterable' => '0',
             'is_filterable_in_search' => '0',
@@ -153,7 +153,7 @@ class Bazaarvoice_Connector_Model_RetrieveInlineRatingsFeed extends Mage_Core_Mo
             'frontend_label' => array($attribCode)
         );
 
-        $data['backend_type'] = 'decimal'; //$model->getBackendTypeByInput($data['frontend_input']);
+        $data['backend_type'] = 'decimal'; // $model->getBackendTypeByInput($data['frontend_input']);
 
         $model->addData($data);
         $model->setEntityTypeId(Mage::getModel('eav/entity')->setType('catalog_product')->getTypeId());

@@ -81,7 +81,7 @@ class Bazaarvoice_Connector_Model_ExportPurchaseFeed extends Mage_Core_Model_Abs
                                 . ", DelayDaysThreshold: " . date("c", $this->getDelayDaysThresholdTimestamp($delayDaysSinceEvent)) . "}");
 
         // Initialize references to the object model accessors
-        $productModel = Mage::getModel("catalog/product"); //Getting product model for access to product related functions
+        $productModel = Mage::getModel("catalog/product"); // Getting product model for access to product related functions
         $orderModel = Mage::getModel("sales/order");
 
         // Get a collection of all the orders
@@ -134,7 +134,7 @@ class Bazaarvoice_Connector_Model_ExportPurchaseFeed extends Mage_Core_Model_Abs
 
             $order->setData(self::ALREADY_SENT_IN_FEED_FLAG, 1);
             $order->save();
-            $order->reset();  //Forces a reload of various collections that the object caches internally so that the next time we load from the orderModel, we'll get a completely new object.
+            $order->reset();  // Forces a reload of various collections that the object caches internally so that the next time we load from the orderModel, we'll get a completely new object.
 
         }
 
@@ -151,7 +151,7 @@ class Bazaarvoice_Connector_Model_ExportPurchaseFeed extends Mage_Core_Model_Abs
                     . "\n\tLatestShipmentDate: " . date("c",$this->getLatestShipmentDate($order))
                     . "\n\tNumItems: " . count($order->getAllItems())
                     . "\n\tSentInBVPPEFeed: " . $order->getData(self::ALREADY_SENT_IN_FEED_FLAG)
-                    //. "\n\tCustomerEmail: " . $order->getCustomerEmail()    //Don't put CustomerEmail in the logs - could be considered PII
+                    // . "\n\tCustomerEmail: " . $order->getCustomerEmail()    // Don't put CustomerEmail in the logs - could be considered PII
                     . "\n}";
     }
 
@@ -265,7 +265,7 @@ class Bazaarvoice_Connector_Model_ExportPurchaseFeed extends Mage_Core_Model_Abs
             $latestShipmentTimestamp = max(strtotime($shipment->getCreatedAtDate()), $latestShipmentTimestamp);
         }
 
-        return $latestShipmentTimestamp;  //This should be an int timestamp of num seconds since epoch
+        return $latestShipmentTimestamp;  // This should be an int timestamp of num seconds since epoch
     }
 
 }

@@ -133,7 +133,7 @@
                 <EnableRR>1</EnableRR>
                 <SubDomain>reviews</SubDomain>
                 <DisplayCodeJavascript><![CDATA[
-                    //no-op
+                    // no-op
                 ]]></DisplayCodeJavascript>
                 <OnEventJavascript><![CDATA[
                     if (json.eventSource == "Display") {
@@ -158,7 +158,7 @@
             <AA>
                 <SubDomain>answers</SubDomain>
                 <DisplayCodeJavascript><![CDATA[
-                    //no-op
+                    // no-op
                 ]]></DisplayCodeJavascript>
                 <OnEventJavascript><![CDATA[
                     if (json.eventSource == "Display") {
@@ -176,7 +176,7 @@
             <SY>
                 <SubDomain>stories</SubDomain>
                 <DisplayCodeJavascript><![CDATA[
-                    //no-op
+                    // no-op
                 ]]></DisplayCodeJavascript>
                 <OnEventJavascript><![CDATA[
                     if (json.eventSource == "Display") {
@@ -198,10 +198,10 @@
             <CP>
                 <SubDomain>ugc</SubDomain>
                 <DisplayCodeJavascript><![CDATA[
-                    //no-op
+                    // no-op
                 ]]></DisplayCodeJavascript>
                 <OnEventJavascript><![CDATA[
-                    //no-op
+                    // no-op
                 ]]></OnEventJavascript>
             </CP>
             <ProductFeed>
