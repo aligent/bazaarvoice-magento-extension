@@ -8,7 +8,7 @@
 <config>
     <modules>
         <Bazaarvoice_Connector>
-            <version>5.1.5</version>
+            <version>5.1.6</version>
             <depends>
                 <!-- no dependencies -->
             </depends>

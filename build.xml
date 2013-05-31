@@ -3,7 +3,7 @@
 <project name="bazaarvoice_ext" default="build" basedir=".">
 	<!-- Properties -->
 	<property name="source" value="app/code/local/Bazaarvoice"/>
-	<property name="module_name" value="Bazaarvoice"/>
+	<property name="module_name" value="Bazaarvoice_Connector"/>
 	<property name="license_id" value="${module_name}-5.1.x.x"/>
 	
 	<!-- Meta Targets -->
