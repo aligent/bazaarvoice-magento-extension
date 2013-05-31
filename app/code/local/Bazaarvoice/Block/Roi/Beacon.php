@@ -50,7 +50,7 @@ class Bazaarvoice_Block_Roi_Beacon extends Mage_Core_Block_Template
 				$items = $order->getAllVisibleItems();
 				foreach ($items as $itemId => $item)
 				{
-					$product = Bazaarvoice_Helper_Data::getReviewableProductFromOrderItem($item);
+					$product = Mage::helper('Bazaarvoice')->getReviewableProductFromOrderItem($item);
 					 
 					$itemDetails = array();
 					$itemDetails["sku"] = $product->getSku();

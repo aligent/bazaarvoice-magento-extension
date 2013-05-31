@@ -1,11 +1,11 @@
 <?php
-$bvApiUrl = Bazaarvoice_Helper_Data::getBvApiHostUrl(true);
+$bvApiUrl = Mage::helper('Bazaarvoice')->getBvApiHostUrl(true);
 $bvFBXdReceiverUrl = Mage::getStoreConfig("bazaarvoice/General/FacebookXdReceiverUrl");
 
 $encUserID = "";
 $customerSession = Mage::getSingleton('customer/session');
 if($customerSession->isLoggedIn()) {
-    $encUserID = Bazaarvoice_Helper_Data::encryptReviewerId($customerSession->getCustomer()->getId());
+    $encUserID = Mage::helper('Bazaarvoice')->encryptReviewerId($customerSession->getCustomer()->getId());
 }
 ?>
 <script type="text/javascript" src="<?php echo $bvApiUrl ?>/bvapi.js"></script>

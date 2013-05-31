@@ -1,11 +1,11 @@
 <?php
 if(Mage::getStoreConfig("bazaarvoice/SY/EnableSY") === "1") {
     //Determine if we are rendering on a product or category page
-    $bvSubject = Bazaarvoice_Helper_Data::getExternalSubjectForPage($this);
+    $bvSubject = Mage::helper('Bazaarvoice')->getExternalSubjectForPage($this);
 
     //Obtain SmartSEO content
     $smartSEOPageFormat = Mage::getStoreConfig("bazaarvoice/SY/SmartSEOPageFormat");
-    $content = Bazaarvoice_Helper_Data::getSmartSEOContent("stories", $bvSubject, $smartSEOPageFormat);
+    $content = Mage::helper('Bazaarvoice')->getSmartSEOContent("stories", $bvSubject, $smartSEOPageFormat);
 ?>
 <div id="BVSYContainer">
     <?php echo $content; ?>
@@ -13,15 +13,15 @@ if(Mage::getStoreConfig("bazaarvoice/SY/EnableSY") === "1") {
 <script type="text/javascript" language="javascript">
     function getSYDisplayCode() {
         try {
-            <?php echo Bazaarvoice_Helper_Data::getConfigPropertyForBVProduct("stories", "DisplayCodeJavascript"); ?>
+            <?php echo Mage::helper('Bazaarvoice')->getConfigPropertyForBVProduct("stories", "DisplayCodeJavascript"); ?>
         }catch(e){
             //The JS in the try-catch above is user-definable.  Catch and suppress any errors and just return a default.
         }
-        return "<?php echo Bazaarvoice_Helper_Data::getDisplayCodeForBVProduct("stories"); ?>";
+        return "<?php echo Mage::helper('Bazaarvoice')->getDisplayCodeForBVProduct("stories"); ?>";
     }
     function getStoriesDisplayFormat() {
         try {
-            <?php echo Bazaarvoice_Helper_Data::getConfigPropertyForBVProduct("stories", "DisplayFormatJavascript"); ?>
+            <?php echo Mage::helper('Bazaarvoice')->getConfigPropertyForBVProduct("stories", "DisplayFormatJavascript"); ?>
         } catch (e) {
             //The JS in the try-catch above is user-definable.  Catch and suppress any errors and just return a default.
         }
@@ -29,19 +29,19 @@ if(Mage::getStoreConfig("bazaarvoice/SY/EnableSY") === "1") {
     }
     var configData = {};
     configData.displayCode = getSYDisplayCode();
-    configData.subjectType = "<?php echo $bvSubject[Bazaarvoice_Helper_Data::BV_SUBJECT_TYPE]; ?>";
-    if ("<?php echo $bvSubject[Bazaarvoice_Helper_Data::BV_SUBJECT_TYPE]; ?>" === "product") {
-        configData.productId = "<?php echo $bvSubject[Bazaarvoice_Helper_Data::BV_EXTERNAL_SUBJECT_ID]; ?>";
+    configData.subjectType = "<?php echo $bvSubject[Mage::helper('Bazaarvoice')->BV_SUBJECT_TYPE]; ?>";
+    if ("<?php echo $bvSubject[Mage::helper('Bazaarvoice')->BV_SUBJECT_TYPE]; ?>" === "product") {
+        configData.productId = "<?php echo $bvSubject[Mage::helper('Bazaarvoice')->BV_EXTERNAL_SUBJECT_ID]; ?>";
     } else {
-        configData.categoryId = "<?php echo $bvSubject[Bazaarvoice_Helper_Data::BV_EXTERNAL_SUBJECT_ID]; ?>";
+        configData.categoryId = "<?php echo $bvSubject[Mage::helper('Bazaarvoice')->BV_EXTERNAL_SUBJECT_ID]; ?>";
     }
     configData.summaryContainerDiv = "BVSYSummaryContainer";
     configData.contentContainerDiv = "BVSYContainer";
     configData.onEvent = function(json) {
-        <?php echo Bazaarvoice_Helper_Data::getConfigPropertyForBVProduct("stories", "OnEventJavascript") . "\n"; ?>
+        <?php echo Mage::helper('Bazaarvoice')->getConfigPropertyForBVProduct("stories", "OnEventJavascript") . "\n"; ?>
     };
     configData.doShowContent = function () {
-    	<?php echo Bazaarvoice_Helper_Data::getConfigPropertyForBVProduct("stories", "DoShowContentJavascript") . "\n"; ?>
+    	<?php echo Mage::helper('Bazaarvoice')->getConfigPropertyForBVProduct("stories", "DoShowContentJavascript") . "\n"; ?>
     };
 	$BV.ui("sy", getStoriesDisplayFormat(), configData);
 </script>

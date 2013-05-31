@@ -133,7 +133,7 @@ class Bazaarvoice_Model_ExportProductFeed extends Mage_Core_Model_Abstract
                     "/" . Mage::getStoreConfig("bazaarvoice/ProductFeed/ExportPath", $store->getId()) . 
                     "/" . Mage::getStoreConfig("bazaarvoice/ProductFeed/ExportFileName", $store->getId());
                 $sourceFile = $productFeedFilePath . DS . $productFeedFileName;
-                $upload = Bazaarvoice_Helper_Data::uploadFile($sourceFile, $destinationFile, $store);
+                $upload = Mage::helper('Bazaarvoice')->uploadFile($sourceFile, $destinationFile, $store);
 
                 if (!$upload) {
                     Mage::log("    Bazaarvoice FTP upload failed! [filename = " . $productFeedFileName . "]");
@@ -167,7 +167,7 @@ class Bazaarvoice_Model_ExportProductFeed extends Mage_Core_Model_Abstract
         foreach ($categoryIds as $categoryId) {
             // Load category object
             $category = $categoryModel->load($categoryId->getId());
-            $categoryExternalId = Bazaarvoice_Helper_Data::getCategoryId($category);
+            $categoryExternalId = Mage::helper('Bazaarvoice')->getCategoryId($category);
             $categoryName = htmlspecialchars($category->getName(), ENT_QUOTES, "UTF-8");
             $categoryPageUrl = htmlspecialchars($category->getCategoryIdUrl(), ENT_QUOTES, "UTF-8");
 
@@ -180,7 +180,7 @@ class Bazaarvoice_Model_ExportProductFeed extends Mage_Core_Model_Abstract
             $parentCategory = Mage::getModel('catalog/category')->load($categoryId->getParentId());
             // If parent category is the root category, then ignore it
             if (!is_null($parentCategory) && $parentCategory->getLevel() != 1) {
-                $parentExtId = "    <ParentExternalId>" . Bazaarvoice_Helper_Data::getCategoryId($parentCategory) . "</ParentExternalId>\n";
+                $parentExtId = "    <ParentExternalId>" . Mage::helper('Bazaarvoice')->getCategoryId($parentCategory) . "</ParentExternalId>\n";
             }
             
             array_push($this->_categoryIdList, $categoryExternalId);
@@ -224,7 +224,7 @@ class Bazaarvoice_Model_ExportProductFeed extends Mage_Core_Model_Abstract
             $product->setStoreId($store->getId());
             // Load product object
             $product->load($productId->getId());
-            $productExternalId = Bazaarvoice_Helper_Data::getProductId($product);
+            $productExternalId = Mage::helper('Bazaarvoice')->getProductId($product);
             $brand = htmlspecialchars($product->getAttributeText("manufacturer"));
 
 
@@ -250,7 +250,7 @@ class Bazaarvoice_Model_ExportProductFeed extends Mage_Core_Model_Abstract
                 foreach ($parentCategories as $parentCategoryId) {
                     $parentCategory = Mage::getModel("catalog/category")->load($parentCategoryId);
                     if ($parentCategory != null) {
-                        $categoryExternalId = Bazaarvoice_Helper_Data::getCategoryId($parentCategory);
+                        $categoryExternalId = Mage::helper('Bazaarvoice')->getCategoryId($parentCategory);
                         if (in_array($categoryExternalId, $this->_categoryIdList)) {
                             $ioObject->streamWrite("    <CategoryExternalId>" . $categoryExternalId . "</CategoryExternalId>\n");
                             break;

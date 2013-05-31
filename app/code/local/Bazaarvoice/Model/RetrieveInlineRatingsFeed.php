@@ -14,7 +14,7 @@ class Bazaarvoice_Model_RetrieveInlineRatingsFeed extends Mage_Core_Model_Abstra
             $gzLocalFilename = $localFileName . ".gz";
             $remoteFile = "/" . Mage::getStoreConfig("bazaarvoice/InlineRatingFeed/FeedPath") . "/" . Mage::getStoreConfig("bazaarvoice/InlineRatingFeed/FeedFileName");
 
-            if (!Bazaarvoice_Helper_Data::downloadFile($localFilePath, $gzLocalFilename, $remoteFile)) {
+            if (!Mage::helper('Bazaarvoice')->downloadFile($localFilePath, $gzLocalFilename, $remoteFile)) {
                 // Unable to download the file.  Check magento log for messages.
                 die("    BV - unable to process feed.  Check the Magento log for further information.");
             }
@@ -94,7 +94,7 @@ class Bazaarvoice_Model_RetrieveInlineRatingsFeed extends Mage_Core_Model_Abstra
         }
 
         //Persist data for this product
-        $product = Bazaarvoice_Helper_Data::getProductFromProductExternalId($bvProductExternalId);
+        $product = Mage::helper('Bazaarvoice')->getProductFromProductExternalId($bvProductExternalId);
         if (!is_null($product)) {
             $product->setBvAverageRating($productAverageRating);
             $product->setBvReviewCount($productReviewCount);

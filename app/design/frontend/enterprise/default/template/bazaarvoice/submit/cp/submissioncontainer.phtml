@@ -1,5 +1,5 @@
 <?php
-    $bvUrl = Bazaarvoice_Helper_Data::getBvUrl(true, "activeprofiles");
+    $bvUrl = Mage::helper('Bazaarvoice')->getBvUrl(true, "activeprofiles");
 ?>
 <div id="BVSubmissionContainer">
     <img src="<?php echo $bvUrl; ?>/bv_sub_loading_60.gif" id="BVLoaderImage" width="60" height="60" alt="Loading..."/>
@@ -7,11 +7,11 @@
 <script type="text/javascript" language="javascript">
    function getCPDisplayCode() {
         try {
-            <?php echo Bazaarvoice_Helper_Data::getConfigPropertyForBVProduct("activeprofiles", "DisplayCodeJavascript"); ?>
+            <?php echo Mage::helper('Bazaarvoice')->getConfigPropertyForBVProduct("activeprofiles", "DisplayCodeJavascript"); ?>
         }catch(e){
             //The JS in the try-catch above is user-definable.  Catch and suppress any errors and just return a default.
         }
-        return "<?php echo Bazaarvoice_Helper_Data::getDisplayCodeForBVProduct("activeprofiles"); ?>";
+        return "<?php echo Mage::helper('Bazaarvoice')->getDisplayCodeForBVProduct("activeprofiles"); ?>";
    }
 
    var configData = {};

@@ -52,7 +52,7 @@ class Bazaarvoice_Model_ExportPurchaseFeed extends Mage_Core_Model_Abstract {
                 $destinationFile = "/" . Mage::getStoreConfig("bazaarvoice/PurchaseFeed/ExportPath") . "/" . Mage::getStoreConfig("bazaarvoice/PurchaseFeed/ExportFileName");
                 $sourceFile = $purchaseFeedFilePath . DS . $purchaseFeedFileName;
 
-                $upload = Bazaarvoice_Helper_Data::uploadFile($sourceFile, $destinationFile);
+                $upload = Mage::helper('Bazaarvoice')->uploadFile($sourceFile, $destinationFile);
             }
 
 
@@ -119,10 +119,10 @@ class Bazaarvoice_Model_ExportPurchaseFeed extends Mage_Core_Model_Abstract {
             $ioObject->streamWrite("    <TransactionDate>" . $this->getTriggeringEventDate($order, $triggeringEvent) . "</TransactionDate>\n");
             $ioObject->streamWrite("    <Products>\n");
             foreach($order->getAllVisibleItems() as $item) {
-            	$product = Bazaarvoice_Helper_Data::getReviewableProductFromOrderItem($item);
+            	$product = Mage::helper('Bazaarvoice')->getReviewableProductFromOrderItem($item);
                 if (!is_null($product)) {
                     $ioObject->streamWrite("        <Product>\n");
-                    $ioObject->streamWrite("            <ExternalId>" . Bazaarvoice_Helper_Data::getProductId($product) . "</ExternalId>\n");
+                    $ioObject->streamWrite("            <ExternalId>" . Mage::helper('Bazaarvoice')->getProductId($product) . "</ExternalId>\n");
                     $ioObject->streamWrite("            <Name>" . htmlspecialchars($product->getName(), ENT_QUOTES, "UTF-8") . "</Name>\n");
                     $ioObject->streamWrite("            <ImageUrl>" . $product->getImageUrl() . "</ImageUrl>\n");
                     $ioObject->streamWrite("            <Price>" . number_format((float)$item->getOriginalPrice(), 2) . "</Price>\n");
