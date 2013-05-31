@@ -42,4 +42,3 @@ class Bazaarvoice_Connector_FeedController extends Mage_Core_Controller_Front_Ac
     }
 
 }
-?>

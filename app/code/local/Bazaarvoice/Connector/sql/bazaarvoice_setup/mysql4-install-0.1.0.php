@@ -14,4 +14,3 @@ $installer->addAttribute('order', Bazaarvoice_Connector_Model_ExportPurchaseFeed
 
 $installer->endSetup();
 
-?>

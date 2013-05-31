@@ -19,4 +19,3 @@ class Bazaarvoice_Connector_ProfileController extends Mage_Core_Controller_Front
 		$this->renderLayout();
     }
 }
-?>

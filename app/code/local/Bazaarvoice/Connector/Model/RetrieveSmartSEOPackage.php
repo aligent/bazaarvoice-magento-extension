@@ -98,4 +98,3 @@ class Bazaarvoice_Connector_Model_RetrieveSmartSEOPackage extends Mage_Core_Mode
         Mage::log("End Bazaarvoice Smart SEO feed import");
     }
 }
-?>
