@@ -1,5 +1,5 @@
 <?php
-    $bvUrl = Mage::helper('Bazaarvoice')->getBvUrl(true, "reviews");
+    $bvUrl = Mage::helper('bazaarvoice')->getBvUrl(true, "reviews");
 ?>
 <div id="BVSubmissionContainer">
     <img src="<?php echo $bvUrl; ?>/bv_sub_loading_60.gif" id="BVLoaderImage" width="60" height="60" alt="Loading..."/>
@@ -23,23 +23,23 @@
             var bvcontenttype = "<?php echo (isset($_GET["bvcontenttype"]) ? $_GET["bvcontenttype"] : "unknown"); ?>".toUpperCase();
 
             if (bvcontenttype.search("REVIEW") > -1) {
-                <?php echo Mage::helper('Bazaarvoice')->getConfigPropertyForBVProduct("reviews", "DisplayCodeJavascript"); ?>
-                return "<?php echo Mage::helper('Bazaarvoice')->getDisplayCodeForBVProduct("reviews"); ?>";
+                <?php echo Mage::helper('bazaarvoice')->getConfigPropertyForBVProduct("reviews", "DisplayCodeJavascript"); ?>
+                return "<?php echo Mage::helper('bazaarvoice')->getDisplayCodeForBVProduct("reviews"); ?>";
             } else if (bvcontenttype.search("PROFILE") > -1) {
-                <?php echo Mage::helper('Bazaarvoice')->getConfigPropertyForBVProduct("activeprofiles", "DisplayCodeJavascript"); ?>
-                return "<?php echo Mage::helper('Bazaarvoice')->getDisplayCodeForBVProduct("activeprofiles"); ?>";
+                <?php echo Mage::helper('bazaarvoice')->getConfigPropertyForBVProduct("activeprofiles", "DisplayCodeJavascript"); ?>
+                return "<?php echo Mage::helper('bazaarvoice')->getDisplayCodeForBVProduct("activeprofiles"); ?>";
             } else if (bvcontenttype.search("QUESTION") > -1 || bvcontenttype.search("ANSWER") > -1) {
-                <?php echo Mage::helper('Bazaarvoice')->getConfigPropertyForBVProduct("questions", "DisplayCodeJavascript"); ?>
-                return "<?php echo Mage::helper('Bazaarvoice')->getDisplayCodeForBVProduct("questions"); ?>";
+                <?php echo Mage::helper('bazaarvoice')->getConfigPropertyForBVProduct("questions", "DisplayCodeJavascript"); ?>
+                return "<?php echo Mage::helper('bazaarvoice')->getDisplayCodeForBVProduct("questions"); ?>";
             } else if (bvcontenttype.search("STORY") > -1) {
-                <?php echo Mage::helper('Bazaarvoice')->getConfigPropertyForBVProduct("stories", "DisplayCodeJavascript"); ?>
-                return "<?php echo Mage::helper('Bazaarvoice')->getDisplayCodeForBVProduct("stories"); ?>";
+                <?php echo Mage::helper('bazaarvoice')->getConfigPropertyForBVProduct("stories", "DisplayCodeJavascript"); ?>
+                return "<?php echo Mage::helper('bazaarvoice')->getDisplayCodeForBVProduct("stories"); ?>";
             }
 
         }catch(e){
             //The JS in the try-catch above is user-definable.  Catch and suppress any errors and just return a default.
         }
-        return "<?php echo Mage::helper('Bazaarvoice')->getDefaultDisplayCode(); ?>";
+        return "<?php echo Mage::helper('bazaarvoice')->getDefaultDisplayCode(); ?>";
    }
 
    var configData = {};

@@ -33,14 +33,14 @@ class Bazaarvoice_Connector_Model_RetrieveSmartSEOPackage extends Mage_Core_Mode
             }
 
             //Download the file
-            if (!Mage::helper('Bazaarvoice')->downloadFile($localFilePath, $gzLocalFilename, $remoteFile)) {
+            if (!Mage::helper('bazaarvoice')->downloadFile($localFilePath, $gzLocalFilename, $remoteFile)) {
                 // Unable to download the file.
 
                 if (!file_exists($localExtractsPath)) {
                     //Couldn't download the file and no old SmartSEO files already exist on the filesystem
                     $subject = "Bazaarvoice SmartSEO Content Unavailable";
                     $msg = "The Bazaarvoice extension in your Magento store was unable to download new SmartSEO files from the Bazaarvoice server and there were no pre-existing SmartSEO files already in your Magento store.";
-                    Mage::helper('Bazaarvoice')->sendNotificationEmail($subject, $msg);
+                    Mage::helper('bazaarvoice')->sendNotificationEmail($subject, $msg);
                     Mage::log($msg);
                     die($msg);
                 }
@@ -58,14 +58,14 @@ class Bazaarvoice_Connector_Model_RetrieveSmartSEOPackage extends Mage_Core_Mode
 
                     $subject = "Bazaarvoice SmartSEO Content Unavailable";
                     $msg = "The Bazaarvoice extension in your Magento store was unable to download new SmartSEO files from the Bazaarvoice server and the existing SmartSEO files that are already in the Magento store have expired.";
-                    Mage::helper('Bazaarvoice')->sendNotificationEmail($subject, $msg);
+                    Mage::helper('bazaarvoice')->sendNotificationEmail($subject, $msg);
                     Mage::log($msg);
                     die($msg);
                 } else {
                     //Couldn't download the file, but the old files that we already have are still usable
                     $subject = "Bazaarvoice SmartSEO Content Couldn't be Updated";
                     $msg = "The Bazaarvoice extension in your Magento store was unable to download new SmartSEO files from the Bazaarvoice server.  The existing files will continue to be used.";
-                    Mage::helper('Bazaarvoice')->sendNotificationEmail($subject, $msg);
+                    Mage::helper('bazaarvoice')->sendNotificationEmail($subject, $msg);
                     Mage::log($msg);
                     die($msg);
                 }

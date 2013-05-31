@@ -1,17 +1,17 @@
 <?php
-$bvApiUrl = Mage::helper('Bazaarvoice')->getBvApiHostUrl(true);
+$bvApiUrl = Mage::helper('bazaarvoice')->getBvApiHostUrl(true);
 
 // Determine if we should set the submissionContainerUrl (we should if this is not a profile container page display)
 // Active Profiles display container will use a different submission container than the one used for other BV products (to allow for customized styling)
 $submissionContainerUrl = null;
 if (strpos($_SERVER["REQUEST_URI"], "bazaarvoice/profile/display") === false) {
     // Determine if we are rendering on a product or category page.
-    $bvSubject = Mage::helper('Bazaarvoice')->getExternalSubjectForPage($this);
+    $bvSubject = Mage::helper('bazaarvoice')->getExternalSubjectForPage($this);
 
     // This is not a profile display page request
     $submissionContainerUrl = Mage::getStoreConfig("bazaarvoice/General/SubmissionURL") . "?";
-    $submissionContainerUrl .= ($bvSubject[Mage::helper('Bazaarvoice')->BV_SUBJECT_TYPE] == "product") ? "pid=" : "cid=";
-    $submissionContainerUrl .= $bvSubject[Mage::helper('Bazaarvoice')->BV_EXTERNAL_SUBJECT_ID];
+    $submissionContainerUrl .= ($bvSubject[Mage::helper('bazaarvoice')->BV_SUBJECT_TYPE] == "product") ? "pid=" : "cid=";
+    $submissionContainerUrl .= $bvSubject[Mage::helper('bazaarvoice')->BV_EXTERNAL_SUBJECT_ID];
 }
 ?>
 

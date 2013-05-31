@@ -11,11 +11,11 @@ class Bazaarvoice_Connector_Model_Source_TriggeringEvent {
         return array(
             array(
                 'value' => self::SHIPPING,
-                'label' => Mage::helper('Bazaarvoice')->__('Shipping')
+                'label' => Mage::helper('bazaarvoice')->__('Shipping')
             ),
             array(
                 'value' => self::PURCHASE,
-                'label' => Mage::helper('Bazaarvoice')->__('Purchase')
+                'label' => Mage::helper('bazaarvoice')->__('Purchase')
             )
         );
     }
