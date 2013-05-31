@@ -3,13 +3,13 @@
 class Bazaarvoice_Connector_Helper_Data extends Mage_Core_Helper_Abstract
 {
 
-    const BV_SUBJECT_TYPE = "bvSubjectType";
-    const BV_EXTERNAL_SUBJECT_NAME = "bvExternalSubjectName";
-    const BV_EXTERNAL_SUBJECT_ID = "bvExternalSubjectID";
+    const BV_SUBJECT_TYPE = 'bvSubjectType';
+    const BV_EXTERNAL_SUBJECT_NAME = 'bvExternalSubjectName';
+    const BV_EXTERNAL_SUBJECT_ID = 'bvExternalSubjectID';
 
-    const CONST_SMARTSEO_BVRRP = "bvrrp";
-    const CONST_SMARTSEO_BVQAP = "bvqap";
-    const CONST_SMARTSEO_BVSYP = "bvsyp";
+    const CONST_SMARTSEO_BVRRP = 'bvrrp';
+    const CONST_SMARTSEO_BVQAP = 'bvqap';
+    const CONST_SMARTSEO_BVSYP = 'bvsyp';
 
     public function getInlineRatingsHtml($product, $pageContext)
     {
@@ -19,17 +19,17 @@ class Bazaarvoice_Connector_Helper_Data extends Mage_Core_Helper_Abstract
             $reviewCount = $product->getBvReviewCount();
 
             if (is_numeric($avgRating) && is_numeric($ratingRange) && is_numeric($reviewCount)) {
-                $avgRatingStr = preg_replace("/\./", "_", round($avgRating,1));
+                $avgRatingStr = preg_replace("/\./", '_', round($avgRating,1));
                 if (strlen($avgRatingStr) == 1) {
-                    $avgRatingStr .= "_0";
+                    $avgRatingStr .= '_0';
                 }
 
-                $starsFile = "rating-" . $avgRatingStr . ".gif";
+                $starsFile = 'rating-' . $avgRatingStr . '.gif';
             } else {
-                $avgRating = "0.0";
-                $ratingRange = "5";
-                $reviewCount = "0";
-                $starsFile = "rating-0_0.gif";
+                $avgRating = '0.0';
+                $ratingRange = '5';
+                $reviewCount = '0';
+                $starsFile = 'rating-0_0.gif';
             }
 
             $ret = "<div id=\"BVInlineRatings\">";
@@ -38,7 +38,7 @@ class Bazaarvoice_Connector_Helper_Data extends Mage_Core_Helper_Abstract
 
             return $ret;
         }
-        return "";
+        return '';
 
     }
 
@@ -48,7 +48,7 @@ class Bazaarvoice_Connector_Helper_Data extends Mage_Core_Helper_Abstract
      * This is the unique, product family-level id (duplicates are unacceptable).
      * If a product has its own page, this is its product ID. It is not necessarily
      * the SKU ID, as we do not collect separate Ratings & Reviews for different
-     * styles of product - i.e. the "Blue" vs. "Red Widget".
+     * styles of product - i.e. the 'Blue' vs. 'Red Widget'.
      *
      * @static
      * @param  $product a reference to a catalog product object
@@ -155,7 +155,7 @@ class Bazaarvoice_Connector_Helper_Data extends Mage_Core_Helper_Abstract
      */
     public function downloadFile($localFilePath, $localFileName, $remoteFile)
     {
-        Mage::log("    BV - starting download from Bazaarvoice server");
+        Mage::log('    BV - starting download from Bazaarvoice server');
 
         // Create the directory if it doesn't already exist.
         $ioObject = new Varien_Io_File();
@@ -176,12 +176,12 @@ class Bazaarvoice_Connector_Helper_Data extends Mage_Core_Helper_Abstract
         }
 
         // Establish a connection to the FTP host
-        Mage::log("    BV - beginning file download");
-        $connection = ftp_connect(Mage::getStoreConfig("bazaarvoice/General/FTPHost"));
-        $login = ftp_login($connection, Mage::getStoreConfig("bazaarvoice/General/CustomerName"), Mage::getStoreConfig("bazaarvoice/General/FTPPassword"));
+        Mage::log('    BV - beginning file download');
+        $connection = ftp_connect(Mage::getStoreConfig('bazaarvoice/General/FTPHost'));
+        $login = ftp_login($connection, Mage::getStoreConfig('bazaarvoice/General/CustomerName'), Mage::getStoreConfig('bazaarvoice/General/FTPPassword'));
         ftp_pasv($connection, true);
         if (!$connection || !$login) {
-            Mage::log("    BV - FTP connection attempt failed!");
+            Mage::log('    BV - FTP connection attempt failed!');
             return false;
         }
 
@@ -194,7 +194,7 @@ class Bazaarvoice_Connector_Helper_Data extends Mage_Core_Helper_Abstract
             // Download the file
             ftp_get($connection, $localFilePath . DS . $localFileName, $remoteFile, FTP_BINARY);
         } catch (Exception $ex) {
-            Mage::log("    BV - Exception downloading file: " . $ex->getTraceAsString());
+            Mage::log('    BV - Exception downloading file: ' . $ex->getTraceAsString());
         }
 
         // Validate file was downloaded
@@ -209,13 +209,13 @@ class Bazaarvoice_Connector_Helper_Data extends Mage_Core_Helper_Abstract
 
     public function uploadFile($localFileName, $remoteFile, $store)
     {
-        Mage::log("    BV - starting upload to Bazaarvoice server");
+        Mage::log('    BV - starting upload to Bazaarvoice server');
 
-        $connection = ftp_connect(Mage::getStoreConfig("bazaarvoice/General/FTPHost", $store->getId()));
-        $login = ftp_login($connection, Mage::getStoreConfig("bazaarvoice/General/CustomerName", $store->getId()), Mage::getStoreConfig("bazaarvoice/General/FTPPassword", $store->getId()));
+        $connection = ftp_connect(Mage::getStoreConfig('bazaarvoice/General/FTPHost', $store->getId()));
+        $login = ftp_login($connection, Mage::getStoreConfig('bazaarvoice/General/CustomerName', $store->getId()), Mage::getStoreConfig('bazaarvoice/General/FTPPassword', $store->getId()));
         ftp_pasv($connection, true);
         if (!$connection || !$login) {
-            Mage::log("    BV - FTP connection attempt failed!");
+            Mage::log('    BV - FTP connection attempt failed!');
             return false;
         }
 
@@ -236,15 +236,15 @@ class Bazaarvoice_Connector_Helper_Data extends Mage_Core_Helper_Abstract
         // Getting the product/category reference from the registry doesn't make any extra DB calls since we're relying
         // upon the product/category template page to set this registry entry.  By default this is the case.
         //  See: http://fishpig.co.uk/the-magento-registry/
-        $category = Mage::registry("current_category");
-        $product = Mage::registry("product");
+        $category = Mage::registry('current_category');
+        $product = Mage::registry('product');
 
         if (!empty($product)) {
-            $ret[$this->BV_SUBJECT_TYPE] = "product";
+            $ret[$this->BV_SUBJECT_TYPE] = 'product';
             $ret[$this->BV_EXTERNAL_SUBJECT_NAME] = $product->getName();
             $ret[$this->BV_EXTERNAL_SUBJECT_ID] = $this->getProductId($product);
         } else if (!empty($category)) {
-            $ret[$this->BV_SUBJECT_TYPE] = "category";
+            $ret[$this->BV_SUBJECT_TYPE] = 'category';
             $ret[$this->BV_EXTERNAL_SUBJECT_NAME] = $category->getName();
             $ret[$this->BV_EXTERNAL_SUBJECT_ID] = $this->getCategoryId($category);
         }
@@ -254,16 +254,16 @@ class Bazaarvoice_Connector_Helper_Data extends Mage_Core_Helper_Abstract
 
     public function getSmartSEOContent($bvProduct, $bvSubjectArr, $pageFormat)
     {
-        $ret = "";
+        $ret = '';
 
-        if (Mage::getStoreConfig("bazaarvoice/SmartSEOFeed/EnableSmartSEO") === "1") {
+        if (Mage::getStoreConfig('bazaarvoice/SmartSEOFeed/EnableSmartSEO') === '1') {
             $displayCode = $this->getDisplayCodeForBVProduct($bvProduct);
-            if ($pageFormat != "") {
-                $pageFormat += "/";
+            if ($pageFormat != '') {
+                $pageFormat += '/';
             }
 
-            $baseFolder = Mage::getBaseDir("var") . DS . "import" . DS . "bvfeeds" . DS . "bvsmartseo" . DS;
-            $smartSEOFile = $baseFolder . $displayCode . DS . $bvProduct . DS . $bvSubjectArr[$this->BV_SUBJECT_TYPE] . DS . "1" . DS . $pageFormat . $bvSubjectArr[$this->BV_EXTERNAL_SUBJECT_ID] . ".htm";
+            $baseFolder = Mage::getBaseDir('var') . DS . 'import' . DS . 'bvfeeds' . DS . 'bvsmartseo' . DS;
+            $smartSEOFile = $baseFolder . $displayCode . DS . $bvProduct . DS . $bvSubjectArr[$this->BV_SUBJECT_TYPE] . DS . '1' . DS . $pageFormat . $bvSubjectArr[$this->BV_EXTERNAL_SUBJECT_ID] . '.htm';
 
             if (isset($_REQUEST[$this->CONST_SMARTSEO_BVRRP])) {
                 $smartSEOFile = $baseFolder . $_REQUEST[$this->CONST_SMARTSEO_BVRRP];
@@ -278,20 +278,20 @@ class Bazaarvoice_Connector_Helper_Data extends Mage_Core_Helper_Abstract
             }
 
             if (!empty($ret)) {
-                $helper = Mage::helper("core/url");
+                $helper = Mage::helper('core/url');
                 $url = parse_url($helper->getCurrentUrl());
                 
                 $query = array();
-                if (isset($_SERVER["QUERY_STRING"]) && $_SERVER["QUERY_STRING"] != "") {
+                if (isset($_SERVER['QUERY_STRING']) && $_SERVER['QUERY_STRING'] != '') {
                     foreach ($_GET as $key => $value) {
                         if ($key !== $this->CONST_SMARTSEO_BVRRP && $key !== $this->CONST_SMARTSEO_BVQAP && $key !== $this->CONST_SMARTSEO_BVSYP) {
                             $query[$helper->stripTags($key, null, true)] = $helper->stripTags($value, null, true);
                         }
                     }
-                    $url["query"] = http_build_query($query);
+                    $url['query'] = http_build_query($query);
                 }
                 
-                $currentPage = $url["scheme"] . "://" . $url["host"] . $url["path"] . "?" . $url["query"];
+                $currentPage = $url['scheme'] . '://' . $url['host'] . $url['path'] . '?' . $url['query'];
                 $ret = preg_replace("/\\{INSERT_PAGE_URI\\}/", $currentPage, $ret);
             }
         }
@@ -306,14 +306,14 @@ class Bazaarvoice_Connector_Helper_Data extends Mage_Core_Helper_Abstract
      */
     public function getActiveProfilesEditProfileLink($userID)
     {
-        $protocol = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != "") ? "https" : "http";
-        $hostSubdomain = $this->getSubDomainForBVProduct("activeprofiles") . "/";
-        $hostDomain = Mage::getStoreConfig("bazaarvoice/General/HostDomain");
+        $protocol = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != '') ? 'https' : 'http';
+        $hostSubdomain = $this->getSubDomainForBVProduct('activeprofiles') . '/';
+        $hostDomain = Mage::getStoreConfig('bazaarvoice/General/HostDomain');
         $bvStaging = $this->getBvStaging();
-        $bvDisplayCode = $this->getDisplayCodeForBVProduct("activeprofiles");
+        $bvDisplayCode = $this->getDisplayCodeForBVProduct('activeprofiles');
         $bvUAS = $this->encryptReviewerId($userID);
 
-        return $protocol . "://" . $hostSubdomain . $hostDomain . $bvStaging . "profiles/" . $bvDisplayCode . "/editprofile.htm?user=" . $bvUAS;
+        return $protocol . '://' . $hostSubdomain . $hostDomain . $bvStaging . 'profiles/' . $bvDisplayCode . '/editprofile.htm?user=' . $bvUAS;
     }
 
     /**
@@ -324,27 +324,27 @@ class Bazaarvoice_Connector_Helper_Data extends Mage_Core_Helper_Abstract
      */
     public function encryptReviewerId($userID)
     {
-        $sharedKey = Mage::getStoreConfig("bazaarvoice/General/EncodingKey");
-        $userStr = 'date=' . date("Ymd") . '&userid=' . $userID;
+        $sharedKey = Mage::getStoreConfig('bazaarvoice/General/EncodingKey');
+        $userStr = 'date=' . date('Ymd') . '&userid=' . $userID;
         return md5($sharedKey . $userStr) . bin2hex($userStr);
     }
 
     /**
      * @static
      * @param  $isStatic boolean indicating whether or not to return a URL to fetch static BV resources
-     * @param  $bvProduct String indicating the BV product to get the URL for ("reviews", "questions", "stories", "activeprofiles")
+     * @param  $bvProduct String indicating the BV product to get the URL for ('reviews', 'questions', 'stories', 'activeprofiles')
      * @return string
      */
     public function getBvUrl($isStatic, $bvProduct)
     {
-        $protocol = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != "") ? "https" : "http";
+        $protocol = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != '') ? 'https' : 'http';
         $hostSubdomain = $this->getSubDomainForBVProduct($bvProduct);
-        $hostDomain = Mage::getStoreConfig("bazaarvoice/General/HostDomain");
+        $hostDomain = Mage::getStoreConfig('bazaarvoice/General/HostDomain');
         $bvStaging = $this->getBvStaging();
         $bvDisplayCode = $this->getDisplayCodeForBVProduct($bvProduct);
-        $stat = ($isStatic === 1) ? "static/" : "";
+        $stat = ($isStatic === 1) ? 'static/' : '';
 
-        return $protocol . "://" . $hostSubdomain . "." . $hostDomain . $bvStaging . $stat . $bvDisplayCode;
+        return $protocol . '://' . $hostSubdomain . '.' . $hostDomain . $bvStaging . $stat . $bvDisplayCode;
     }
 
     /**
@@ -354,25 +354,25 @@ class Bazaarvoice_Connector_Helper_Data extends Mage_Core_Helper_Abstract
      */
     public function getBvApiHostUrl($isStatic)
     {
-        $protocol = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != "") ? "https" : "http";
-        $apiHostname = Mage::getStoreConfig("bazaarvoice/General/APIHostname");
+        $protocol = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != '') ? 'https' : 'http';
+        $apiHostname = Mage::getStoreConfig('bazaarvoice/General/APIHostname');
         $bvStaging = $this->getBvStaging();
         $bvDisplayCode = $this->getDefaultDisplayCode();
 
-        return $protocol . "://" . $apiHostname . $bvStaging . "static/" . $bvDisplayCode;
+        return $protocol . '://' . $apiHostname . $bvStaging . 'static/' . $bvDisplayCode;
     }
 
     /**
      * @static
-     * @return string Either returns "/" or "/bvstaging/"
+     * @return string Either returns '/' or '/bvstaging/'
      */
     public function getBvStaging()
     {
-        $bvStaging = Mage::getStoreConfig("bazaarvoice/General/Staging");
-        if ($bvStaging === "") {
-            $bvStaging = "/";
-        } else if ($bvStaging !== "/") {
-            $bvStaging = "/bvstaging/";
+        $bvStaging = Mage::getStoreConfig('bazaarvoice/General/Staging');
+        if ($bvStaging === '') {
+            $bvStaging = '/';
+        } else if ($bvStaging !== '/') {
+            $bvStaging = '/bvstaging/';
         }
         return $bvStaging;
     }
@@ -383,37 +383,37 @@ class Bazaarvoice_Connector_Helper_Data extends Mage_Core_Helper_Abstract
      */
     public function getDefaultDisplayCode()
     {
-        $dc = $this->getDisplayCodeForBVProduct("reviews");
+        $dc = $this->getDisplayCodeForBVProduct('reviews');
         if (empty($dc)) {
-            $dc = $this->getDisplayCodeForBVProduct("questions");
+            $dc = $this->getDisplayCodeForBVProduct('questions');
         }
         if (empty($dc)) {
-            $dc = $this->getDisplayCodeForBVProduct("stories");
+            $dc = $this->getDisplayCodeForBVProduct('stories');
         }
         if (empty($dc)) {
-            $dc = $this->getDisplayCodeForBVProduct("activeprofiles");
+            $dc = $this->getDisplayCodeForBVProduct('activeprofiles');
         }
         return $dc;
     }
 
     /**
      * @static
-     * @param  $bvProduct String indicating the BV product to get the displaycode for ("reviews", "questions", "stories", "activeprofiles")
+     * @param  $bvProduct String indicating the BV product to get the displaycode for ('reviews', 'questions', 'stories', 'activeprofiles')
      * @return string
      */
     public function getDisplayCodeForBVProduct($bvProduct)
     {
-        return $this->getConfigPropertyForBVProduct($bvProduct, "DefaultDisplayCode");
+        return $this->getConfigPropertyForBVProduct($bvProduct, 'DefaultDisplayCode');
     }
 
     /**
      * @static
-     * @param  $bvProduct String indicating the BV product to get the sub-domain for ("reviews", "questions", "stories", "activeprofiles")
+     * @param  $bvProduct String indicating the BV product to get the sub-domain for ('reviews', 'questions', 'stories', 'activeprofiles')
      * @return string
      */
     public function getSubDomainForBVProduct($bvProduct)
     {
-        return $this->getConfigPropertyForBVProduct($bvProduct, "SubDomain");
+        return $this->getConfigPropertyForBVProduct($bvProduct, 'SubDomain');
     }
 
     // =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
@@ -421,22 +421,22 @@ class Bazaarvoice_Connector_Helper_Data extends Mage_Core_Helper_Abstract
 
     public function getConfigPropertyForBVProduct($bvProduct, $propertyName)
     {
-        $code = "RR";
-        if ($bvProduct === "questions") {
-            $code = "AA";
-        } else if ($bvProduct === "stories") {
-            $code = "SY";
-        } else if ($bvProduct === "activeprofiles") {
-            $code = "CP";
+        $code = 'RR';
+        if ($bvProduct === 'questions') {
+            $code = 'AA';
+        } else if ($bvProduct === 'stories') {
+            $code = 'SY';
+        } else if ($bvProduct === 'activeprofiles') {
+            $code = 'CP';
         }
 
-        return Mage::getStoreConfig("bazaarvoice/".$code."/".$propertyName);
+        return Mage::getStoreConfig('bazaarvoice/'.$code.'/'.$propertyName);
     }
 
     public function sendNotificationEmail($subject, $text)
     {
-        $toEmail = Mage::getStoreConfig("bazaarvoice/General/AdminEmail");
-        $fromEmail = Mage::getStoreConfig('trans_email/ident_general/email');   // The "General" contact identity is a default setting in Magento
+        $toEmail = Mage::getStoreConfig('bazaarvoice/General/AdminEmail');
+        $fromEmail = Mage::getStoreConfig('trans_email/ident_general/email');   // The 'General' contact identity is a default setting in Magento
         if (empty($fromEmail)) {
             $fromEmail = $toEmail;
         }
@@ -470,14 +470,14 @@ class Bazaarvoice_Connector_Helper_Data extends Mage_Core_Helper_Abstract
      */
     public function getReviewableProductFromOrderItem($item)
     {
-        $product = Mage::getModel("catalog/product")->load($item->getProductId());
+        $product = Mage::getModel('catalog/product')->load($item->getProductId());
         if ($product->getVisibility() == Mage_Catalog_Model_Product_Visibility::VISIBILITY_NOT_VISIBLE)
         {
             $options = $item->getProductOptions();
             try
             {
-                $parentId = $options["super_product_config"]["product_id"];
-                $product = Mage::getModel("catalog/product")->load($parentId);
+                $parentId = $options['super_product_config']['product_id'];
+                $product = Mage::getModel('catalog/product')->load($parentId);
             }
             catch (Exception $ex) {}
         }

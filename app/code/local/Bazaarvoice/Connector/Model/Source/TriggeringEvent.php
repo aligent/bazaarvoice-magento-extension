@@ -5,8 +5,8 @@
 class Bazaarvoice_Connector_Model_Source_TriggeringEvent
 {
 
-    const PURCHASE = "purchase";
-    const SHIPPING = "shipping";
+    const PURCHASE = 'purchase';
+    const SHIPPING = 'shipping';
 
     public function toOptionArray()
     {

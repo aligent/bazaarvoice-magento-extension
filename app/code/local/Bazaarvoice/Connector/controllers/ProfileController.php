@@ -4,7 +4,7 @@ class Bazaarvoice_Connector_ProfileController extends Mage_Core_Controller_Front
     public function preDispatch()
     {
         parent::preDispatch();
-        if ($this->getRequest()->getParam('bvauthenticateuser') == "true") {
+        if ($this->getRequest()->getParam('bvauthenticateuser') == 'true') {
             if (!Mage::getSingleton('customer/session')->authenticate($this)) {
                 $this->setFlag('', self::FLAG_NO_DISPATCH, true);
             }

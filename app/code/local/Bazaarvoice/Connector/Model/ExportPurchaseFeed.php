@@ -83,22 +83,22 @@ class Bazaarvoice_Connector_Model_ExportPurchaseFeed extends Mage_Core_Model_Abs
             . ", NumDaysLookback: " . $numDaysLookback
             . ", NumDaysLookbackStartDate: " . $this->getNumDaysLookbackStartDate($numDaysLookback)
             . ", DelayDaysSinceEvent: " . $delayDaysSinceEvent
-            . ", DelayDaysThreshold: " . date("c", $this->getDelayDaysThresholdTimestamp($delayDaysSinceEvent)) . "}");
+            . ', DelayDaysThreshold: ' . date('c', $this->getDelayDaysThresholdTimestamp($delayDaysSinceEvent)) . '}');
 
         // Initialize references to the object model accessors
-        $productModel = Mage::getModel("catalog/product"); // Getting product model for access to product related functions
-        $orderModel = Mage::getModel("sales/order");
+        $productModel = Mage::getModel('catalog/product'); // Getting product model for access to product related functions
+        $orderModel = Mage::getModel('sales/order');
 
         // Get a collection of all the orders
         $orders = $orderModel->getCollection();
 
         // Filter the returned orders to minimize processing as much as possible.  More available operations in method _getConditionSql in Varien_Data_Collection_Db.
-        // Status is "complete" or "closed"
-        $orders->addFieldToFilter("status", array("in" => array("complete", "closed")));
+        // Status is 'complete' or 'closed'
+        $orders->addFieldToFilter('status', array('in' => array('complete', 'closed')));
         // Only orders created within our lookback window
-        $orders->addFieldToFilter("created_at", array("gteq" => $this->getNumDaysLookbackStartDate($numDaysLookback)));
+        $orders->addFieldToFilter('created_at', array('gteq' => $this->getNumDaysLookbackStartDate($numDaysLookback)));
         // Exclude orders that have been previously sent in a feed
-        $orders->addFieldToFilter(self::ALREADY_SENT_IN_FEED_FLAG, array("null" => "null"));  // adds an "IS NULL" filter to the BV flag column
+        $orders->addFieldToFilter(self::ALREADY_SENT_IN_FEED_FLAG, array('null' => 'null'));  // adds an 'IS NULL' filter to the BV flag column
 
 
         $numOrdersExported = 0; // Keep track of how many orders we include in the feed
@@ -117,20 +117,20 @@ class Bazaarvoice_Connector_Model_ExportPurchaseFeed extends Mage_Core_Model_Abs
             $numOrdersExported++;
 
             $ioObject->streamWrite("<Interaction>\n");
-            $ioObject->streamWrite("    <EmailAddress>" . $order->getCustomerEmail() . "</EmailAddress>\n");
-            $ioObject->streamWrite("    <Locale>" . $store->getConfig("general/locale/code") . "</Locale>\n");
-            $ioObject->streamWrite("    <UserName>" . $order->getCustomerName() . "</UserName>\n");
-            $ioObject->streamWrite("    <UserID>" . $order->getCustomerId() . "</UserID>\n");
-            $ioObject->streamWrite("    <TransactionDate>" . $this->getTriggeringEventDate($order, $triggeringEvent) . "</TransactionDate>\n");
+            $ioObject->streamWrite('    <EmailAddress>' . $order->getCustomerEmail() . "</EmailAddress>\n");
+            $ioObject->streamWrite('    <Locale>' . $store->getConfig('general/locale/code') . "</Locale>\n");
+            $ioObject->streamWrite('    <UserName>' . $order->getCustomerName() . "</UserName>\n");
+            $ioObject->streamWrite('    <UserID>' . $order->getCustomerId() . "</UserID>\n");
+            $ioObject->streamWrite('    <TransactionDate>' . $this->getTriggeringEventDate($order, $triggeringEvent) . "</TransactionDate>\n");
             $ioObject->streamWrite("    <Products>\n");
             foreach ($order->getAllVisibleItems() as $item) {
                 $product = Mage::helper('bazaarvoice')->getReviewableProductFromOrderItem($item);
                 if (!is_null($product)) {
                     $ioObject->streamWrite("        <Product>\n");
-                    $ioObject->streamWrite("            <ExternalId>" . Mage::helper('bazaarvoice')->getProductId($product) . "</ExternalId>\n");
-                    $ioObject->streamWrite("            <Name>" . htmlspecialchars($product->getName(), ENT_QUOTES, "UTF-8") . "</Name>\n");
-                    $ioObject->streamWrite("            <ImageUrl>" . $product->getImageUrl() . "</ImageUrl>\n");
-                    $ioObject->streamWrite("            <Price>" . number_format((float)$item->getOriginalPrice(), 2) . "</Price>\n");
+                    $ioObject->streamWrite('            <ExternalId>' . Mage::helper('bazaarvoice')->getProductId($product) . "</ExternalId>\n");
+                    $ioObject->streamWrite('            <Name>' . htmlspecialchars($product->getName(), ENT_QUOTES, 'UTF-8') . "</Name>\n");
+                    $ioObject->streamWrite('            <ImageUrl>' . $product->getImageUrl() . "</ImageUrl>\n");
+                    $ioObject->streamWrite('            <Price>' . number_format((float)$item->getOriginalPrice(), 2) . "</Price>\n");
                     $ioObject->streamWrite("        </Product>\n");
                 }
             }
@@ -152,9 +152,9 @@ class Bazaarvoice_Connector_Model_ExportPurchaseFeed extends Mage_Core_Model_Abs
                     . "\n\tCustomerId: " . $order->getCustomerId()
                     . "\n\tStatus: " . $order->getStatus()
                     . "\n\tState: " . $order->getState()
-                    . "\n\tDate: " . date("c",strtotime($order->getCreatedAtDate()))
+                    . "\n\tDate: " . date('c',strtotime($order->getCreatedAtDate()))
                     . "\n\tHasShipped: " . $this->hasOrderCompletelyShipped($order)
-                    . "\n\tLatestShipmentDate: " . date("c",$this->getLatestShipmentDate($order))
+                    . "\n\tLatestShipmentDate: " . date('c',$this->getLatestShipmentDate($order))
                     . "\n\tNumItems: " . count($order->getAllItems())
                     . "\n\tSentInBVPPEFeed: " . $order->getData(self::ALREADY_SENT_IN_FEED_FLAG)
                     // . "\n\tCustomerEmail: " . $order->getCustomerEmail()    // Don't put CustomerEmail in the logs - could be considered PII
@@ -169,11 +169,11 @@ class Bazaarvoice_Connector_Model_ExportPurchaseFeed extends Mage_Core_Model_Abs
             $timestamp = $this->getLatestShipmentDate($order);
         }
 
-        return date("c", $timestamp);
+        return date('c', $timestamp);
     }
 
     private function getNumDaysLookbackStartDate($numDaysLookback) {
-        return date("Y-m-d", strtotime(date("Y-m-d", time()) . " -" . $numDaysLookback . " days"));
+        return date('Y-m-d', strtotime(date('Y-m-d', time()) . ' -' . $numDaysLookback . ' days'));
     }
 
     private function getDelayDaysThresholdTimestamp($delayDaysSinceEvent)
@@ -184,21 +184,21 @@ class Bazaarvoice_Connector_Model_ExportPurchaseFeed extends Mage_Core_Model_Abs
     private function shouldIncludeOrder($order, $triggeringEvent, $delayDaysSinceEvent)
     {
         // Have we already included this order in a previous feed?
-        if ($order->getData(self::ALREADY_SENT_IN_FEED_FLAG) === "1") {
-            Mage::log("    BV - Skipping Order.  Already included in previous feed. " . $this->orderToString($order));
+        if ($order->getData(self::ALREADY_SENT_IN_FEED_FLAG) === '1') {
+            Mage::log('    BV - Skipping Order.  Already included in previous feed. ' . $this->orderToString($order));
             return false;
         }
 
         // Is the order canceled?
         if ($order->isCanceled()) {
-            Mage::log("    BV - Skipping Order.  Canceled state. " . $this->orderToString($order));
+            Mage::log('    BV - Skipping Order.  Canceled state. ' . $this->orderToString($order));
             return false;
         }
 
         // Ensure that we can get the store for the order
         $store = $order->getStore();
         if (is_null($store)) {
-            Mage::log("    BV - Skipping Order.  Could not find store for order. " . $this->orderToString($order));
+            Mage::log('    BV - Skipping Order.  Could not find store for order. ' . $this->orderToString($order));
             return false;
         }
 
@@ -209,7 +209,7 @@ class Bazaarvoice_Connector_Model_ExportPurchaseFeed extends Mage_Core_Model_Abs
 
             // Is the order completely shipped?
             if (!$this->hasOrderCompletelyShipped($order)) {
-                Mage::log("    BV - Skipping Order.  Not completely shipped. " . $this->orderToString($order));
+                Mage::log('    BV - Skipping Order.  Not completely shipped. ' . $this->orderToString($order));
                 return false;
             }
 
@@ -217,7 +217,7 @@ class Bazaarvoice_Connector_Model_ExportPurchaseFeed extends Mage_Core_Model_Abs
             $latestItemShipDateTimestamp = $this->getLatestShipmentDate($order);
             if ($latestItemShipDateTimestamp > $thresholdTimestamp) {
                 // Latest ship date for the fully shipped order is still within the delay period
-                Mage::log("    BV - Skipping Order.  Ship date not outside the threshold of " . date("c", $thresholdTimestamp) . ". " . $this->orderToString($order));
+                Mage::log('    BV - Skipping Order.  Ship date not outside the threshold of ' . date('c', $thresholdTimestamp) . '. ' . $this->orderToString($order));
                 return false;
             }
         } else if ($triggeringEvent === self::TRIGGER_EVENT_PURCHASE) {
@@ -225,7 +225,7 @@ class Bazaarvoice_Connector_Model_ExportPurchaseFeed extends Mage_Core_Model_Abs
             $orderPlacementTimestamp = strtotime($order->getCreatedAtDate());
             if ($orderPlacementTimestamp > $thresholdTimestamp) {
                 // Order placement date is still within the delay period
-                Mage::log("    BV - Skipping Order.  Order date not outside the threshold of " . date("c", $thresholdTimestamp) . ". " . $this->orderToString($order));
+                Mage::log('    BV - Skipping Order.  Order date not outside the threshold of ' . date('c', $thresholdTimestamp) . '. ' . $this->orderToString($order));
                 return false;
             }
         }
@@ -234,21 +234,21 @@ class Bazaarvoice_Connector_Model_ExportPurchaseFeed extends Mage_Core_Model_Abs
         // Finally, ensure we have everything on this order that would be needed.
 
         // Do we have what basically looks like a legit email address?
-        if (!preg_match("/@/", $order->getCustomerEmail())) {
-            Mage::log("    BV - Skipping Order.  No valid email address. " . $this->orderToString($order));
+        if (!preg_match('/@/', $order->getCustomerEmail())) {
+            Mage::log('    BV - Skipping Order.  No valid email address. ' . $this->orderToString($order));
             return false;
         }
 
         // Does the order have any items?
         if (count($order->getAllItems()) < 1) {
-            Mage::log("    BV - Skipping Order.  No items in this order. " . $this->orderToString($order));
+            Mage::log('    BV - Skipping Order.  No items in this order. ' . $this->orderToString($order));
             return false;
         }
 
 
 
         if (self::DEBUG_OUTPUT) {
-                Mage::log("    BV - Including Order. " . $this->orderToString($order));
+                Mage::log('    BV - Including Order. ' . $this->orderToString($order));
         }
         return true;
     }
