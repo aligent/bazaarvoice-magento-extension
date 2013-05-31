@@ -66,23 +66,23 @@ class Bazaarvoice_Connector_Model_ExportProductFeed extends Mage_Core_Model_Abst
         Mage::log("Start Bazaarvoice product feed generation");
         // Iterate through all stores / views in this instance
         // (Not the 'admin' store view, which represents admin panel)
-		$stores = Mage::app()->getStores(false);
-		foreach($stores as $store) {
-		    try {
+        $stores = Mage::app()->getStores(false);
+        foreach($stores as $store) {
+            try {
                 if (Mage::getStoreConfig('bazaarvoice/ProductFeed/EnableProductFeed', $store->getId()) === '1') {
                     Mage::log("    BV - Exporting product feed for store: " . $store->getCode(), Zend_Log::INFO);
-		            $this->exportDailyProductFeedForStore($store);
-		        }
-		        else {
+                    $this->exportDailyProductFeedForStore($store);
+                }
+                else {
                     Mage::log("    BV - Product feed disabled for store: " . $store->getCode(), Zend_Log::INFO);
-		        }
+                }
             } catch (Exception $e) {
                 Mage::log("    BV - Failed to export daily product feed for store: " . $store->getCode(), Zend_Log::ERR);
                 Mage::log("    BV - Error message: " . $e->getMessage(), Zend_Log::ERR);
                 Mage::logException($e);
                 // Continue processing other stores
-		    }
-		}
+            }
+        }
         // Log
         Mage::log("End Bazaarvoice product feed generation");
     }
@@ -147,19 +147,19 @@ class Bazaarvoice_Connector_Model_ExportProductFeed extends Mage_Core_Model_Abst
 
     private function processCategories($ioObject, $store)
     {
-		// Lookup category path for root category
-		// Assume only 1 store per website
-		$rootCategoryId = $store->getRootCategoryId();
-		$rootCategory = Mage::getModel('catalog/category')->load($rootCategoryId);
-		$rootCategoryPath = $rootCategory->getPath();
-		// Get category collection
+        // Lookup category path for root category
+        // Assume only 1 store per website
+        $rootCategoryId = $store->getRootCategoryId();
+        $rootCategory = Mage::getModel('catalog/category')->load($rootCategoryId);
+        $rootCategoryPath = $rootCategory->getPath();
+        // Get category collection
         $categoryModel = Mage::getModel('catalog/category');
         $categoryIds = $categoryModel->getCollection();
         // Filter category collection based on Magento store
-		// Do this by filtering on 'path' attribute, based on root category path found above
-		// Include the root category itself in the feed
-		$categoryIds
-			->addAttributeToFilter('path', array('like' => $rootCategoryPath . '%') );        
+        // Do this by filtering on 'path' attribute, based on root category path found above
+        // Include the root category itself in the feed
+        $categoryIds
+            ->addAttributeToFilter('path', array('like' => $rootCategoryPath . '%') );        
         // Check count of categories
         if (count($categoryIds) > 0) {
             $ioObject->streamWrite("<Categories>\n");

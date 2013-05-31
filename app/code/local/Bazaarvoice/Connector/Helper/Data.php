@@ -450,18 +450,18 @@ class Bazaarvoice_Connector_Helper_Data extends Mage_Core_Helper_Abstract {
      */
     public function getReviewableProductFromOrderItem($item)
     {
-    	$product = Mage::getModel("catalog/product")->load($item->getProductId());
-    	if ($product->getVisibility() == Mage_Catalog_Model_Product_Visibility::VISIBILITY_NOT_VISIBLE)
-    	{
-    		$options = $item->getProductOptions();
-    		try
-    		{
-    			$parentId = $options["super_product_config"]["product_id"];
-    			$product = Mage::getModel("catalog/product")->load($parentId);
-    		}
-    		catch (Exception $ex) {}
-    	}
-    	
-    	return $product;
+        $product = Mage::getModel("catalog/product")->load($item->getProductId());
+        if ($product->getVisibility() == Mage_Catalog_Model_Product_Visibility::VISIBILITY_NOT_VISIBLE)
+        {
+            $options = $item->getProductOptions();
+            try
+            {
+                $parentId = $options["super_product_config"]["product_id"];
+                $product = Mage::getModel("catalog/product")->load($parentId);
+            }
+            catch (Exception $ex) {}
+        }
+        
+        return $product;
     }
 }

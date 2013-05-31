@@ -10,12 +10,12 @@ class Bazaarvoice_Connector_ProfileController extends Mage_Core_Controller_Front
     }
 
     public function editAction() {
-    	$this->loadLayout();
-		$this->renderLayout();
+        $this->loadLayout();
+        $this->renderLayout();
     }
 
     public function displayAction() {
-    	$this->loadLayout();
-		$this->renderLayout();
+        $this->loadLayout();
+        $this->renderLayout();
     }
 }

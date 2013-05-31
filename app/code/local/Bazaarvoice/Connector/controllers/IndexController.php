@@ -10,7 +10,7 @@ class Bazaarvoice_Connector_IndexController extends Mage_Core_Controller_Front_A
     }
 
     public function indexAction() {
-    	$this->loadLayout();
-		$this->renderLayout();
+        $this->loadLayout();
+        $this->renderLayout();
     }
 }

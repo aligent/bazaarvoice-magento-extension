@@ -8,7 +8,7 @@ class Bazaarvoice_Connector_Block_Bazaarvoice extends Mage_Core_Block_Template {
 
 
     public function _prepareLayout() {
-		return parent::_prepareLayout();
+        return parent::_prepareLayout();
     }
     
     public function getRatingsandreviews() {
