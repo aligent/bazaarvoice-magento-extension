@@ -1,6 +1,8 @@
 <?php
-class Bazaarvoice_Connector_FeedController extends Mage_Core_Controller_Front_Action {
-    public function preDispatch() {
+class Bazaarvoice_Connector_FeedController extends Mage_Core_Controller_Front_Action
+{
+    public function preDispatch()
+    {
         parent::preDispatch();
         if ($this->getRequest()->getParam('bvauthenticateuser') == "true") {
             if (!Mage::getSingleton('customer/session')->authenticate($this)) {
@@ -9,7 +11,8 @@ class Bazaarvoice_Connector_FeedController extends Mage_Core_Controller_Front_Ac
         }
     }
 
-    public function inlineratingsAction() {
+    public function inlineratingsAction()
+    {
         $rerf = Mage::getModel('bazaarvoice/retrieveInlineRatingsFeed');
         $rerf->retrieveInlineRatingsFeed();
 
@@ -17,7 +20,8 @@ class Bazaarvoice_Connector_FeedController extends Mage_Core_Controller_Front_Ac
         $this->renderLayout();
     }
     
-    public function productAction() {
+    public function productAction()
+    {
         $epf = Mage::getModel('bazaarvoice/exportProductFeed');
         $epf->exportDailyProductFeed();
 
@@ -25,7 +29,8 @@ class Bazaarvoice_Connector_FeedController extends Mage_Core_Controller_Front_Ac
         $this->renderLayout();
     }
     
-    public function smartseoAction() {
+    public function smartseoAction()
+    {
         $seo = Mage::getModel('bazaarvoice/retrieveSmartSEOPackage');
         $seo->retrieveSmartSEOPackage();
 
@@ -33,7 +38,8 @@ class Bazaarvoice_Connector_FeedController extends Mage_Core_Controller_Front_Ac
         $this->renderLayout();
     }
     
-    public function ppeAction() {
+    public function ppeAction()
+    {
         $ppe = Mage::getModel('bazaarvoice/exportPurchaseFeed');
         $ppe->exportPurchaseFeed();
 

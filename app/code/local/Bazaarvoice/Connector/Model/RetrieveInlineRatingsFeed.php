@@ -2,11 +2,15 @@
 /**
  * @author Bazaarvoice, Inc.
  */
-class Bazaarvoice_Connector_Model_RetrieveInlineRatingsFeed extends Mage_Core_Model_Abstract {
+class Bazaarvoice_Connector_Model_RetrieveInlineRatingsFeed extends Mage_Core_Model_Abstract
+{
 
-    protected function _construct() {}
+    protected function _construct()
+    {
+    }
 
-    public function retrieveInlineRatingsFeed() {
+    public function retrieveInlineRatingsFeed()
+    {
         Mage::log("Start Bazaarvoice Inline Ratings feed import");
         if (Mage::getStoreConfig("bazaarvoice/InlineRatingFeed/EnableInlineRatings") === "1") {
             $localFilePath = Mage::getBaseDir("var") . DS . "import" . DS . "bvfeeds";
@@ -44,7 +48,8 @@ class Bazaarvoice_Connector_Model_RetrieveInlineRatingsFeed extends Mage_Core_Mo
     }
 
 
-    private function parseFeed($fileName) {
+    private function parseFeed($fileName)
+    {
         // Use XMLReader to parse the feed.  Should be available in all PHP5 environments, which is a pre-req of Magento
         // http://devzone.zend.com/article/2387
 
@@ -61,7 +66,8 @@ class Bazaarvoice_Connector_Model_RetrieveInlineRatingsFeed extends Mage_Core_Mo
 
     }
 
-    private function processProduct($xmlReader) {
+    private function processProduct($xmlReader)
+    {
         $endOfProduct = false;
 
         $bvProductExternalId = $xmlReader->getAttribute("id");
@@ -109,7 +115,8 @@ class Bazaarvoice_Connector_Model_RetrieveInlineRatingsFeed extends Mage_Core_Mo
         }
     }
 
-    private function createProductAttributesIfNecessary() {
+    private function createProductAttributesIfNecessary()
+    {
         $attributeModel = Mage::getModel('catalog/resource_eav_attribute');
         $entityTypeId = Mage::getModel('eav/entity')->setType('catalog_product')->getTypeId();
 
@@ -123,7 +130,8 @@ class Bazaarvoice_Connector_Model_RetrieveInlineRatingsFeed extends Mage_Core_Mo
         }
     }
 
-    private function createProductAttribute($attribCode) {
+    private function createProductAttribute($attribCode)
+    {
 
         $model = Mage::getModel('catalog/resource_eav_attribute');
 
@@ -164,5 +172,6 @@ class Bazaarvoice_Connector_Model_RetrieveInlineRatingsFeed extends Mage_Core_Mo
             
         }
     }
+    
 }
 

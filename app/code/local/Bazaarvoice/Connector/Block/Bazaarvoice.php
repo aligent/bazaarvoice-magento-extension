@@ -1,5 +1,6 @@
 <?php
-class Bazaarvoice_Connector_Block_Bazaarvoice extends Mage_Core_Block_Template {
+class Bazaarvoice_Connector_Block_Bazaarvoice extends Mage_Core_Block_Template
+{
 
     /**
      *  NOTE:  This class isn't used by the current Bazaarvoice integration, but is left
@@ -7,15 +8,17 @@ class Bazaarvoice_Connector_Block_Bazaarvoice extends Mage_Core_Block_Template {
      */
 
 
-    public function _prepareLayout() {
+    public function _prepareLayout()
+    {
         return parent::_prepareLayout();
     }
     
-    public function getRatingsandreviews() {
-       if (!$this->hasData('ratingsandreviews')) {
-           $this->setData('ratingsandreviews', Mage::registry('ratingsandreviews'));
-       }
-       return $this->getData('ratingsandreviews');
+    public function getRatingsandreviews()
+    {
+        if (!$this->hasData('ratingsandreviews')) {
+            $this->setData('ratingsandreviews', Mage::registry('ratingsandreviews'));
+        }
+        return $this->getData('ratingsandreviews');
     }
 
 }

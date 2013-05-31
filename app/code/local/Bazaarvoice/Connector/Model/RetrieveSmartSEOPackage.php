@@ -2,11 +2,15 @@
 /**
  * @author Bazaarvoice, Inc.
  */
-class Bazaarvoice_Connector_Model_RetrieveSmartSEOPackage extends Mage_Core_Model_Abstract {
+class Bazaarvoice_Connector_Model_RetrieveSmartSEOPackage extends Mage_Core_Model_Abstract
+{
 
-    protected function _construct() {}
+    protected function _construct()
+    {
+    }
 
-    public function retrieveSmartSEOPackage() {
+    public function retrieveSmartSEOPackage()
+    {
         Mage::log("Start Bazaarvoice Smart SEO feed import");
         if (Mage::getStoreConfig("bazaarvoice/SmartSEOFeed/EnableSmartSEO") === "1") {
 
@@ -97,4 +101,5 @@ class Bazaarvoice_Connector_Model_RetrieveSmartSEOPackage extends Mage_Core_Mode
         }
         Mage::log("End Bazaarvoice Smart SEO feed import");
     }
+    
 }

@@ -1,5 +1,6 @@
 <?php
-class Bazaarvoice_Connector_Model_ExportPurchaseFeed extends Mage_Core_Model_Abstract {
+class Bazaarvoice_Connector_Model_ExportPurchaseFeed extends Mage_Core_Model_Abstract 
+{
 
     const ALREADY_SENT_IN_FEED_FLAG = "sent_in_bv_postpurchase_feed";
     const TRIGGER_EVENT_PURCHASE = "purchase";
@@ -7,9 +8,12 @@ class Bazaarvoice_Connector_Model_ExportPurchaseFeed extends Mage_Core_Model_Abs
 
     const DEBUG_OUTPUT = false;
 
-    protected function _construct() {}
+    protected function _construct()
+    {
+    }
 
-    public function exportPurchaseFeed() {
+    public function exportPurchaseFeed()
+    {
         Mage::log("Start Bazaarvoice purchase feed generation");
 
         // Short-circuit if the purchase feed export is not enabled
@@ -68,7 +72,8 @@ class Bazaarvoice_Connector_Model_ExportPurchaseFeed extends Mage_Core_Model_Abs
         Mage::log("End Bazaarvoice purchase feed generation");
     }
 
-    private function processOrders($ioObject) {
+    private function processOrders($ioObject)
+    {
 
         // Gather settings for how this feed should be generated
         $triggeringEvent = Mage::getStoreConfig("bazaarvoice/PurchaseFeed/TriggeringEvent") === Bazaarvoice_Connector_Model_Source_TriggeringEvent::SHIPPING? self::TRIGGER_EVENT_SHIP : self::TRIGGER_EVENT_PURCHASE;
@@ -141,7 +146,8 @@ class Bazaarvoice_Connector_Model_ExportPurchaseFeed extends Mage_Core_Model_Abs
         return $numOrdersExported;
     }
 
-    private function orderToString($order){
+    private function orderToString($order)
+    {
         return "\nOrder {Id: " . $order->getId()
                     . "\n\tCustomerId: " . $order->getCustomerId()
                     . "\n\tStatus: " . $order->getStatus()
@@ -155,7 +161,8 @@ class Bazaarvoice_Connector_Model_ExportPurchaseFeed extends Mage_Core_Model_Abs
                     . "\n}";
     }
 
-    private function getTriggeringEventDate($order, $triggeringEvent) {
+    private function getTriggeringEventDate($order, $triggeringEvent)
+    {
         $timestamp = strtotime($order->getCreatedAtDate());
 
         if ($triggeringEvent === self::TRIGGER_EVENT_SHIP) {
@@ -169,11 +176,13 @@ class Bazaarvoice_Connector_Model_ExportPurchaseFeed extends Mage_Core_Model_Abs
         return date("Y-m-d", strtotime(date("Y-m-d", time()) . " -" . $numDaysLookback . " days"));
     }
 
-    private function getDelayDaysThresholdTimestamp($delayDaysSinceEvent) {
+    private function getDelayDaysThresholdTimestamp($delayDaysSinceEvent)
+    {
         return time() - (24 * 60 * 60 * $delayDaysSinceEvent);
     }
 
-    private function shouldIncludeOrder($order, $triggeringEvent, $delayDaysSinceEvent) {
+    private function shouldIncludeOrder($order, $triggeringEvent, $delayDaysSinceEvent)
+    {
         // Have we already included this order in a previous feed?
         if ($order->getData(self::ALREADY_SENT_IN_FEED_FLAG) === "1") {
             Mage::log("    BV - Skipping Order.  Already included in previous feed. " . $this->orderToString($order));
@@ -244,7 +253,8 @@ class Bazaarvoice_Connector_Model_ExportPurchaseFeed extends Mage_Core_Model_Abs
         return true;
     }
 
-    private function hasOrderCompletelyShipped($order) {
+    private function hasOrderCompletelyShipped($order)
+    {
         $hasOrderCompletelyShipped = true;
         $items = $order->getAllItems();
         foreach ($items as $item) {
@@ -257,7 +267,8 @@ class Bazaarvoice_Connector_Model_ExportPurchaseFeed extends Mage_Core_Model_Abs
         return $hasOrderCompletelyShipped;
     }
 
-    private function getLatestShipmentDate($order) {
+    private function getLatestShipmentDate($order)
+    {
         $latestShipmentTimestamp = 0;
 
         $shipments = $order->getShipmentsCollection();
