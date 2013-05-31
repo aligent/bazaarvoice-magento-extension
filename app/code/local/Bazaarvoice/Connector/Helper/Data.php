@@ -60,7 +60,7 @@ class Bazaarvoice_Connector_Helper_Data extends Mage_Core_Helper_Abstract {
         //
         //<< No further customizations after this
 
-        return self::replaceIllegalCharacters($rawProductId);
+        return $this->replaceIllegalCharacters($rawProductId);
 
     }
 
@@ -73,7 +73,7 @@ class Bazaarvoice_Connector_Helper_Data extends Mage_Core_Helper_Abstract {
      * @return product object for the provided external ID, or null if no match is found.
      */
     public function getProductFromProductExternalId($productExternalId) {
-        $rawId = self::reconstructRawId($productExternalId);
+        $rawId = $this->reconstructRawId($productExternalId);
 
         $model = Mage::getModel('catalog/product');
 
@@ -109,7 +109,7 @@ class Bazaarvoice_Connector_Helper_Data extends Mage_Core_Helper_Abstract {
         //
         //<< No further customizations after this
 
-        return self::replaceIllegalCharacters($rawCategoryId);
+        return $this->replaceIllegalCharacters($rawCategoryId);
 
     }
 
@@ -231,13 +231,13 @@ class Bazaarvoice_Connector_Helper_Data extends Mage_Core_Helper_Abstract {
         $product = Mage::registry("product");
 
         if (!empty($product)) {
-            $ret[self::BV_SUBJECT_TYPE] = "product";
-            $ret[self::BV_EXTERNAL_SUBJECT_NAME] = $product->getName();
-            $ret[self::BV_EXTERNAL_SUBJECT_ID] = self::getProductId($product);
+            $ret[$this->BV_SUBJECT_TYPE] = "product";
+            $ret[$this->BV_EXTERNAL_SUBJECT_NAME] = $product->getName();
+            $ret[$this->BV_EXTERNAL_SUBJECT_ID] = $this->getProductId($product);
         } else if (!empty($category)) {
-            $ret[self::BV_SUBJECT_TYPE] = "category";
-            $ret[self::BV_EXTERNAL_SUBJECT_NAME] = $category->getName();
-            $ret[self::BV_EXTERNAL_SUBJECT_ID] = self::getCategoryId($category);
+            $ret[$this->BV_SUBJECT_TYPE] = "category";
+            $ret[$this->BV_EXTERNAL_SUBJECT_NAME] = $category->getName();
+            $ret[$this->BV_EXTERNAL_SUBJECT_ID] = $this->getCategoryId($category);
         }
 
         return $ret;
@@ -247,20 +247,20 @@ class Bazaarvoice_Connector_Helper_Data extends Mage_Core_Helper_Abstract {
         $ret = "";
 
         if(Mage::getStoreConfig("bazaarvoice/SmartSEOFeed/EnableSmartSEO") === "1") {
-            $displayCode = self::getDisplayCodeForBVProduct($bvProduct);
+            $displayCode = $this->getDisplayCodeForBVProduct($bvProduct);
             if ($pageFormat != "") {
                 $pageFormat += "/";
             }
 
             $baseFolder = Mage::getBaseDir("var") . DS . "import" . DS . "bvfeeds" . DS . "bvsmartseo" . DS;
-            $smartSEOFile = $baseFolder . $displayCode . DS . $bvProduct . DS . $bvSubjectArr[self::BV_SUBJECT_TYPE] . DS . "1" . DS . $pageFormat . $bvSubjectArr[self::BV_EXTERNAL_SUBJECT_ID] . ".htm";
+            $smartSEOFile = $baseFolder . $displayCode . DS . $bvProduct . DS . $bvSubjectArr[$this->BV_SUBJECT_TYPE] . DS . "1" . DS . $pageFormat . $bvSubjectArr[$this->BV_EXTERNAL_SUBJECT_ID] . ".htm";
 
-            if (isset($_REQUEST[self::CONST_SMARTSEO_BVRRP])) {
-                $smartSEOFile = $baseFolder . $_REQUEST[self::CONST_SMARTSEO_BVRRP];
-            } else if (isset($_REQUEST[self::CONST_SMARTSEO_BVQAP])) {
-                $smartSEOFile = $baseFolder . $_REQUEST[self::CONST_SMARTSEO_BVQAP];
-            } else if (isset($_REQUEST[self::CONST_SMARTSEO_BVSYP])) {
-                $smartSEOFile = $baseFolder . $_REQUEST[self::CONST_SMARTSEO_BVSYP];
+            if (isset($_REQUEST[$this->CONST_SMARTSEO_BVRRP])) {
+                $smartSEOFile = $baseFolder . $_REQUEST[$this->CONST_SMARTSEO_BVRRP];
+            } else if (isset($_REQUEST[$this->CONST_SMARTSEO_BVQAP])) {
+                $smartSEOFile = $baseFolder . $_REQUEST[$this->CONST_SMARTSEO_BVQAP];
+            } else if (isset($_REQUEST[$this->CONST_SMARTSEO_BVSYP])) {
+                $smartSEOFile = $baseFolder . $_REQUEST[$this->CONST_SMARTSEO_BVSYP];
             }
 
             if (file_exists($smartSEOFile)) {
@@ -274,7 +274,7 @@ class Bazaarvoice_Connector_Helper_Data extends Mage_Core_Helper_Abstract {
                 $query = array();
                 if (isset($_SERVER["QUERY_STRING"]) && $_SERVER["QUERY_STRING"] != "") {
                     foreach ($_GET as $key => $value) {
-                        if ($key !== self::CONST_SMARTSEO_BVRRP && $key !== self::CONST_SMARTSEO_BVQAP && $key !== self::CONST_SMARTSEO_BVSYP) {
+                        if ($key !== $this->CONST_SMARTSEO_BVRRP && $key !== $this->CONST_SMARTSEO_BVQAP && $key !== $this->CONST_SMARTSEO_BVSYP) {
                             $query[$helper->stripTags($key, null, true)] = $helper->stripTags($value, null, true);
                         }
                     }
@@ -296,11 +296,11 @@ class Bazaarvoice_Connector_Helper_Data extends Mage_Core_Helper_Abstract {
      */
     public function getActiveProfilesEditProfileLink($userID) {
         $protocol = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != "") ? "https" : "http";
-        $hostSubdomain = Bazaarvoice_Connector_Helper_Data::getSubDomainForBVProduct("activeprofiles") . "/";
+        $hostSubdomain = $this->getSubDomainForBVProduct("activeprofiles") . "/";
         $hostDomain = Mage::getStoreConfig("bazaarvoice/General/HostDomain");
-        $bvStaging = Bazaarvoice_Connector_Helper_Data::getBvStaging();
-        $bvDisplayCode = Bazaarvoice_Connector_Helper_Data::getDisplayCodeForBVProduct("activeprofiles");
-        $bvUAS = Bazaarvoice_Connector_Helper_Data::encryptReviewerId($userID);
+        $bvStaging = $this->getBvStaging();
+        $bvDisplayCode = $this->getDisplayCodeForBVProduct("activeprofiles");
+        $bvUAS = $this->encryptReviewerId($userID);
 
         return $protocol . "://" . $hostSubdomain . $hostDomain . $bvStaging . "profiles/" . $bvDisplayCode . "/editprofile.htm?user=" . $bvUAS;
     }
@@ -325,10 +325,10 @@ class Bazaarvoice_Connector_Helper_Data extends Mage_Core_Helper_Abstract {
      */
     public function getBvUrl($isStatic, $bvProduct) {
         $protocol = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != "") ? "https" : "http";
-        $hostSubdomain = Bazaarvoice_Connector_Helper_Data::getSubDomainForBVProduct($bvProduct);
+        $hostSubdomain = $this->getSubDomainForBVProduct($bvProduct);
         $hostDomain = Mage::getStoreConfig("bazaarvoice/General/HostDomain");
-        $bvStaging = Bazaarvoice_Connector_Helper_Data::getBvStaging();
-        $bvDisplayCode = Bazaarvoice_Connector_Helper_Data::getDisplayCodeForBVProduct($bvProduct);
+        $bvStaging = $this->getBvStaging();
+        $bvDisplayCode = $this->getDisplayCodeForBVProduct($bvProduct);
         $stat = ($isStatic === 1) ? "static/" : "";
 
         return $protocol . "://" . $hostSubdomain . "." . $hostDomain . $bvStaging . $stat . $bvDisplayCode;
@@ -342,8 +342,8 @@ class Bazaarvoice_Connector_Helper_Data extends Mage_Core_Helper_Abstract {
     public function getBvApiHostUrl($isStatic) {
         $protocol = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != "") ? "https" : "http";
         $apiHostname = Mage::getStoreConfig("bazaarvoice/General/APIHostname");
-        $bvStaging = Bazaarvoice_Connector_Helper_Data::getBvStaging();
-        $bvDisplayCode = Bazaarvoice_Connector_Helper_Data::getDefaultDisplayCode();
+        $bvStaging = $this->getBvStaging();
+        $bvDisplayCode = $this->getDefaultDisplayCode();
 
         return $protocol . "://" . $apiHostname . $bvStaging . "static/" . $bvDisplayCode;
     }
@@ -367,15 +367,15 @@ class Bazaarvoice_Connector_Helper_Data extends Mage_Core_Helper_Abstract {
      * @return string representing the default display code to be used across all available BV products
      */
     public function getDefaultDisplayCode() {
-        $dc = Bazaarvoice_Connector_Helper_Data::getDisplayCodeForBVProduct("reviews");
+        $dc = $this->getDisplayCodeForBVProduct("reviews");
         if (empty($dc)) {
-            $dc = Bazaarvoice_Connector_Helper_Data::getDisplayCodeForBVProduct("questions");
+            $dc = $this->getDisplayCodeForBVProduct("questions");
         }
         if (empty($dc)) {
-            $dc = Bazaarvoice_Connector_Helper_Data::getDisplayCodeForBVProduct("stories");
+            $dc = $this->getDisplayCodeForBVProduct("stories");
         }
         if (empty($dc)) {
-            $dc = Bazaarvoice_Connector_Helper_Data::getDisplayCodeForBVProduct("activeprofiles");
+            $dc = $this->getDisplayCodeForBVProduct("activeprofiles");
         }
         return $dc;
     }
@@ -386,7 +386,7 @@ class Bazaarvoice_Connector_Helper_Data extends Mage_Core_Helper_Abstract {
      * @return string
      */
     public function getDisplayCodeForBVProduct($bvProduct) {
-        return Bazaarvoice_Connector_Helper_Data::getConfigPropertyForBVProduct($bvProduct, "DefaultDisplayCode");
+        return $this->getConfigPropertyForBVProduct($bvProduct, "DefaultDisplayCode");
     }
 
     /**
@@ -395,7 +395,7 @@ class Bazaarvoice_Connector_Helper_Data extends Mage_Core_Helper_Abstract {
      * @return string
      */
     public function getSubDomainForBVProduct($bvProduct) {
-        return Bazaarvoice_Connector_Helper_Data::getConfigPropertyForBVProduct($bvProduct, "SubDomain");
+        return $this->getConfigPropertyForBVProduct($bvProduct, "SubDomain");
     }
 
     //=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
