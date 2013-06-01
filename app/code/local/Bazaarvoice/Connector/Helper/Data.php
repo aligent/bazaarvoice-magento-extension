@@ -484,4 +484,13 @@ class Bazaarvoice_Connector_Helper_Data extends Mage_Core_Helper_Abstract
         
         return $product;
     }
+    
+    /**
+     *
+     */
+    public function getExtensionVersion()
+    {
+        return (string) Mage::getConfig()->getNode()->modules->Bazaarvoice_Connector->version;
+    }
+    
 }
