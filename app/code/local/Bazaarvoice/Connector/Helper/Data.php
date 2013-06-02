@@ -470,7 +470,9 @@ class Bazaarvoice_Connector_Helper_Data extends Mage_Core_Helper_Abstract
      */
     public function getReviewableProductFromOrderItem($item)
     {
-        $product = Mage::getModel('catalog/product')->load($item->getProductId());
+        $product = Mage::getModel('catalog/product');
+        $product->setStoreId($item->getStoreId());
+        $product->load($item->getProductId());
         if ($product->getVisibility() == Mage_Catalog_Model_Product_Visibility::VISIBILITY_NOT_VISIBLE)
         {
             $options = $item->getProductOptions();

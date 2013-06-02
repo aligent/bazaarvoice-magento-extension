@@ -14,18 +14,48 @@ class Bazaarvoice_Connector_Model_ExportPurchaseFeed extends Mage_Core_Model_Abs
 
     public function exportPurchaseFeed()
     {
+        // Log
         Mage::log("Start Bazaarvoice purchase feed generation");
-
-        // Short-circuit if the purchase feed export is not enabled
-        if (Mage::getStoreConfig("bazaarvoice/PurchaseFeed/EnablePurchaseFeed") !== "1") {
-            Mage::log("    BV - purchase feed generation is disabled ");
-            Mage::log("End Bazaarvoice purchase feed generation");
-            return;
+        // Iterate through all stores / groups in this instance
+        // (Not the 'admin' store view, which represents admin panel)
+        $groups = Mage::app()->getGroups(false);
+        /** @var $group Mage_Core_Model_Store_Group */
+        foreach ($groups as $group) {
+            try {
+                if (Mage::getStoreConfig('bazaarvoice/PurchaseFeed/EnablePurchaseFeed', $group->getDefaultStoreId()) === '1') {
+                    if(count($group->getStores()) > 0) {
+                        Mage::log('    BV - Exporting purchase feed for store group: ' . $group->getName(), Zend_Log::INFO);
+                        $this->exportPurchaseFeedForStoreGroup($group);
+                    }
+                    else {
+                        Mage::throwException('No stores for store group: ' . $group->getName());
+                    }
+                }
+                else {
+                    Mage::log('    BV - Purchase feed disabled for store group: ' . $group->getName(), Zend_Log::INFO);
+                }
+            } catch (Exception $e) {
+                Mage::log('    BV - Failed to export daily purchase feed for store group: ' . $group->getName(), Zend_Log::ERR);
+                Mage::log('    BV - Error message: ' . $e->getMessage(), Zend_Log::ERR);
+                Mage::logException($e);
+                // Continue processing other store groups
+            }
         }
 
+        // Log
+        Mage::log("End Bazaarvoice purchase feed generation");
+    }
 
+    /**
+     *
+     * @param Mage_Core_Model_Store_Group $group Store Group
+     *
+     */
+    public function exportPurchaseFeedForStoreGroup($group)
+    {
+        // Build purchase export file path and name
         $purchaseFeedFilePath = Mage::getBaseDir("var") . DS . 'export' . DS . 'bvfeeds';
-        $purchaseFeedFileName = 'purchaseFeed-' . date('U') . '.xml';
+        $purchaseFeedFileName = 'purchaseFeed-' . $group->getGroupId() . '-' . date('U') . '.xml';
 
         // Make sure that the directory we want to write to exists.
         $ioObject = new Varien_Io_File();
@@ -36,14 +66,13 @@ class Bazaarvoice_Connector_Model_ExportPurchaseFeed extends Mage_Core_Model_Abs
             $ioObject->open(array('path'=>$purchaseFeedFilePath));
         }
 
-
         if ($ioObject->streamOpen($purchaseFeedFileName)) {
 
             $ioObject->streamWrite("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Feed xmlns=\"http://www.bazaarvoice.com/xs/PRR/PostPurchaseFeed/4.9\">\n");
 
 
             Mage::log("    BV - processing all orders");
-            $numOrdersExported = $this->processOrders($ioObject);
+            $numOrdersExported = $this->processOrders($ioObject, $group);
             Mage::log("    BV - completed processing all orders");
 
             $ioObject->streamWrite("</Feed>\n");
@@ -53,10 +82,11 @@ class Bazaarvoice_Connector_Model_ExportPurchaseFeed extends Mage_Core_Model_Abs
             // Don't bother uploading if there are no orders in the feed
             $upload = false;
             if ($numOrdersExported > 0) {
-                $destinationFile = "/" . Mage::getStoreConfig("bazaarvoice/PurchaseFeed/ExportPath") . "/" . Mage::getStoreConfig("bazaarvoice/PurchaseFeed/ExportFileName");
+                $destinationFile = "/" . Mage::getStoreConfig("bazaarvoice/PurchaseFeed/ExportPath", $group->getDefaultStoreId())
+                     . "/" . Mage::getStoreConfig("bazaarvoice/PurchaseFeed/ExportFileName", $group->getDefaultStoreId());
                 $sourceFile = $purchaseFeedFilePath . DS . $purchaseFeedFileName;
 
-                $upload = Mage::helper('bazaarvoice')->uploadFile($sourceFile, $destinationFile);
+                $upload = Mage::helper('bazaarvoice')->uploadFile($sourceFile, $destinationFile, $group->getDefaultStore());
             }
 
 
@@ -68,11 +98,14 @@ class Bazaarvoice_Connector_Model_ExportPurchaseFeed extends Mage_Core_Model_Abs
             }
             
         }
-
-        Mage::log("End Bazaarvoice purchase feed generation");
     }
 
-    private function processOrders($ioObject)
+    /**
+     *
+     * @param Mage_Core_Model_Store_Group $group Store Group
+     *
+     */
+    private function processOrders($ioObject, $group)
     {
 
         // Gather settings for how this feed should be generated
@@ -93,6 +126,12 @@ class Bazaarvoice_Connector_Model_ExportPurchaseFeed extends Mage_Core_Model_Abs
         $orders = $orderModel->getCollection();
 
         // Filter the returned orders to minimize processing as much as possible.  More available operations in method _getConditionSql in Varien_Data_Collection_Db.
+        // Add filter to limit orders to this store group
+		// Join to core_store table and grab group_id field
+		$orders->getSelect()
+			->joinLeft('core_store', 'main_table.store_id = core_store.store_id', 'core_store.group_id')
+			->where('core_store.group_id = ' . $group->getGroupId())
+			;
         // Status is 'complete' or 'closed'
         $orders->addFieldToFilter('status', array('in' => array('complete', 'closed')));
         // Only orders created within our lookback window
