@@ -141,7 +141,7 @@ class Bazaarvoice_Connector_Model_ExportProductFeed extends Mage_Core_Model_Abst
                     '/' . Mage::getStoreConfig('bazaarvoice/ProductFeed/ExportPath', $group->getDefaultStoreId()) . 
                     '/' . Mage::getStoreConfig('bazaarvoice/ProductFeed/ExportFileName', $group->getDefaultStoreId());
                 $sourceFile = $productFeedFilePath . DS . $productFeedFileName;
-                $upload = Mage::helper('bazaarvoice')->uploadFile($sourceFile, $destinationFile, $store);
+                $upload = Mage::helper('bazaarvoice')->uploadFile($sourceFile, $destinationFile, $group->getDefaultStore());
 
                 if (!$upload) {
                     Mage::log('    Bazaarvoice FTP upload failed! [filename = ' . $productFeedFileName . ']');
