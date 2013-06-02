@@ -162,33 +162,56 @@ class Bazaarvoice_Connector_Model_ExportProductFeed extends Mage_Core_Model_Abst
     private function processCategories($ioObject, $group)
     {
         // Lookup category path for root category
-        // Assume only 1 store per website
         $rootCategoryId = $group->getRootCategoryId();
         $rootCategory = Mage::getModel('catalog/category')->load($rootCategoryId);
         $rootCategoryPath = $rootCategory->getPath();
         // Get category collection
-        $categoryModel = Mage::getModel('catalog/category');
-        $categoryIds = $categoryModel->getCollection();
+        $categoryIds = Mage::getModel('catalog/category')->getCollection();
         // Filter category collection based on Magento store
         // Do this by filtering on 'path' attribute, based on root category path found above
         // Include the root category itself in the feed
         $categoryIds
+            ->addAttributeToFilter('level', array('gt' => 1) )
+            ->addAttributeToFilter('is_active', 1)
             ->addAttributeToFilter('path', array('like' => $rootCategoryPath . '%') );        
         // Check count of categories
         if (count($categoryIds) > 0) {
             $ioObject->streamWrite("<Categories>\n");
         }
         foreach ($categoryIds as $categoryId) {
-            // Load category object
-            $category = $categoryModel->load($categoryId->getId());
-            $categoryExternalId = Mage::helper('bazaarvoice')->getCategoryId($category);
-            $categoryName = htmlspecialchars($category->getName(), ENT_QUOTES, 'UTF-8');
-            $categoryPageUrl = htmlspecialchars($category->getCategoryIdUrl(), ENT_QUOTES, 'UTF-8');
+            // Load version of cat for all store views
+            $categoryViews = array();
+            $categoryDefault = null;
+            foreach($group->getStores() as $store) {                
+                // Get new category model
+                $category = Mage::getModel('catalog/category');
+                // Set store id before load, to get attribs for this particular store / view
+                $category->setStoreId($store->getId());
+                // Load category object
+                $category->load($categoryId->getId());
+                // Set default category
+                if($group->getDefaultStoreId() == $store->getStoreId()) {
+                    $categoryDefault = $category;
+                }
+                // Get store locale
+                $localeCode = Mage::getStoreConfig('general/locale/code', $store->getId());
+                // Add product to array
+                $categoryViews[$localeCode] = $category;
+            }
 
+            // Get external id
+            $categoryExternalId = Mage::helper('bazaarvoice')->getCategoryId($categoryDefault);
+
+            $categoryName = htmlspecialchars($categoryDefault->getName(), ENT_QUOTES, 'UTF-8');
+            $categoryPageUrl = htmlspecialchars($categoryDefault->getCategoryIdUrl(), ENT_QUOTES, 'UTF-8');
+
+            /*
+             * We are now filtering the collection to eliminate these cats             
             if (!$category->getIsActive() || empty($categoryExternalId) || is_null($categoryExternalId) || $category->getLevel() == 1) {
                 Mage::log('        BV - Skipping category: ' . $category->getUrlKey());
                 continue;
             }
+            */
 
             $parentExtId = '';
             $parentCategory = Mage::getModel('catalog/category')->load($categoryId->getParentId());
@@ -203,8 +226,22 @@ class Bazaarvoice_Connector_Model_ExportProductFeed extends Mage_Core_Model_Abst
                 "    <ExternalId>".$categoryExternalId."</ExternalId>\n".
                 $parentExtId .
                 "    <Name>".$categoryName."</Name>\n".
-                "    <CategoryPageUrl>".$categoryPageUrl."</CategoryPageUrl>\n".
-                "</Category>\n");
+                "    <CategoryPageUrl>".$categoryPageUrl."</CategoryPageUrl>\n");
+                
+            // Write out localized <Names>
+            $ioObject->streamWrite("    <Names>\n");
+            foreach($categoryViews as $curLocale => $curCategory) {
+                $ioObject->streamWrite('        <Name locale="' . $curLocale . '">' . htmlspecialchars($curCategory->getName(), ENT_QUOTES, 'UTF-8') . "</Name>\n");
+            }
+            $ioObject->streamWrite("    </Names>\n");
+            // Write out localized <CategoryPageUrls>
+            $ioObject->streamWrite("    <CategoryPageUrls>\n");
+            foreach($categoryViews as $curLocale => $curCategory) {
+                $ioObject->streamWrite('        <CategoryPageUrl locale="' . $curLocale . '">' . htmlspecialchars($curCategory->getCategoryIdUrl(), ENT_QUOTES, 'UTF-8') . "</CategoryPageUrl>\n");
+            }
+            $ioObject->streamWrite("    </CategoryPageUrls>\n");
+            
+            $ioObject->streamWrite("</Category>\n");
             
         }
         
@@ -259,7 +296,7 @@ class Bazaarvoice_Connector_Model_ExportProductFeed extends Mage_Core_Model_Abst
             }
 
             // Generate product external ID from SKU, this is the same for all groups / stores / views
-            $productExternalId = Mage::helper('bazaarvoice')->getProductId($product);
+            $productExternalId = Mage::helper('bazaarvoice')->getProductId($productDefault);
 
             // A status of 1 means enabled, 0 means disabled
             // We already filtered collection by status, and SKU is always guaranteed to be non-null, so we can skip this check
