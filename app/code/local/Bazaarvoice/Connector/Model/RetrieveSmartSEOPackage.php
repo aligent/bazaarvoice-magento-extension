@@ -62,7 +62,7 @@ class Bazaarvoice_Connector_Model_RetrieveSmartSEOPackage extends Mage_Core_Mode
             if (substr_compare($remoteFile, $desiredExt, -strlen($desiredExt), strlen($desiredExt)) !== 0) {
                 $msg = 'BV - Unable to retrieve and process a .zip SmartSEO feed.  Only .tar.gz SmartSEO feeds can be processed by this extension';
                 Mage::log($msg);
-                die($msg);
+                Mage::throwException($msg);
             }
 
             $gzInterface = new Mage_Archive_Gz();
@@ -83,7 +83,7 @@ class Bazaarvoice_Connector_Model_RetrieveSmartSEOPackage extends Mage_Core_Mode
                     $msg = 'The Bazaarvoice extension in your Magento store was unable to download new SmartSEO files from the Bazaarvoice server and there were no pre-existing SmartSEO files already in your Magento store.';
                     Mage::helper('bazaarvoice')->sendNotificationEmail($subject, $msg);
                     Mage::log($msg);
-                    die($msg);
+                    Mage::throwException($msg);
                 }
 
 
@@ -101,14 +101,14 @@ class Bazaarvoice_Connector_Model_RetrieveSmartSEOPackage extends Mage_Core_Mode
                     $msg = 'The Bazaarvoice extension in your Magento store was unable to download new SmartSEO files from the Bazaarvoice server and the existing SmartSEO files that are already in the Magento store have expired.';
                     Mage::helper('bazaarvoice')->sendNotificationEmail($subject, $msg);
                     Mage::log($msg);
-                    die($msg);
+                    Mage::throwException($msg);
                 } else {
                     // Couldn't download the file, but the old files that we already have are still usable
                     $subject = "Bazaarvoice SmartSEO Content Couldn't be Updated";
                     $msg = 'The Bazaarvoice extension in your Magento store was unable to download new SmartSEO files from the Bazaarvoice server.  The existing files will continue to be used.';
                     Mage::helper('bazaarvoice')->sendNotificationEmail($subject, $msg);
                     Mage::log($msg);
-                    die($msg);
+                    Mage::throwException($msg);
                 }
 
             } else {
