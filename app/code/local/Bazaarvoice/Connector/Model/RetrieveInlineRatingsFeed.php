@@ -11,16 +11,54 @@ class Bazaarvoice_Connector_Model_RetrieveInlineRatingsFeed extends Mage_Core_Mo
 
     public function retrieveInlineRatingsFeed()
     {
+        // Log
         Mage::log('Start Bazaarvoice Inline Ratings feed import');
-        if (Mage::getStoreConfig('bazaarvoice/InlineRatingFeed/EnableInlineRatings') === '1') {
+        // Iterate through all stores / groups in this instance
+        // (Not the 'admin' store view, which represents admin panel)
+        $groups = Mage::app()->getGroups(false);
+        /** @var $group Mage_Core_Model_Store_Group */
+        foreach ($groups as $group) {
+            try {
+                if (Mage::getStoreConfig('bazaarvoice/InlineRatingFeed/EnableInlineRatings', $group->getDefaultStoreId()) === '1') {
+                    if(count($group->getStores()) > 0) {
+                        Mage::log('    BV - Importing Inline Ratings feed for store group: ' . $group->getName(), Zend_Log::INFO);
+                        $this->retrieveInlineRatingsFeedForStoreGroup($group);
+                    }
+                    else {
+                        Mage::throwException('No stores for store group: ' . $group->getName());
+                    }
+                }
+                else {
+                    Mage::log('    BV - Inline Ratings feed disabled for store group: ' . $group->getName(), Zend_Log::INFO);
+                }
+            } catch (Exception $e) {
+                Mage::log('    BV - Failed to import Inline Ratings feed for store group: ' . $group->getName(), Zend_Log::ERR);
+                Mage::log('    BV - Error message: ' . $e->getMessage(), Zend_Log::ERR);
+                Mage::logException($e);
+                // Continue processing other store groups
+            }
+        }
+        // Log
+        Mage::log('End Bazaarvoice Inline Ratings feed import');
+    }
+
+    /**
+     *
+     * @param Mage_Core_Model_Store_Group $group Store Group
+     *
+     */
+    public function retrieveInlineRatingsFeedForStoreGroup($group)
+    {
+        if (Mage::getStoreConfig('bazaarvoice/InlineRatingFeed/EnableInlineRatings', $group->getDefaultStoreId()) === '1') {
             $localFilePath = Mage::getBaseDir('var') . DS . 'import' . DS . 'bvfeeds';
-            $localFileName = 'inline-ratings-' . date('U') . '.xml';
+            $localFileName = 'inline-ratings-' . $group->getGroupId() . '-' . date('U') . '.xml';
             $gzLocalFilename = $localFileName . '.gz';
-            $remoteFile = '/' . Mage::getStoreConfig('bazaarvoice/InlineRatingFeed/FeedPath') . '/' . Mage::getStoreConfig('bazaarvoice/InlineRatingFeed/FeedFileName');
+            $remoteFile = '/' . Mage::getStoreConfig('bazaarvoice/InlineRatingFeed/FeedPath', $group->getDefaultStoreId())
+                 . '/' . Mage::getStoreConfig('bazaarvoice/InlineRatingFeed/FeedFileName', $group->getDefaultStoreId());
 
             if (!Mage::helper('bazaarvoice')->downloadFile($localFilePath, $gzLocalFilename, $remoteFile)) {
                 // Unable to download the file.  Check magento log for messages.
-                die('    BV - unable to process feed.  Check the Magento log for further information.');
+                Mage::throwException('    BV - unable to process feed.  Check the Magento log for further information.');
             }
 
             // Unpack the file
@@ -44,7 +82,6 @@ class Bazaarvoice_Connector_Model_RetrieveInlineRatingsFeed extends Mage_Core_Mo
                 unlink($localFilePath . DS . $gzLocalFilename);
             }
         }
-        Mage::log('End Bazaarvoice Inline Ratings feed import');
     }
 
 
