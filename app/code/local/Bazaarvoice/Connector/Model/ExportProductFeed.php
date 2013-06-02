@@ -29,7 +29,7 @@
  *                <ExternalId>2000001</ExternalId>
  *                <Name>First Product</Name>
  *                <Description>First Product Description Text</Description>
- *    TODO            <Brand>ProductBrand</Brand>
+ *                <Brand>ProductBrand</Brand>
  *                <CategoryExternalId>1010</CategoryExternalId>
  *                <ProductPageUrl>http://www.site.com/product.htm?prod=2000001</ProductPageUrl>
  *                <ImageUrl>http://images.site.com/prodimages/2000001.gif</ImageUrl>
@@ -64,23 +64,29 @@ class Bazaarvoice_Connector_Model_ExportProductFeed extends Mage_Core_Model_Abst
     {
         // Log
         Mage::log('Start Bazaarvoice product feed generation');
-        // Iterate through all stores / views in this instance
+        // Iterate through all stores / groups in this instance
         // (Not the 'admin' store view, which represents admin panel)
-        $stores = Mage::app()->getStores(false);
-        foreach ($stores as $store) {
+        $groups = Mage::app()->getGroups(false);
+        /** @var $group Mage_Core_Model_Store_Group */
+        foreach ($groups as $group) {
             try {
-                if (Mage::getStoreConfig('bazaarvoice/ProductFeed/EnableProductFeed', $store->getId()) === '1') {
-                    Mage::log('    BV - Exporting product feed for store: ' . $store->getCode(), Zend_Log::INFO);
-                    $this->exportDailyProductFeedForStore($store);
+                if (Mage::getStoreConfig('bazaarvoice/ProductFeed/EnableProductFeed', $group->getDefaultStoreId()) === '1') {
+                    if(count($group->getStores()) > 0) {
+                        Mage::log('    BV - Exporting product feed for store group: ' . $group->getName(), Zend_Log::INFO);
+                        $this->exportDailyProductFeedForStoreGroup($group);
+                    }
+                    else {
+                        Mage::throwException('No stores for store group: ' . $group->getName());
+                    }
                 }
                 else {
-                    Mage::log('    BV - Product feed disabled for store: ' . $store->getCode(), Zend_Log::INFO);
+                    Mage::log('    BV - Product feed disabled for store group: ' . $group->getName(), Zend_Log::INFO);
                 }
             } catch (Exception $e) {
-                Mage::log('    BV - Failed to export daily product feed for store: ' . $store->getCode(), Zend_Log::ERR);
+                Mage::log('    BV - Failed to export daily product feed for store group: ' . $group->getName(), Zend_Log::ERR);
                 Mage::log('    BV - Error message: ' . $e->getMessage(), Zend_Log::ERR);
                 Mage::logException($e);
-                // Continue processing other stores
+                // Continue processing other store groups
             }
         }
         // Log
@@ -93,13 +99,15 @@ class Bazaarvoice_Connector_Model_ExportProductFeed extends Mage_Core_Model_Abst
      *
      * Product & Catalog Feed to BV
      *
+     * @param Mage_Core_Model_Store_Group $group Store Group
+     *
      */
-    public function exportDailyProductFeedForStore($store)
+    public function exportDailyProductFeedForStoreGroup($group)
     {
-        if (Mage::getStoreConfig('bazaarvoice/ProductFeed/EnableProductFeed', $store->getId()) === '1') {
+        if (Mage::getStoreConfig('bazaarvoice/ProductFeed/EnableProductFeed', $group->getDefaultStoreId()) === '1') {
             
             $productFeedFilePath = Mage::getBaseDir('var') . DS . 'export' . DS . 'bvfeeds';
-            $productFeedFileName = 'productFeed-' . $store->getCode() . '-' . date('U') . '.xml';
+            $productFeedFileName = 'productFeed-' . $group->getGroupId() . '-' . date('U') . '.xml';
 
             $ioObject = new Varien_Io_File();
             try {
@@ -121,9 +129,9 @@ class Bazaarvoice_Connector_Model_ExportProductFeed extends Mage_Core_Model_Abst
 
 
                 Mage::log('    BV - processing all categories');
-                $this->processCategories($ioObject, $store);
+                $this->processCategories($ioObject, $group);
                 Mage::log('    BV - completed categories, beginning products');
-                $this->processProducts($ioObject, $store);
+                $this->processProducts($ioObject, $group);
                 Mage::log('    BV - completed processing all products');
 
                 $ioObject->streamWrite("</Feed>\n");
@@ -145,7 +153,12 @@ class Bazaarvoice_Connector_Model_ExportProductFeed extends Mage_Core_Model_Abst
         }
     }
 
-    private function processCategories($ioObject, $store)
+    /**
+     *
+     * @param Mage_Core_Model_Store_Group $group Store Group
+     *
+     */
+    private function processCategories($ioObject, $group)
     {
         // Lookup category path for root category
         // Assume only 1 store per website
@@ -199,17 +212,20 @@ class Bazaarvoice_Connector_Model_ExportProductFeed extends Mage_Core_Model_Abst
         }
     }
 
-    private function processProducts($ioObject, $store)
+    /**
+     *
+     * @param Mage_Core_Model_Store_Group $group Store Group
+     *
+     */
+    private function processProducts($ioObject, $group)
     {
         // Category model instance
         $categoryModel = Mage::getModel('catalog/category');
-        // Getting product model for access to product related functions
-        $product = Mage::getModel('catalog/product');
             
         // *FROM MEMORY*  this should get all the products
-        $productIds = $product->getCollection();
-        // Filter collection for the specific store
-        $productIds->addStoreFilter($store);
+        $productIds =  Mage::getModel('catalog/product')->getCollection();
+        // Filter collection for the specific website
+        $productIds->addWebsiteFilter($group->getWebsiteId());
         // Filter collection for product status
         $productIds->addAttributeToFilter('status', Mage_Catalog_Model_Product_Status::STATUS_ENABLED);
             
@@ -218,34 +234,53 @@ class Bazaarvoice_Connector_Model_ExportProductFeed extends Mage_Core_Model_Abst
             $ioObject->streamWrite("<Products>\n");
         }
         foreach ($productIds as $productId) {
-            // Reset product model to prevent model data persisting between loop iterations.
-            $product->reset();
-            // Set store id before load, to get attribs for this particular store / view
-            $product->setStoreId($store->getId());
-            // Load product object
-            $product->load($productId->getId());
-            $productExternalId = Mage::helper('bazaarvoice')->getProductId($product);
-            $brand = htmlspecialchars($product->getAttributeText('manufacturer'));
+            // Load version of product for all store views
+            $productViews = array();
+            $productDefault = null;
+            foreach($group->getStores() as $store) {                
+                // Get new product model
+                $product = Mage::getModel('catalog/product');
+                // Set store id before load, to get attribs for this particular store / view
+                $product->setStoreId($store->getId());
+                // Load product object
+                $product->load($productId->getId());
+                // Set bazaarvoice specific attributes
+                $brand = htmlspecialchars($product->getAttributeText('manufacturer'));
+                $product->setBrand($brand);
+                // Set default product
+                if($group->getDefaultStoreId() == $store->getStoreId()) {
+                    $productDefault = $product;
+                }
+                // Get store locale
+                $localeCode = Mage::getStoreConfig('general/locale/code', $store->getId());
+                // Add product to array
+                $productViews[$localeCode] = $product;
+            }
 
+            // Generate product external ID from SKU, this is the same for all groups / stores / views
+            $productExternalId = Mage::helper('bazaarvoice')->getProductId($product);
 
             // A status of 1 means enabled, 0 means disabled
+            // We already filtered collection by status, and SKU is always guaranteed to be non-null, so we can skip this check
+            /*
             if ($product->getStatus() != 1 || empty($productExternalId) || is_null($productExternalId)) {
                 Mage::log('        BV - Skipping product: ' . $product->getSku());
                 continue;
             }
-
-
+            */
+            
             $ioObject->streamWrite("<Product>\n".
                 '    <ExternalId>'.$productExternalId."</ExternalId>\n".
-                '    <Name>'.htmlspecialchars($product->getName(), ENT_QUOTES, 'UTF-8')."</Name>\n".
-                '    <Description>'.htmlspecialchars($product->getShortDescription(), ENT_QUOTES, 'UTF-8')."</Description>\n");
+                '    <Name>'.htmlspecialchars($productDefault->getName(), ENT_QUOTES, 'UTF-8')."</Name>\n".
+                '    <Description>'.htmlspecialchars($productDefault->getShortDescription(), ENT_QUOTES, 'UTF-8')."</Description>\n");
 
+            $brand = $productDefault->getBrand();
             if (!is_null($brand) && !empty($brand)) {
                 $ioObject->streamWrite('    <Brand><ExternalId>' . $brand . "</ExternalId></Brand>\n");
             }
                 
             /* Make sure that CategoryExternalId is one written to Category section */
-            $parentCategories = $productId->getCategoryIds();
+            $parentCategories = $productDefault->getCategoryIds();
             if (!is_null($parentCategories) && count($parentCategories) > 0) {
                 foreach ($parentCategories as $parentCategoryId) {
                     $parentCategory = Mage::getModel('catalog/category')->load($parentCategoryId);
@@ -259,9 +294,36 @@ class Bazaarvoice_Connector_Model_ExportProductFeed extends Mage_Core_Model_Abst
                 }                
             }
             
-            $ioObject->streamWrite('    <ProductPageUrl>'.$product->getProductUrl()."</ProductPageUrl>\n".
-                '    <ImageUrl>'.$product->getImageUrl()."</ImageUrl>\n".
-                "</Product>\n");
+            $ioObject->streamWrite('    <ProductPageUrl>'.$productDefault->getProductUrl()."</ProductPageUrl>\n".
+                '    <ImageUrl>'.$productDefault->getImageUrl()."</ImageUrl>\n");
+
+            // Write out localized <Names>
+            $ioObject->streamWrite("<Names>\n");
+            foreach($productViews as $curLocale => $curProduct) {
+                $ioObject->streamWrite('<Name locale="' . $curLocale . '">' . htmlspecialchars($curProduct->getName(), ENT_QUOTES, 'UTF-8')."</Name>\n");
+            }
+            $ioObject->streamWrite("</Names>\n");
+            // Write out localized <Descriptions>
+            $ioObject->streamWrite("<Descriptions>\n");
+            foreach($productViews as $curLocale => $curProduct) {
+                $ioObject->streamWrite('<Name locale="' . $curLocale . '">' . htmlspecialchars($curProduct->getShortDescription(), ENT_QUOTES, 'UTF-8')."</Description>\n");
+            }
+            $ioObject->streamWrite("</Descriptions>\n");
+            // Write out localized <ProductPageUrls>
+            $ioObject->streamWrite("<ProductPageUrls>\n");
+            foreach($productViews as $curLocale => $curProduct) {
+                $ioObject->streamWrite('<ProductPageUrl locale="' . $curLocale . '">' . $curProduct->getProductUrl() . "</ProductPageUrl>\n");
+            }
+            $ioObject->streamWrite("</ProductPageUrls>\n");
+            // Write out localized <ImageUrls>
+            $ioObject->streamWrite("<ImageUrls>\n");
+            foreach($productViews as $curLocale => $curProduct) {
+                $ioObject->streamWrite('<ImageUrl locale="' . $curLocale . '">' . $curProduct->getImageUrl() . "</ImageUrl>\n");
+            }
+            $ioObject->streamWrite("</ImageUrls>\n");            
+
+            // Close this product
+            $ioObject->streamWrite("</Product>\n");
         }
         if (count($productIds) > 0) {
             $ioObject->streamWrite("</Products>\n");
