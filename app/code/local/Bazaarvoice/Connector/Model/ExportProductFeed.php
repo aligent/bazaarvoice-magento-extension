@@ -123,7 +123,7 @@ class Bazaarvoice_Connector_Model_ExportProductFeed extends Mage_Core_Model_Abst
                 $ioObject->streamWrite("<?xml version=\"1.0\" encoding=\"UTF-8\"?>".
                     "<Feed xmlns=\"http://www.bazaarvoice.com/xs/PRR/ProductFeed/5.2\"".
                     " generator=\"Magento Extension r" . Mage::helper('bazaarvoice')->getExtensionVersion() . "\"".
-                    "  name=\"".Mage::getStoreConfig("bazaarvoice/General/CustomerName", $store->getId())."\"".
+                    "  name=\"".Mage::getStoreConfig("bazaarvoice/General/CustomerName", $group->getDefaultStoreId())."\"".
                     "  incremental=\"false\"".
                     "  extractDate=\"".date('Y-m-d')."T".date('H:i:s').".000000\">\n");
 
@@ -138,10 +138,11 @@ class Bazaarvoice_Connector_Model_ExportProductFeed extends Mage_Core_Model_Abst
                 $ioObject->streamClose();
 
                 $destinationFile = 
-                    '/' . Mage::getStoreConfig('bazaarvoice/ProductFeed/ExportPath', $store->getId()) . 
-                    '/' . Mage::getStoreConfig('bazaarvoice/ProductFeed/ExportFileName', $store->getId());
+                    '/' . Mage::getStoreConfig('bazaarvoice/ProductFeed/ExportPath', $group->getDefaultStoreId()) . 
+                    '/' . Mage::getStoreConfig('bazaarvoice/ProductFeed/ExportFileName', $group->getDefaultStoreId());
                 $sourceFile = $productFeedFilePath . DS . $productFeedFileName;
-                $upload = Mage::helper('bazaarvoice')->uploadFile($sourceFile, $destinationFile, $store);
+                //$upload = Mage::helper('bazaarvoice')->uploadFile($sourceFile, $destinationFile, $store);
+                $upload = false;
 
                 if (!$upload) {
                     Mage::log('    Bazaarvoice FTP upload failed! [filename = ' . $productFeedFileName . ']');
@@ -162,7 +163,7 @@ class Bazaarvoice_Connector_Model_ExportProductFeed extends Mage_Core_Model_Abst
     {
         // Lookup category path for root category
         // Assume only 1 store per website
-        $rootCategoryId = $store->getRootCategoryId();
+        $rootCategoryId = $group->getRootCategoryId();
         $rootCategory = Mage::getModel('catalog/category')->load($rootCategoryId);
         $rootCategoryPath = $rootCategory->getPath();
         // Get category collection
@@ -298,29 +299,29 @@ class Bazaarvoice_Connector_Model_ExportProductFeed extends Mage_Core_Model_Abst
                 '    <ImageUrl>'.$productDefault->getImageUrl()."</ImageUrl>\n");
 
             // Write out localized <Names>
-            $ioObject->streamWrite("<Names>\n");
+            $ioObject->streamWrite("    <Names>\n");
             foreach($productViews as $curLocale => $curProduct) {
-                $ioObject->streamWrite('<Name locale="' . $curLocale . '">' . htmlspecialchars($curProduct->getName(), ENT_QUOTES, 'UTF-8')."</Name>\n");
+                $ioObject->streamWrite('        <Name locale="' . $curLocale . '">' . htmlspecialchars($curProduct->getName(), ENT_QUOTES, 'UTF-8')."</Name>\n");
             }
-            $ioObject->streamWrite("</Names>\n");
+            $ioObject->streamWrite("    </Names>\n");
             // Write out localized <Descriptions>
-            $ioObject->streamWrite("<Descriptions>\n");
+            $ioObject->streamWrite("    <Descriptions>\n");
             foreach($productViews as $curLocale => $curProduct) {
-                $ioObject->streamWrite('<Name locale="' . $curLocale . '">' . htmlspecialchars($curProduct->getShortDescription(), ENT_QUOTES, 'UTF-8')."</Description>\n");
+                $ioObject->streamWrite('         <Description locale="' . $curLocale . '">' . htmlspecialchars($curProduct->getShortDescription(), ENT_QUOTES, 'UTF-8')."</Description>\n");
             }
-            $ioObject->streamWrite("</Descriptions>\n");
+            $ioObject->streamWrite("    </Descriptions>\n");
             // Write out localized <ProductPageUrls>
-            $ioObject->streamWrite("<ProductPageUrls>\n");
+            $ioObject->streamWrite("    <ProductPageUrls>\n");
             foreach($productViews as $curLocale => $curProduct) {
-                $ioObject->streamWrite('<ProductPageUrl locale="' . $curLocale . '">' . $curProduct->getProductUrl() . "</ProductPageUrl>\n");
+                $ioObject->streamWrite('        <ProductPageUrl locale="' . $curLocale . '">' . $curProduct->getProductUrl() . "</ProductPageUrl>\n");
             }
-            $ioObject->streamWrite("</ProductPageUrls>\n");
+            $ioObject->streamWrite("    </ProductPageUrls>\n");
             // Write out localized <ImageUrls>
-            $ioObject->streamWrite("<ImageUrls>\n");
+            $ioObject->streamWrite("    <ImageUrls>\n");
             foreach($productViews as $curLocale => $curProduct) {
-                $ioObject->streamWrite('<ImageUrl locale="' . $curLocale . '">' . $curProduct->getImageUrl() . "</ImageUrl>\n");
+                $ioObject->streamWrite('        <ImageUrl locale="' . $curLocale . '">' . $curProduct->getImageUrl() . "</ImageUrl>\n");
             }
-            $ioObject->streamWrite("</ImageUrls>\n");            
+            $ioObject->streamWrite("    </ImageUrls>\n");            
 
             // Close this product
             $ioObject->streamWrite("</Product>\n");
