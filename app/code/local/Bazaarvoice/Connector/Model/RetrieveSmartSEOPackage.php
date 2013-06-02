@@ -11,14 +11,51 @@ class Bazaarvoice_Connector_Model_RetrieveSmartSEOPackage extends Mage_Core_Mode
 
     public function retrieveSmartSEOPackage()
     {
+        // Log
         Mage::log('Start Bazaarvoice Smart SEO feed import');
-        if (Mage::getStoreConfig('bazaarvoice/SmartSEOFeed/EnableSmartSEO') === '1') {
+        // Iterate through all stores / groups in this instance
+        // (Not the 'admin' store view, which represents admin panel)
+        $groups = Mage::app()->getGroups(false);
+        /** @var $group Mage_Core_Model_Store_Group */
+        foreach ($groups as $group) {
+            try {
+                if (Mage::getStoreConfig('bazaarvoice/SmartSEOFeed/EnableSmartSEO', $group->getDefaultStoreId()) === '1') {
+                    if(count($group->getStores()) > 0) {
+                        Mage::log('    BV - Importing Smart SEO feed for store group: ' . $group->getName(), Zend_Log::INFO);
+                        $this->retrieveSmartSEOPackageForStoreGroup($group);
+                    }
+                    else {
+                        Mage::throwException('No stores for store group: ' . $group->getName());
+                    }
+                }
+                else {
+                    Mage::log('    BV - Smart SEO feed disabled for store group: ' . $group->getName(), Zend_Log::INFO);
+                }
+            } catch (Exception $e) {
+                Mage::log('    BV - Failed to import Smart SEO feed for store group: ' . $group->getName(), Zend_Log::ERR);
+                Mage::log('    BV - Error message: ' . $e->getMessage(), Zend_Log::ERR);
+                Mage::logException($e);
+                // Continue processing other store groups
+            }
+        }
+        // Log
+        Mage::log('End Bazaarvoice Smart SEO feed import');
+    }
+
+    /**
+     *
+     * @param Mage_Core_Model_Store_Group $group Store Group
+     *
+     */
+    public function retrieveSmartSEOPackageForStoreGroup($group)
+    {
+        if (Mage::getStoreConfig('bazaarvoice/SmartSEOFeed/EnableSmartSEO', $group->getDefaultStoreId()) === '1') {
 
             $localFilePath = Mage::getBaseDir('var') . DS . 'import' . DS . 'bvfeeds';
-            $localExtractsPath = $localFilePath . DS . 'bvsmartseo';
+            $localExtractsPath = $localFilePath . DS . 'bvsmartseo-' . $group->getGroupId();
 
-            $gzLocalFilename = Mage::getStoreConfig('bazaarvoice/SmartSEOFeed/FeedFileName');
-            $remoteFile = '/' . Mage::getStoreConfig('bazaarvoice/SmartSEOFeed/FeedPath') . '/' . Mage::getStoreConfig('bazaarvoice/SmartSEOFeed/FeedFileName');
+            $gzLocalFilename = Mage::getStoreConfig('bazaarvoice/SmartSEOFeed/FeedFileName', $group->getDefaultStoreId());
+            $remoteFile = '/' . Mage::getStoreConfig('bazaarvoice/SmartSEOFeed/FeedPath', $group->getDefaultStoreId()) . '/' . Mage::getStoreConfig('bazaarvoice/SmartSEOFeed/FeedFileName', $group->getDefaultStoreId());
 
             // Make sure the $remoteFile is tar.gz and not .zip (BV can create either - but Magento has no ability to deal with .zip)
             $desiredExt = '.tar.gz';
@@ -51,7 +88,7 @@ class Bazaarvoice_Connector_Model_RetrieveSmartSEOPackage extends Mage_Core_Mode
 
 
                 $lastModificationTime = filemtime($localExtractsPath);  // num seconds since EPOCH
-                $maxStaleDays = Mage::getStoreConfig('bazaarvoice/SmartSEOFeed/MaxStaleDays');
+                $maxStaleDays = Mage::getStoreConfig('bazaarvoice/SmartSEOFeed/MaxStaleDays', $group->getDefaultStoreId());
                 if (empty($maxStaleDays) || !is_numeric($maxStaleDays) || $maxStaleDays < 0) {
                     $maxStaleDays = 5;
                 }
@@ -94,12 +131,10 @@ class Bazaarvoice_Connector_Model_RetrieveSmartSEOPackage extends Mage_Core_Mode
                 // Expand the .tar archive
                 $tarInterface->unpack($localExtractsPath . DS . $tmpTarFilename, $localExtractsPath . DS);
                 unlink($localExtractsPath . DS . $tmpTarFilename);
-            }
-
-            
+            }            
 
         }
-        Mage::log('End Bazaarvoice Smart SEO feed import');
+        
     }
     
 }
