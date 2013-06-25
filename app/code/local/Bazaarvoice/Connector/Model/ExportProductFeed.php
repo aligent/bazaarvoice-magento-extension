@@ -47,6 +47,10 @@
 class Bazaarvoice_Connector_Model_ExportProductFeed extends Mage_Core_Model_Abstract
 {
 
+    // Hard code export path and filename in class constants
+    const EXPORT_PATH       = '/import-inbox';
+    const EXPORT_FILENAME   = 'productfeed.xml';
+
     private $_categoryIdList = array();    
 
     protected function _construct()
@@ -137,9 +141,9 @@ class Bazaarvoice_Connector_Model_ExportProductFeed extends Mage_Core_Model_Abst
                 $ioObject->streamWrite("</Feed>\n");
                 $ioObject->streamClose();
 
-                $destinationFile = 
-                    '/' . Mage::getStoreConfig('bazaarvoice/ProductFeed/ExportPath', $group->getDefaultStoreId()) . 
-                    '/' . Mage::getStoreConfig('bazaarvoice/ProductFeed/ExportFileName', $group->getDefaultStoreId());
+                // Hard code path and filename in class constants
+                $destinationFile = Bazaarvoice_Connector_Model_ExportProductFeed::EXPORT_PATH . '/' . 
+                    Bazaarvoice_Connector_Model_ExportProductFeed::EXPORT_FILENAME;
                 $sourceFile = $productFeedFilePath . DS . $productFeedFileName;
                 $upload = Mage::helper('bazaarvoice')->uploadFile($sourceFile, $destinationFile, $group->getDefaultStore());
 

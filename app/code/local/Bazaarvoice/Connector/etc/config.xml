@@ -8,7 +8,7 @@
 <config>
     <modules>
         <Bazaarvoice_Connector>
-            <version>5.1.6</version>
+            <version>6.0.0</version>
             <depends>
                 <!-- no dependencies -->
             </depends>
@@ -91,14 +91,16 @@
                     <model>bazaarvoice/exportProductFeed::exportDailyProductFeed</model>
                 </run>
             </bazaarvoice_product_feed>
+<!--  Temp disable as part of MGP-103         
             <bazaarvoice_download_inlineratings>
                 <schedule>
-                    <cron_expr>30 1 * * *</cron_expr><!-- Every day at 1:30 AM -->
+                    <cron_expr>30 1 * * *</cron_expr>  Every day at 1:30 AM
                 </schedule>
                 <run>
                     <model>bazaarvoice/retrieveInlineRatingsFeed::retrieveInlineRatingsFeed</model>
                 </run>
             </bazaarvoice_download_inlineratings>
+-->
             <bazaarvoice_download_smartseo>
                 <schedule>
                     <cron_expr>0 2 * * *</cron_expr><!-- Every day at 2 AM -->
@@ -121,8 +123,7 @@
     <default>
         <bazaarvoice>
             <General>
-                <FTPHost>ftp-stg.bazaarvoice.com</FTPHost>
-                <Staging>/bvstaging</Staging>
+                <environment>staging</environment>
                 <SubmissionDisplayTypeJavascript><![CDATA[
                     var userAgent = navigator.userAgent.toLowerCase();
                     var isMobileDevice = (userAgent.search("iphone") > -1 || userAgent.search("android") > -1 || userAgent.search("blackberry") > -1);
@@ -173,28 +174,6 @@
                     // code to execute when read answers link is clicked
                 ]]></DoShowContentJavascript>
             </AA>
-            <SY>
-                <SubDomain>stories</SubDomain>
-                <DisplayCodeJavascript><![CDATA[
-                    // no-op
-                ]]></DisplayCodeJavascript>
-                <OnEventJavascript><![CDATA[
-                    if (json.eventSource == "Display") {
-                    if (json.attributes.numStories == 0) {
-                    var bvSYCntr = document.getElementById("BVSYContainer");
-
-                    if (bvSYCntr) { bvSYCntr.style.display = "none"; }
-                    }
-                    }
-                ]]></OnEventJavascript>
-                <DisplayFormatJavascript><![CDATA[
-                    return "show_grid";
-                ]]></DisplayFormatJavascript>
-                <DoShowContentJavascript><![CDATA[
-                    // code to execute when read stories link is clicked
-                ]]></DoShowContentJavascript>
-                <SmartSEOPageFormat>storiesgrid</SmartSEOPageFormat>
-            </SY>
             <CP>
                 <SubDomain>ugc</SubDomain>
                 <DisplayCodeJavascript><![CDATA[
@@ -206,27 +185,20 @@
             </CP>
             <ProductFeed>
                 <EnableProductFeed>1</EnableProductFeed>
-                <ExportPath>import-inbox</ExportPath>
-                <ExportFileName>productfeed.xml</ExportFileName>
             </ProductFeed>
+<!--  Temp disable as part of MGP-103         
             <InlineRatingFeed>
                 <EnableInlineRatings>1</EnableInlineRatings>
-                <FeedPath>feeds</FeedPath>
                 <FeedFileName>bv_(clientname)_ratings.xml.gz</FeedFileName>
             </InlineRatingFeed>
+-->            
             <SmartSEOFeed>
                 <EnableSmartSEO>1</EnableSmartSEO>
-                <FeedPath>feeds</FeedPath>
                 <FeedFileName>bv_(clientname)_smartseo.tar.gz</FeedFileName>
-                <MaxStaleDays>5</MaxStaleDays>
             </SmartSEOFeed>
             <PurchaseFeed>
                 <EnablePurchaseFeed>1</EnablePurchaseFeed>
-                <ExportPath>/ppe/inbox</ExportPath>
-                <ExportFileName>bazaarvoice-order-data.xml</ExportFileName>
-                <DelayDaysSinceEvent>1</DelayDaysSinceEvent>
                 <TriggeringEvent>shipping</TriggeringEvent>
-                <NumDaysLookback>30</NumDaysLookback>
             </PurchaseFeed>
         </bazaarvoice>
     </default>

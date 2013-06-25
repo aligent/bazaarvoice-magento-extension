@@ -82,8 +82,13 @@ class Bazaarvoice_Connector_Model_ExportPurchaseFeed extends Mage_Core_Model_Abs
             // Don't bother uploading if there are no orders in the feed
             $upload = false;
             if ($numOrdersExported > 0) {
-                $destinationFile = "/" . Mage::getStoreConfig("bazaarvoice/PurchaseFeed/ExportPath", $group->getDefaultStoreId())
-                     . "/" . Mage::getStoreConfig("bazaarvoice/PurchaseFeed/ExportFileName", $group->getDefaultStoreId());
+                /*
+                 * Hard code path and file name
+                 * Former config setting defaults:
+                 *   <ExportPath>/ppe/inbox</ExportPath>
+                 *   <ExportFileName>bazaarvoice-order-data.xml</ExportFileName>
+                 */
+                $destinationFile = '/ppe/inbox/bazaarvoice-order-data.xml';
                 $sourceFile = $purchaseFeedFilePath . DS . $purchaseFeedFileName;
 
                 $upload = Mage::helper('bazaarvoice')->uploadFile($sourceFile, $destinationFile, $group->getDefaultStore());
@@ -110,8 +115,9 @@ class Bazaarvoice_Connector_Model_ExportPurchaseFeed extends Mage_Core_Model_Abs
 
         // Gather settings for how this feed should be generated
         $triggeringEvent = Mage::getStoreConfig("bazaarvoice/PurchaseFeed/TriggeringEvent") === Bazaarvoice_Connector_Model_Source_TriggeringEvent::SHIPPING? self::TRIGGER_EVENT_SHIP : self::TRIGGER_EVENT_PURCHASE;
-        $numDaysLookback = Mage::getStoreConfig("bazaarvoice/PurchaseFeed/NumDaysLookback");
-        $delayDaysSinceEvent = Mage::getStoreConfig("bazaarvoice/PurchaseFeed/DelayDaysSinceEvent");
+        // Hard code former settings
+        $numDaysLookback = 30;
+        $delayDaysSinceEvent = 1;
         Mage::log("    BV - Config {TriggeringEvent: " . $triggeringEvent
             . ", NumDaysLookback: " . $numDaysLookback
             . ", NumDaysLookbackStartDate: " . $this->getNumDaysLookbackStartDate($numDaysLookback)

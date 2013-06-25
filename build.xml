@@ -4,7 +4,7 @@
 	<!-- Properties -->
 	<property name="source" value="app/code/local/Bazaarvoice"/>
 	<property name="module_name" value="Bazaarvoice_Connector"/>
-	<property name="license_id" value="${module_name}-5.1.x.x"/>
+	<property name="license_id" value="${module_name}-6.0.x.x"/>
 	
 	<!-- Meta Targets -->
 	<target name="analyze" depends="clean,lint,parallelTasks,phpunit"/>

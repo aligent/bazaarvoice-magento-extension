@@ -55,7 +55,8 @@ class Bazaarvoice_Connector_Model_RetrieveSmartSEOPackage extends Mage_Core_Mode
             $localExtractsPath = $localFilePath . DS . 'bvsmartseo-' . $group->getGroupId();
 
             $gzLocalFilename = Mage::getStoreConfig('bazaarvoice/SmartSEOFeed/FeedFileName', $group->getDefaultStoreId());
-            $remoteFile = '/' . Mage::getStoreConfig('bazaarvoice/SmartSEOFeed/FeedPath', $group->getDefaultStoreId()) . '/' . Mage::getStoreConfig('bazaarvoice/SmartSEOFeed/FeedFileName', $group->getDefaultStoreId());
+            // Hard code path to feed file
+            $remoteFile = '/feeds/' . Mage::getStoreConfig('bazaarvoice/SmartSEOFeed/FeedFileName', $group->getDefaultStoreId());
 
             // Make sure the $remoteFile is tar.gz and not .zip (BV can create either - but Magento has no ability to deal with .zip)
             $desiredExt = '.tar.gz';
@@ -88,10 +89,8 @@ class Bazaarvoice_Connector_Model_RetrieveSmartSEOPackage extends Mage_Core_Mode
 
 
                 $lastModificationTime = filemtime($localExtractsPath);  // num seconds since EPOCH
-                $maxStaleDays = Mage::getStoreConfig('bazaarvoice/SmartSEOFeed/MaxStaleDays', $group->getDefaultStoreId());
-                if (empty($maxStaleDays) || !is_numeric($maxStaleDays) || $maxStaleDays < 0) {
-                    $maxStaleDays = 5;
-                }
+                // Hard code maximum stale days
+                $maxStaleDays = 5;
                 if ((time() - $lastModificationTime) > ($maxStaleDays * 24 * 60 * 60)) {
                     // Couldn't download the file, and the old files that we DO have are too old.
                     $ioObject = new Varien_Io_File();

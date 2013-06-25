@@ -27,33 +27,16 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </CustomerName>
-                        <APIHostname translate="label comment">
-                            <label>Bazaarvoice Javascript API Hostname</label>
-                            <frontend_type>text</frontend_type>
-                            <comment><![CDATA[The domain from which bvapi.js is hosted.  For example: &lt;clientname&gt;.ugc.bazaarvoice.com]]></comment>
-                            <sort_order>20</sort_order>
+                        <environment>
+                            <label>Environment</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>bazaarvoice/source_environment</source_model>
+                            <comment><![CDATA[Select current environment.]]></comment>
+                            <sort_order>14</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
-                        </APIHostname>
-                        <HostDomain>
-                            <label>Host Domain</label>
-                            <frontend_type>text</frontend_type>
-                            <comment><![CDATA[The domain from which your store will be hosted and Bazaarvoice content will be injected. For example: yourdomain.com]]></comment>
-                            <sort_order>30</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
-                        </HostDomain>
-                        <Staging>
-                            <label>Bazaarvoice Staging</label>
-                            <frontend_type>text</frontend_type>
-                            <comment><![CDATA[Bazaarvoice staging URL string.  This is used to append the bvstaging to Bazaarvoice URLs.  Its value should be set to "/" for the production context and "/bvstaging" for the sandbox and staging contexts.]]></comment>
-                            <sort_order>40</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
-                        </Staging>
+                        </environment>
                         <FacebookXdReceiverUrl>
                             <label>Facebook Cross-Domain Channel Policy File URL</label>
                             <frontend_type>text</frontend_type>
@@ -103,15 +86,6 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </EncodingKey>
-                        <FTPHost>
-                            <label>Bazaarvoice FTP Host</label>
-                            <frontend_type>text</frontend_type>
-                            <comment><![CDATA[Usually either ftp-stg.bazaarvoice.com or ftp.bazaarvoice.com]]></comment>
-                            <sort_order>100</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
-                        </FTPHost>
                         <FTPPassword>
                             <label>Bazaarvoice FTP Password</label>
                             <frontend_type>text</frontend_type>
@@ -284,102 +258,6 @@
                         </DoShowContentJavascript>
                     </fields>
                 </AA>
-                <SY translate="label">
-                    <label>Stories</label>
-                    <frontend_type>text</frontend_type>
-                    <sort_order>130</sort_order>
-                    <show_in_default>1</show_in_default>
-                    <show_in_website>1</show_in_website>
-                    <show_in_store>1</show_in_store>
-                    <fields>
-                        <EnableSY>
-                            <label>Enable Bazaarvoice Stories</label>
-                            <frontend_type>select</frontend_type>
-                            <source_model>adminhtml/system_config_source_yesno</source_model>
-                            <comment><![CDATA[Turn on Bazaarvoice Stories. This will enable display of Stories content on your product and category pages.]]></comment>
-                            <sort_order>10</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
-                        </EnableSY>
-                        <DefaultDisplayCode>
-                            <label>Bazaarvoice Stories Default Display Code</label>
-                            <frontend_type>text</frontend_type>
-                            <comment><![CDATA[The display code for your Bazaarvoice Stories implementation.  For example: 1234-en_us]]></comment>
-                            <sort_order>20</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
-                        </DefaultDisplayCode>
-                        <DisplayCodeJavascript>
-                            <label>Display Code Javascript Function</label>
-                            <frontend_type>textarea</frontend_type>
-                            <comment><![CDATA[This preference value is expected to be valid client-side javascript.  This Bazaarvoice extension
-                                will wrap this javascript in a function(){...} block.  Your code must return a valid Bazaarvoice DisplayCode to be used for display and submission of Stories.
-                                This preference exists so that you may customize which DisplayCode is used based upon data available client-side.  Typically this is used to select
-                                a locale-specific DisplayCode.  In the event of an error processing this javascript or that it returns nothing, the default display code specified
-                            above will be used.]]></comment>
-                            <sort_order>30</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
-                        </DisplayCodeJavascript>
-                        <SubDomain>
-                            <label>Bazaarvoice Stories Sub Domain</label>
-                            <frontend_type>text</frontend_type>
-                            <comment><![CDATA[The sub domain name for the Bazaarvoice Stories.  Typically, this is just "stories".]]></comment>
-                            <sort_order>40</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
-                        </SubDomain>
-                        <DisplayFormatJavascript>
-                            <label>Stories Display Format Javascript Function</label>
-                            <frontend_type>textarea</frontend_type>
-                            <comment><![CDATA[This preference value is expected to be valid client-side javascript.  This Bazaarvoice extension
-                                will wrap this javascript in a function(){...} block, therefore your code must return a value of "show_grid" or "show_stories" depending
-                                on whether or not you want to display the Stories grid or list views.  This preference exists so that you may customize which view is
-                            displayed based upon other data in the browser. "show_grid" is the default display type if nothing is provided here.]]></comment>
-                            <sort_order>50</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
-                        </DisplayFormatJavascript>
-                        <OnEventJavascript>
-                            <label>Stories OnEvent Javascript Callback</label>
-                            <frontend_type>textarea</frontend_type>
-                            <comment><![CDATA[The Bazaarvoice javascript onEvent callback enables you to track certain actions that occur with
-                                Bazaarvoice UI components. For example, the event callback can be used to pass tracking information into your web analytics system or otherwise change
-                                the behavior of your page depending on the information it passes back about the user-generated content available on the page. This code will be wrapped
-                            in a javascript function(json){...} block.  See your Bazaarvoice Implementation manual for further information.]]></comment>
-                            <sort_order>60</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
-                        </OnEventJavascript>
-                        <DoShowContentJavascript>
-                            <label>DoShowContent Javascript Callback</label>
-                            <frontend_type>textarea</frontend_type>
-                            <comment><![CDATA[The Bazaarvoice doShowContent javascript callback is triggered when the "read all stories" link in the story summary is clicked.
-                                You may provide code here that you wish to execute on said click event.  For example, you may want to activate a specific tab on the page.  This
-                            code will be wrapped in a javascript function(){...} block. See your Bazaarvoice Implementation manual for further information.]]></comment>
-                            <sort_order>70</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
-                        </DoShowContentJavascript>
-                        <SmartSEOPageFormat>
-                            <label>Bazaarvoice Stories SmartSEO Page Format</label>
-                            <frontend_type>text</frontend_type>
-                            <comment><![CDATA[If you have enabled SmartSEO, this preference determines which type of pre-rendered content will be injected
-                            into the page.  Valid options are "stories" and "storiesgrid", corresponding to the list and grid views of stories, respectively.]]></comment>
-                            <sort_order>80</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
-                        </SmartSEOPageFormat>
-                    </fields>
-                </SY>
                 <CP translate="label">
                     <label>Active Profiles</label>
                     <frontend_type>text</frontend_type>
@@ -465,25 +343,9 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </EnableProductFeed>
-                        <ExportPath>
-                            <label>FTP Export File Path</label>
-                            <frontend_type>text</frontend_type>
-                            <comment><![CDATA[Typically, this should be "import-inbox".]]></comment>
-                            <sort_order>20</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
-                        </ExportPath>
-                        <ExportFileName>
-                            <label>Product Feed Export File Name</label>
-                            <frontend_type>text</frontend_type>
-                            <sort_order>30</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
-                        </ExportFileName>
                     </fields>
                 </ProductFeed>
+<!--  Temp disable as part of MGP-103         
                 <InlineRatingFeed translate="label">
                     <label>Inline Ratings Feed Import</label>
                     <frontend_type>text</frontend_type>
@@ -502,15 +364,6 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </EnableInlineRatings>
-                        <FeedPath>
-                            <label>Inline Rating Feed Path</label>
-                            <frontend_type>text</frontend_type>
-                            <comment><![CDATA[Typically, this should be "feeds".]]></comment>
-                            <sort_order>20</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
-                        </FeedPath>
                         <FeedFileName>
                             <label>Inline Rating Feed Filename</label>
                             <frontend_type>text</frontend_type>
@@ -522,6 +375,7 @@
                         </FeedFileName>
                     </fields>
                 </InlineRatingFeed>
+-->
                 <SmartSEOFeed translate="label">
                     <label>Smart SEO Feed Import</label>
                     <frontend_type>text</frontend_type>
@@ -540,15 +394,6 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </EnableSmartSEO>
-                        <FeedPath>
-                            <label>Smart SEO Feed Path</label>
-                            <frontend_type>text</frontend_type>
-                            <comment><![CDATA[Typically, this should be "feeds".]]></comment>
-                            <sort_order>20</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
-                        </FeedPath>
                         <FeedFileName>
                             <label>Smart SEO Feed Filename</label>
                             <frontend_type>text</frontend_type>
@@ -558,15 +403,6 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </FeedFileName>
-                        <MaxStaleDays>
-                            <label>Smart SEO Maximum Content Staleness</label>
-                            <frontend_type>text</frontend_type>
-                            <comment><![CDATA[This value represents the maximum age in days to use cached content if new content is not available on import.  The value provided should be a valid positive integer.]]></comment>
-                            <sort_order>40</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
-                        </MaxStaleDays>
                     </fields>
                 </SmartSEOFeed>
                 <PurchaseFeed translate="label">
@@ -587,23 +423,6 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </EnablePurchaseFeed>
-                        <ExportPath>
-                            <label>FTP Export File Path</label>
-                            <frontend_type>text</frontend_type>
-                            <comment><![CDATA[Typically, this should be "/ppe/inbox".]]></comment>
-                            <sort_order>20</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
-                        </ExportPath>
-                        <ExportFileName>
-                            <label>Purchase Feed Export File Name</label>
-                            <frontend_type>text</frontend_type>
-                            <sort_order>30</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
-                        </ExportFileName>
                         <TriggeringEvent>
                             <label>Triggering Event</label>
                             <frontend_type>select</frontend_type>
@@ -614,24 +433,6 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </TriggeringEvent>
-                        <DelayDaysSinceEvent>
-                            <label>Days to wait after trigger event</label>
-                            <frontend_type>text</frontend_type>
-                            <comment><![CDATA[This value represents the number of days to wait after the triggering event until including the transaction in the exported feed.]]></comment>
-                            <sort_order>50</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
-                        </DelayDaysSinceEvent>
-                        <NumDaysLookback>
-                            <label>Number of days worth of transactions in past to retrieve</label>
-                            <frontend_type>text</frontend_type>
-                            <comment><![CDATA[This value represents the number of days of historical transactions to include in the feed.  This extension keeps track of which Orders have already been included in a previous purchase feed in an effort to avoid sending duplicate emails to customers for the same order.  This number should be larger than how long it typically takes to send out a shipment.]]></comment>
-                            <sort_order>60</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
-                        </NumDaysLookback>
                     </fields>
                 </PurchaseFeed>
                 <ROIBeacon translate="label">

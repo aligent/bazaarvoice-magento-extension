@@ -177,7 +177,7 @@ class Bazaarvoice_Connector_Helper_Data extends Mage_Core_Helper_Abstract
 
         // Establish a connection to the FTP host
         Mage::log('    BV - beginning file download');
-        $connection = ftp_connect(Mage::getStoreConfig('bazaarvoice/General/FTPHost'));
+        $connection = ftp_connect($this->getSFTPHost());
         $login = ftp_login($connection, Mage::getStoreConfig('bazaarvoice/General/CustomerName'), Mage::getStoreConfig('bazaarvoice/General/FTPPassword'));
         ftp_pasv($connection, true);
         if (!$connection || !$login) {
@@ -211,7 +211,7 @@ class Bazaarvoice_Connector_Helper_Data extends Mage_Core_Helper_Abstract
     {
         Mage::log('    BV - starting upload to Bazaarvoice server');
 
-        $connection = ftp_connect(Mage::getStoreConfig('bazaarvoice/General/FTPHost', $store->getId()));
+        $connection = ftp_connect($this->getSFTPHost($store));
         $login = ftp_login($connection, Mage::getStoreConfig('bazaarvoice/General/CustomerName', $store->getId()), Mage::getStoreConfig('bazaarvoice/General/FTPPassword', $store->getId()));
         ftp_pasv($connection, true);
         if (!$connection || !$login) {
@@ -308,7 +308,7 @@ class Bazaarvoice_Connector_Helper_Data extends Mage_Core_Helper_Abstract
     {
         $protocol = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != '') ? 'https' : 'http';
         $hostSubdomain = $this->getSubDomainForBVProduct('activeprofiles') . '/';
-        $hostDomain = Mage::getStoreConfig('bazaarvoice/General/HostDomain');
+        $hostDomain = 'ugc.bazaarvoice.com';
         $bvStaging = $this->getBvStaging();
         $bvDisplayCode = $this->getDisplayCodeForBVProduct('activeprofiles');
         $bvUAS = $this->encryptReviewerId($userID);
@@ -332,14 +332,14 @@ class Bazaarvoice_Connector_Helper_Data extends Mage_Core_Helper_Abstract
     /**
      * @static
      * @param  $isStatic boolean indicating whether or not to return a URL to fetch static BV resources
-     * @param  $bvProduct String indicating the BV product to get the URL for ('reviews', 'questions', 'stories', 'activeprofiles')
+     * @param  $bvProduct String indicating the BV product to get the URL for ('reviews', 'questions', 'activeprofiles')
      * @return string
      */
     public function getBvUrl($isStatic, $bvProduct)
     {
         $protocol = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != '') ? 'https' : 'http';
         $hostSubdomain = $this->getSubDomainForBVProduct($bvProduct);
-        $hostDomain = Mage::getStoreConfig('bazaarvoice/General/HostDomain');
+        $hostDomain = 'ugc.bazaarvoice.com';
         $bvStaging = $this->getBvStaging();
         $bvDisplayCode = $this->getDisplayCodeForBVProduct($bvProduct);
         $stat = ($isStatic === 1) ? 'static/' : '';
@@ -355,7 +355,7 @@ class Bazaarvoice_Connector_Helper_Data extends Mage_Core_Helper_Abstract
     public function getBvApiHostUrl($isStatic)
     {
         $protocol = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != '') ? 'https' : 'http';
-        $apiHostname = Mage::getStoreConfig('bazaarvoice/General/APIHostname');
+        $apiHostname = Mage::getStoreConfig('bazaarvoice/General/CustomerName') . '.ugc.bazaarvoice.com';
         $bvStaging = $this->getBvStaging();
         $bvDisplayCode = $this->getDefaultDisplayCode();
 
@@ -368,13 +368,26 @@ class Bazaarvoice_Connector_Helper_Data extends Mage_Core_Helper_Abstract
      */
     public function getBvStaging()
     {
-        $bvStaging = Mage::getStoreConfig('bazaarvoice/General/Staging');
-        if ($bvStaging === '') {
-            $bvStaging = '/';
-        } else if ($bvStaging !== '/') {
+        $environment = Mage::getStoreConfig('bazaarvoice/General/environment');
+        if ($enviornment == 'staging') {
             $bvStaging = '/bvstaging/';
         }
+        else {
+            $bvStaging = '/';
+        }
         return $bvStaging;
+    }
+
+    public function getSFTPHost($store = null)
+    {
+        $environment = Mage::getStoreConfig('bazaarvoice/General/environment', $store);
+        if ($enviornment == 'staging') {
+            $sftpHost = 'sftp-stg.bazaarvoice.com';
+        }
+        else {
+            $sftpHost = 'sftp.bazaarvoice.com';
+        }
+        return $sftpHost;
     }
 
     /**
@@ -388,9 +401,6 @@ class Bazaarvoice_Connector_Helper_Data extends Mage_Core_Helper_Abstract
             $dc = $this->getDisplayCodeForBVProduct('questions');
         }
         if (empty($dc)) {
-            $dc = $this->getDisplayCodeForBVProduct('stories');
-        }
-        if (empty($dc)) {
             $dc = $this->getDisplayCodeForBVProduct('activeprofiles');
         }
         return $dc;
@@ -398,7 +408,7 @@ class Bazaarvoice_Connector_Helper_Data extends Mage_Core_Helper_Abstract
 
     /**
      * @static
-     * @param  $bvProduct String indicating the BV product to get the displaycode for ('reviews', 'questions', 'stories', 'activeprofiles')
+     * @param  $bvProduct String indicating the BV product to get the displaycode for ('reviews', 'questions', 'activeprofiles')
      * @return string
      */
     public function getDisplayCodeForBVProduct($bvProduct)
@@ -408,7 +418,7 @@ class Bazaarvoice_Connector_Helper_Data extends Mage_Core_Helper_Abstract
 
     /**
      * @static
-     * @param  $bvProduct String indicating the BV product to get the sub-domain for ('reviews', 'questions', 'stories', 'activeprofiles')
+     * @param  $bvProduct String indicating the BV product to get the sub-domain for ('reviews', 'questions', 'activeprofiles')
      * @return string
      */
     public function getSubDomainForBVProduct($bvProduct)
@@ -424,8 +434,6 @@ class Bazaarvoice_Connector_Helper_Data extends Mage_Core_Helper_Abstract
         $code = 'RR';
         if ($bvProduct === 'questions') {
             $code = 'AA';
-        } else if ($bvProduct === 'stories') {
-            $code = 'SY';
         } else if ($bvProduct === 'activeprofiles') {
             $code = 'CP';
         }
