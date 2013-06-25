@@ -308,7 +308,7 @@ class Bazaarvoice_Connector_Helper_Data extends Mage_Core_Helper_Abstract
     {
         $protocol = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != '') ? 'https' : 'http';
         $hostSubdomain = $this->getSubDomainForBVProduct('activeprofiles') . '/';
-        $hostDomain = Mage::getStoreConfig('bazaarvoice/General/HostDomain');
+        $hostDomain = 'ugc.bazaarvoice.com';
         $bvStaging = $this->getBvStaging();
         $bvDisplayCode = $this->getDisplayCodeForBVProduct('activeprofiles');
         $bvUAS = $this->encryptReviewerId($userID);
@@ -339,7 +339,7 @@ class Bazaarvoice_Connector_Helper_Data extends Mage_Core_Helper_Abstract
     {
         $protocol = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != '') ? 'https' : 'http';
         $hostSubdomain = $this->getSubDomainForBVProduct($bvProduct);
-        $hostDomain = Mage::getStoreConfig('bazaarvoice/General/HostDomain');
+        $hostDomain = 'ugc.bazaarvoice.com';
         $bvStaging = $this->getBvStaging();
         $bvDisplayCode = $this->getDisplayCodeForBVProduct($bvProduct);
         $stat = ($isStatic === 1) ? 'static/' : '';
@@ -355,7 +355,7 @@ class Bazaarvoice_Connector_Helper_Data extends Mage_Core_Helper_Abstract
     public function getBvApiHostUrl($isStatic)
     {
         $protocol = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != '') ? 'https' : 'http';
-        $apiHostname = Mage::getStoreConfig('bazaarvoice/General/APIHostname');
+        $apiHostname = Mage::getStoreConfig('bazaarvoice/General/CustomerName') . '.ugc.bazaarvoice.com';
         $bvStaging = $this->getBvStaging();
         $bvDisplayCode = $this->getDefaultDisplayCode();
 

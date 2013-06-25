@@ -27,24 +27,6 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </CustomerName>
-                        <APIHostname translate="label comment">
-                            <label>Bazaarvoice Javascript API Hostname</label>
-                            <frontend_type>text</frontend_type>
-                            <comment><![CDATA[The domain from which bvapi.js is hosted.  For example: &lt;clientname&gt;.ugc.bazaarvoice.com]]></comment>
-                            <sort_order>20</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
-                        </APIHostname>
-                        <HostDomain>
-                            <label>Host Domain</label>
-                            <frontend_type>text</frontend_type>
-                            <comment><![CDATA[The domain from which your store will be hosted and Bazaarvoice content will be injected. For example: yourdomain.com]]></comment>
-                            <sort_order>30</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
-                        </HostDomain>
                         <Staging>
                             <label>Bazaarvoice Staging</label>
                             <frontend_type>text</frontend_type>
