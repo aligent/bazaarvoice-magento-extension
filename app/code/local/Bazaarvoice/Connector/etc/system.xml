@@ -343,23 +343,6 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </EnableProductFeed>
-                        <ExportPath>
-                            <label>FTP Export File Path</label>
-                            <frontend_type>text</frontend_type>
-                            <comment><![CDATA[Typically, this should be "import-inbox".]]></comment>
-                            <sort_order>20</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
-                        </ExportPath>
-                        <ExportFileName>
-                            <label>Product Feed Export File Name</label>
-                            <frontend_type>text</frontend_type>
-                            <sort_order>30</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
-                        </ExportFileName>
                     </fields>
                 </ProductFeed>
                 <InlineRatingFeed translate="label">

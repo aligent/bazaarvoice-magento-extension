@@ -183,8 +183,6 @@
             </CP>
             <ProductFeed>
                 <EnableProductFeed>1</EnableProductFeed>
-                <ExportPath>import-inbox</ExportPath>
-                <ExportFileName>productfeed.xml</ExportFileName>
             </ProductFeed>
             <InlineRatingFeed>
                 <EnableInlineRatings>1</EnableInlineRatings>

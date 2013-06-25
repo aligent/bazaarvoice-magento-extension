@@ -137,9 +137,13 @@ class Bazaarvoice_Connector_Model_ExportProductFeed extends Mage_Core_Model_Abst
                 $ioObject->streamWrite("</Feed>\n");
                 $ioObject->streamClose();
 
-                $destinationFile = 
-                    '/' . Mage::getStoreConfig('bazaarvoice/ProductFeed/ExportPath', $group->getDefaultStoreId()) . 
-                    '/' . Mage::getStoreConfig('bazaarvoice/ProductFeed/ExportFileName', $group->getDefaultStoreId());
+                /*
+                 * Hard code path and filename
+                 * Previous config setting defaults:
+                 *    <ExportPath>import-inbox</ExportPath>
+                 *    <ExportFileName>productfeed.xml</ExportFileName>
+                 */
+                $destinationFile = '/import-inbox/productfeed.xml';
                 $sourceFile = $productFeedFilePath . DS . $productFeedFileName;
                 $upload = Mage::helper('bazaarvoice')->uploadFile($sourceFile, $destinationFile, $group->getDefaultStore());
 
