@@ -345,6 +345,7 @@
                         </EnableProductFeed>
                     </fields>
                 </ProductFeed>
+<!--  Temp disable as part of MGP-103         
                 <InlineRatingFeed translate="label">
                     <label>Inline Ratings Feed Import</label>
                     <frontend_type>text</frontend_type>
@@ -374,6 +375,7 @@
                         </FeedFileName>
                     </fields>
                 </InlineRatingFeed>
+-->
                 <SmartSEOFeed translate="label">
                     <label>Smart SEO Feed Import</label>
                     <frontend_type>text</frontend_type>
