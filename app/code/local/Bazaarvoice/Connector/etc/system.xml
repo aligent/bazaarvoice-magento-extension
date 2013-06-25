@@ -418,15 +418,6 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </EnableSmartSEO>
-                        <FeedPath>
-                            <label>Smart SEO Feed Path</label>
-                            <frontend_type>text</frontend_type>
-                            <comment><![CDATA[Typically, this should be "feeds".]]></comment>
-                            <sort_order>20</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
-                        </FeedPath>
                         <FeedFileName>
                             <label>Smart SEO Feed Filename</label>
                             <frontend_type>text</frontend_type>
@@ -436,15 +427,6 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </FeedFileName>
-                        <MaxStaleDays>
-                            <label>Smart SEO Maximum Content Staleness</label>
-                            <frontend_type>text</frontend_type>
-                            <comment><![CDATA[This value represents the maximum age in days to use cached content if new content is not available on import.  The value provided should be a valid positive integer.]]></comment>
-                            <sort_order>40</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
-                        </MaxStaleDays>
                     </fields>
                 </SmartSEOFeed>
                 <PurchaseFeed translate="label">

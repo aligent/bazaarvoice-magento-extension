@@ -193,9 +193,7 @@
             </InlineRatingFeed>
             <SmartSEOFeed>
                 <EnableSmartSEO>1</EnableSmartSEO>
-                <FeedPath>feeds</FeedPath>
                 <FeedFileName>bv_(clientname)_smartseo.tar.gz</FeedFileName>
-                <MaxStaleDays>5</MaxStaleDays>
             </SmartSEOFeed>
             <PurchaseFeed>
                 <EnablePurchaseFeed>1</EnablePurchaseFeed>
