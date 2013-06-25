@@ -196,11 +196,7 @@
             </SmartSEOFeed>
             <PurchaseFeed>
                 <EnablePurchaseFeed>1</EnablePurchaseFeed>
-                <ExportPath>/ppe/inbox</ExportPath>
-                <ExportFileName>bazaarvoice-order-data.xml</ExportFileName>
-                <DelayDaysSinceEvent>1</DelayDaysSinceEvent>
                 <TriggeringEvent>shipping</TriggeringEvent>
-                <NumDaysLookback>30</NumDaysLookback>
             </PurchaseFeed>
         </bazaarvoice>
     </default>

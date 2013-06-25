@@ -438,23 +438,6 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </EnablePurchaseFeed>
-                        <ExportPath>
-                            <label>FTP Export File Path</label>
-                            <frontend_type>text</frontend_type>
-                            <comment><![CDATA[Typically, this should be "/ppe/inbox".]]></comment>
-                            <sort_order>20</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
-                        </ExportPath>
-                        <ExportFileName>
-                            <label>Purchase Feed Export File Name</label>
-                            <frontend_type>text</frontend_type>
-                            <sort_order>30</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
-                        </ExportFileName>
                         <TriggeringEvent>
                             <label>Triggering Event</label>
                             <frontend_type>select</frontend_type>
@@ -465,24 +448,6 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </TriggeringEvent>
-                        <DelayDaysSinceEvent>
-                            <label>Days to wait after trigger event</label>
-                            <frontend_type>text</frontend_type>
-                            <comment><![CDATA[This value represents the number of days to wait after the triggering event until including the transaction in the exported feed.]]></comment>
-                            <sort_order>50</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
-                        </DelayDaysSinceEvent>
-                        <NumDaysLookback>
-                            <label>Number of days worth of transactions in past to retrieve</label>
-                            <frontend_type>text</frontend_type>
-                            <comment><![CDATA[This value represents the number of days of historical transactions to include in the feed.  This extension keeps track of which Orders have already been included in a previous purchase feed in an effort to avoid sending duplicate emails to customers for the same order.  This number should be larger than how long it typically takes to send out a shipment.]]></comment>
-                            <sort_order>60</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
-                        </NumDaysLookback>
                     </fields>
                 </PurchaseFeed>
                 <ROIBeacon translate="label">
