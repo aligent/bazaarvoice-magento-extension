@@ -1,5 +1,6 @@
 <_>
-   <form_key>vgCITnIE153aafRY</form_key>
+   <form_key>QQLJXKtuRPKaiCPM</form_key>
+   <_create/>
    <name>Bazaarvoice_Connector</name>
    <channel>community</channel>
    <version_ids>
@@ -40,7 +41,7 @@
             <max/>
          </max>
          <files>
-            <files>       </files>
+            <files>        </files>
          </files>
       </package>
       <extension>
@@ -67,7 +68,7 @@
       </target>
       <path>
          <path/>
-         <path>Bazaarvoice_Connector</path>
+         <path>Bazaarvoice/Connector</path>
          <path>modules/Bazaarvoice_Connector.xml</path>
          <path>frontend/enterprise/default/template/bazaarvoice</path>
          <path>frontend/enterprise/default/layout/bazaarvoice.xml</path>
