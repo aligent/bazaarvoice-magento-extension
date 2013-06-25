@@ -122,7 +122,7 @@
         <bazaarvoice>
             <General>
                 <FTPHost>ftp-stg.bazaarvoice.com</FTPHost>
-                <Staging>/bvstaging</Staging>
+                <environment>staging</environment>
                 <SubmissionDisplayTypeJavascript><![CDATA[
                     var userAgent = navigator.userAgent.toLowerCase();
                     var isMobileDevice = (userAgent.search("iphone") > -1 || userAgent.search("android") > -1 || userAgent.search("blackberry") > -1);
