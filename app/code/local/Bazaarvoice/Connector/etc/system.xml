@@ -86,15 +86,6 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </EncodingKey>
-                        <FTPHost>
-                            <label>Bazaarvoice FTP Host</label>
-                            <frontend_type>text</frontend_type>
-                            <comment><![CDATA[Usually either ftp-stg.bazaarvoice.com or ftp.bazaarvoice.com]]></comment>
-                            <sort_order>100</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
-                        </FTPHost>
                         <FTPPassword>
                             <label>Bazaarvoice FTP Password</label>
                             <frontend_type>text</frontend_type>

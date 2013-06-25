@@ -177,7 +177,7 @@ class Bazaarvoice_Connector_Helper_Data extends Mage_Core_Helper_Abstract
 
         // Establish a connection to the FTP host
         Mage::log('    BV - beginning file download');
-        $connection = ftp_connect(Mage::getStoreConfig('bazaarvoice/General/FTPHost'));
+        $connection = ftp_connect($this->getSFTPHost());
         $login = ftp_login($connection, Mage::getStoreConfig('bazaarvoice/General/CustomerName'), Mage::getStoreConfig('bazaarvoice/General/FTPPassword'));
         ftp_pasv($connection, true);
         if (!$connection || !$login) {
@@ -211,7 +211,7 @@ class Bazaarvoice_Connector_Helper_Data extends Mage_Core_Helper_Abstract
     {
         Mage::log('    BV - starting upload to Bazaarvoice server');
 
-        $connection = ftp_connect(Mage::getStoreConfig('bazaarvoice/General/FTPHost', $store->getId()));
+        $connection = ftp_connect($this->getSFTPHost($store));
         $login = ftp_login($connection, Mage::getStoreConfig('bazaarvoice/General/CustomerName', $store->getId()), Mage::getStoreConfig('bazaarvoice/General/FTPPassword', $store->getId()));
         ftp_pasv($connection, true);
         if (!$connection || !$login) {
@@ -376,6 +376,18 @@ class Bazaarvoice_Connector_Helper_Data extends Mage_Core_Helper_Abstract
             $bvStaging = '/';
         }
         return $bvStaging;
+    }
+
+    public function getSFTPHost($store = null)
+    {
+        $environment = Mage::getStoreConfig('bazaarvoice/General/environment', $store);
+        if ($enviornment == 'staging') {
+            $sftpHost = 'sftp-stg.bazaarvoice.com';
+        }
+        else {
+            $sftpHost = 'sftp.bazaarvoice.com';
+        }
+        return $sftpHost;
     }
 
     /**

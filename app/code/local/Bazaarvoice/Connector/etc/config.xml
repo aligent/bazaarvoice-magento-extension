@@ -121,7 +121,6 @@
     <default>
         <bazaarvoice>
             <General>
-                <FTPHost>ftp-stg.bazaarvoice.com</FTPHost>
                 <environment>staging</environment>
                 <SubmissionDisplayTypeJavascript><![CDATA[
                     var userAgent = navigator.userAgent.toLowerCase();
