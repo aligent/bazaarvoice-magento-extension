@@ -332,7 +332,7 @@ class Bazaarvoice_Connector_Helper_Data extends Mage_Core_Helper_Abstract
     /**
      * @static
      * @param  $isStatic boolean indicating whether or not to return a URL to fetch static BV resources
-     * @param  $bvProduct String indicating the BV product to get the URL for ('reviews', 'questions', 'stories', 'activeprofiles')
+     * @param  $bvProduct String indicating the BV product to get the URL for ('reviews', 'questions', 'activeprofiles')
      * @return string
      */
     public function getBvUrl($isStatic, $bvProduct)
@@ -388,9 +388,6 @@ class Bazaarvoice_Connector_Helper_Data extends Mage_Core_Helper_Abstract
             $dc = $this->getDisplayCodeForBVProduct('questions');
         }
         if (empty($dc)) {
-            $dc = $this->getDisplayCodeForBVProduct('stories');
-        }
-        if (empty($dc)) {
             $dc = $this->getDisplayCodeForBVProduct('activeprofiles');
         }
         return $dc;
@@ -398,7 +395,7 @@ class Bazaarvoice_Connector_Helper_Data extends Mage_Core_Helper_Abstract
 
     /**
      * @static
-     * @param  $bvProduct String indicating the BV product to get the displaycode for ('reviews', 'questions', 'stories', 'activeprofiles')
+     * @param  $bvProduct String indicating the BV product to get the displaycode for ('reviews', 'questions', 'activeprofiles')
      * @return string
      */
     public function getDisplayCodeForBVProduct($bvProduct)
@@ -408,7 +405,7 @@ class Bazaarvoice_Connector_Helper_Data extends Mage_Core_Helper_Abstract
 
     /**
      * @static
-     * @param  $bvProduct String indicating the BV product to get the sub-domain for ('reviews', 'questions', 'stories', 'activeprofiles')
+     * @param  $bvProduct String indicating the BV product to get the sub-domain for ('reviews', 'questions', 'activeprofiles')
      * @return string
      */
     public function getSubDomainForBVProduct($bvProduct)
@@ -424,8 +421,6 @@ class Bazaarvoice_Connector_Helper_Data extends Mage_Core_Helper_Abstract
         $code = 'RR';
         if ($bvProduct === 'questions') {
             $code = 'AA';
-        } else if ($bvProduct === 'stories') {
-            $code = 'SY';
         } else if ($bvProduct === 'activeprofiles') {
             $code = 'CP';
         }

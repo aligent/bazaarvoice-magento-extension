@@ -75,9 +75,6 @@
 
                 <block type="bazaarvoice/bazaarvoice" name="questionsummary" as="bv_questionsummary" template="bazaarvoice/display/qa/questionsummary.phtml" />
                 <block type="bazaarvoice/bazaarvoice" name="questions" as="bv_questions" template="bazaarvoice/display/qa/questions.phtml" />
-
-                <block type="bazaarvoice/bazaarvoice" name="storysummary" as="bv_storysummary" template="bazaarvoice/display/sy/storysummary.phtml" />
-                <block type="bazaarvoice/bazaarvoice" name="stories" as="bv_stories" template="bazaarvoice/display/sy/stories.phtml" />
             </reference>
         </reference>
     </catalog_product_view>
@@ -92,9 +89,6 @@
                     <!-- Review Summary and List blocks intentionally omitted here.  RR is not supported on categories.  -->
                     <block type="bazaarvoice/bazaarvoice" name="questionsummary" as="bv_questionsummary" template="bazaarvoice/display/qa/questionsummary.phtml" />
                     <block type="bazaarvoice/bazaarvoice" name="questions" as="bv_questions" template="bazaarvoice/display/qa/questions.phtml" />
-
-                    <block type="bazaarvoice/bazaarvoice" name="storysummary" as="bv_storysummary" template="bazaarvoice/display/sy/storysummary.phtml" />
-                    <block type="bazaarvoice/bazaarvoice" name="stories" as="bv_stories" template="bazaarvoice/display/sy/stories.phtml" />
                 </reference>
             </reference>
         </reference>

@@ -173,28 +173,6 @@
                     // code to execute when read answers link is clicked
                 ]]></DoShowContentJavascript>
             </AA>
-            <SY>
-                <SubDomain>stories</SubDomain>
-                <DisplayCodeJavascript><![CDATA[
-                    // no-op
-                ]]></DisplayCodeJavascript>
-                <OnEventJavascript><![CDATA[
-                    if (json.eventSource == "Display") {
-                    if (json.attributes.numStories == 0) {
-                    var bvSYCntr = document.getElementById("BVSYContainer");
-
-                    if (bvSYCntr) { bvSYCntr.style.display = "none"; }
-                    }
-                    }
-                ]]></OnEventJavascript>
-                <DisplayFormatJavascript><![CDATA[
-                    return "show_grid";
-                ]]></DisplayFormatJavascript>
-                <DoShowContentJavascript><![CDATA[
-                    // code to execute when read stories link is clicked
-                ]]></DoShowContentJavascript>
-                <SmartSEOPageFormat>storiesgrid</SmartSEOPageFormat>
-            </SY>
             <CP>
                 <SubDomain>ugc</SubDomain>
                 <DisplayCodeJavascript><![CDATA[
