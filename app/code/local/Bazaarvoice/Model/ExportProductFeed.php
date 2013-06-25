@@ -114,7 +114,7 @@ class Bazaarvoice_Model_ExportProductFeed extends Mage_Core_Model_Abstract
 
                 $ioObject->streamWrite("<?xml version=\"1.0\" encoding=\"UTF-8\"?>".
                         "<Feed xmlns=\"http://www.bazaarvoice.com/xs/PRR/ProductFeed/5.2\"".
-                        " generator=\"Magento Extension r5.1.5\"".
+                        " generator=\"Magento Extension r5.1.7\"".
                         "  name=\"".Mage::getStoreConfig("bazaarvoice/General/CustomerName", $store->getId())."\"".
                         "  incremental=\"false\"".
                         "  extractDate=\"".date('Y-m-d')."T".date('H:i:s').".000000\">\n");
@@ -212,6 +212,8 @@ class Bazaarvoice_Model_ExportProductFeed extends Mage_Core_Model_Abstract
         $productIds->addStoreFilter($store);
         // Filter collection for product status
         $productIds->addAttributeToFilter('status', Mage_Catalog_Model_Product_Status::STATUS_ENABLED);
+        // Filter collection for product visibility
+        $productIds->addAttributeToFilter('visibility', array('neq' => Mage_Catalog_Model_Product_Visibility::VISIBILITY_NOT_VISIBLE));
             
         // Output tag only if more than 1 product
         if (count($productIds) > 0) {
