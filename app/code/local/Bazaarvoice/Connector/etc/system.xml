@@ -380,15 +380,6 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </EnableInlineRatings>
-                        <FeedPath>
-                            <label>Inline Rating Feed Path</label>
-                            <frontend_type>text</frontend_type>
-                            <comment><![CDATA[Typically, this should be "feeds".]]></comment>
-                            <sort_order>20</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
-                        </FeedPath>
                         <FeedFileName>
                             <label>Inline Rating Feed Filename</label>
                             <frontend_type>text</frontend_type>

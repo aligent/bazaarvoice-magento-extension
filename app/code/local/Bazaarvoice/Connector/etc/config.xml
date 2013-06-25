@@ -188,7 +188,6 @@
             </ProductFeed>
             <InlineRatingFeed>
                 <EnableInlineRatings>1</EnableInlineRatings>
-                <FeedPath>feeds</FeedPath>
                 <FeedFileName>bv_(clientname)_ratings.xml.gz</FeedFileName>
             </InlineRatingFeed>
             <SmartSEOFeed>

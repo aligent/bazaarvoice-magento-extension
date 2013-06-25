@@ -53,8 +53,8 @@ class Bazaarvoice_Connector_Model_RetrieveInlineRatingsFeed extends Mage_Core_Mo
             $localFilePath = Mage::getBaseDir('var') . DS . 'import' . DS . 'bvfeeds';
             $localFileName = 'inline-ratings-' . $group->getGroupId() . '-' . date('U') . '.xml';
             $gzLocalFilename = $localFileName . '.gz';
-            $remoteFile = '/' . Mage::getStoreConfig('bazaarvoice/InlineRatingFeed/FeedPath', $group->getDefaultStoreId())
-                 . '/' . Mage::getStoreConfig('bazaarvoice/InlineRatingFeed/FeedFileName', $group->getDefaultStoreId());
+            // Hard code feed file path
+            $remoteFile = '/feeds/' . Mage::getStoreConfig('bazaarvoice/InlineRatingFeed/FeedFileName', $group->getDefaultStoreId());
 
             if (!Mage::helper('bazaarvoice')->downloadFile($localFilePath, $gzLocalFilename, $remoteFile)) {
                 // Unable to download the file.  Check magento log for messages.
