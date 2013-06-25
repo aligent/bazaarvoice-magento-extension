@@ -212,6 +212,8 @@ class Bazaarvoice_Model_ExportProductFeed extends Mage_Core_Model_Abstract
         $productIds->addStoreFilter($store);
         // Filter collection for product status
         $productIds->addAttributeToFilter('status', Mage_Catalog_Model_Product_Status::STATUS_ENABLED);
+        // Filter collection for product visibility
+        $productIds->addAttributeToFilter('visibility', array('neq' => Mage_Catalog_Model_Product_Visibility::VISIBILITY_NOT_VISIBLE));
             
         // Output tag only if more than 1 product
         if (count($productIds) > 0) {
