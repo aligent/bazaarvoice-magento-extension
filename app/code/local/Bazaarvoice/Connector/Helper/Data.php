@@ -374,19 +374,17 @@ class Bazaarvoice_Connector_Helper_Data extends Mage_Core_Helper_Abstract
         }
         // Build static dir name based on param
         if($isStatic) {
-            $static = '/static/';
+            $static = 'static/';
         }
         else {
-            $static = '/';
+            $static = '';
         }
         // Lookup other config settings
         $customerName = Mage::getStoreConfig('bazaarvoice/General/CustomerName', $store);
         $deploymnetZoneName = Mage::getStoreConfig('bazaarvoice/RR/deployment_zone', $store);
         $localeCode = Mage::getStoreConfig('general/locale/code', $store);
         // Build url string
-        $url = $protocol . '://' . $apiHostname . $static . $customerName . '/' . $deploymnetZoneName . '/' . $localeCode;
-        // Encode url string
-        $url = urlencode($url);
+        $url = $protocol . '://' . $apiHostname . '/' . urlencode($static . $customerName . '/' . $deploymnetZoneName . '/' . $localeCode);
         // Return final url
         return $url;
     }
