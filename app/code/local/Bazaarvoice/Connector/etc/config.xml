@@ -124,55 +124,22 @@
         <bazaarvoice>
             <General>
                 <environment>staging</environment>
-                <SubmissionDisplayTypeJavascript><![CDATA[
-                    var userAgent = navigator.userAgent.toLowerCase();
-                    var isMobileDevice = (userAgent.search("iphone") > -1 || userAgent.search("android") > -1 || userAgent.search("blackberry") > -1);
-                    return (isMobileDevice ? "mobile" : "");
-                ]]></SubmissionDisplayTypeJavascript>
             </General>
             <RR>
                 <EnableRR>1</EnableRR>
                 <SubDomain>reviews</SubDomain>
-                <DisplayCodeJavascript><![CDATA[
-                    // no-op
-                ]]></DisplayCodeJavascript>
-                <OnEventJavascript><![CDATA[
-                    if (json.eventSource == "Display") {
-                    if (json.attributes.numReviews == 0) {
-                    var bvRevCntr = document.getElementById("BVReviewsContainer");
-                    var bvSVPLink = document.getElementById("BVRRLinkContainer");
-
-                    if (bvRevCntr) { bvRevCntr.style.display = "none"; }
-                    if (bvSVPLink) { bvSVPLink.style.display = "none"; }
-                    }
-                    }
-                ]]></OnEventJavascript>
-                <DisplayTypeJavascript><![CDATA[
-                    var userAgent = navigator.userAgent.toLowerCase();
-                    var isMobileDevice = (userAgent.search("iphone") > -1 || userAgent.search("android") > -1 || userAgent.search("blackberry") > -1);
-                    return (isMobileDevice ? "mobile" : "");
-                ]]></DisplayTypeJavascript>
                 <DoShowContentJavascript><![CDATA[
                     // code to execute when read reviews link is clicked
                 ]]></DoShowContentJavascript>
             </RR>
             <AA>
                 <SubDomain>answers</SubDomain>
-                <DisplayCodeJavascript><![CDATA[
-                    // no-op
-                ]]></DisplayCodeJavascript>
-                <OnEventJavascript><![CDATA[
-                    if (json.eventSource == "Display") {
-                    if (json.attributes.numQuestions == 0) {
-                    var bvQACntr = document.getElementById("BVQAContainer");
-
-                    if (bvQACntr) { bvQACntr.style.display = "none"; }
-                    }
-                    }
-                ]]></OnEventJavascript>
-                <DoShowContentJavascript><![CDATA[
+                <do_show_content_js_product_page><![CDATA[
                     // code to execute when read answers link is clicked
-                ]]></DoShowContentJavascript>
+                ]]></do_show_content_js_product_page>
+                <do_show_content_js_category_page><![CDATA[
+                    // code to execute when read answers link is clicked
+                ]]></do_show_content_js_category_page>
             </AA>
             <CP>
                 <SubDomain>ugc</SubDomain>

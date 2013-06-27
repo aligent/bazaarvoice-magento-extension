@@ -21,7 +21,7 @@ if(Mage::getStoreConfig("bazaarvoice/RR/EnableRR") === "1") {
         }catch(e){
             //The JS in the try-catch above is user-definable.  Catch and suppress any errors and just return a default.
         }
-        return "<?php echo Mage::helper('bazaarvoice')->getDisplayCodeForBVProduct("reviews"); ?>";
+        return "<?php echo Mage::helper('bazaarvoice')->getDeploymentZoneForBVProduct("reviews"); ?>";
     }
     function getRRDisplayType() {
         try {

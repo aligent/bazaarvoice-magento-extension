@@ -16,7 +16,7 @@ if(Mage::getStoreConfig("bazaarvoice/AA/EnableAA") === "1") {
         }catch(e){
             //The JS in the try-catch above is user-definable.  Catch and suppress any errors and just return a default.
         }
-        return "<?php echo Mage::helper('bazaarvoice')->getDisplayCodeForBVProduct("questions"); ?>";
+        return "<?php echo Mage::helper('bazaarvoice')->getDeploymentZoneForBVProduct("questions"); ?>";
     }
     var configData = {};
     configData.displayCode = getAADisplayCode();
@@ -32,7 +32,11 @@ if(Mage::getStoreConfig("bazaarvoice/AA/EnableAA") === "1") {
         <?php echo Mage::helper('bazaarvoice')->getConfigPropertyForBVProduct("questions", "OnEventJavascript") . "\n"; ?>
     };
     configData.doShowContent = function () {
-    	<?php echo Mage::helper('bazaarvoice')->getConfigPropertyForBVProduct("questions", "DoShowContentJavascript") . "\n"; ?>
+        if ("<?php echo $bvSubject[Mage::helper('bazaarvoice')->BV_SUBJECT_TYPE]; ?>" === "product") {
+        	<?php echo Mage::helper('bazaarvoice')->getConfigPropertyForBVProduct("questions", "do_show_content_js_product_page") . "\n"; ?>
+        } else {
+        	<?php echo Mage::helper('bazaarvoice')->getConfigPropertyForBVProduct("questions", "do_show_content_js_category_page") . "\n"; ?>
+        }
     };
     $BV.ui("qa", "show_questions", configData);
 </script>

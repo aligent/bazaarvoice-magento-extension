@@ -55,6 +55,7 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </SubmissionURL>
+<!--                        
                         <SubmissionDisplayTypeJavascript>
                             <label>Display Type Javascript Function</label>
                             <frontend_type>textarea</frontend_type>
@@ -68,6 +69,7 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </SubmissionDisplayTypeJavascript>
+-->                        
                         <AdminEmail>
                             <label>Bazaavoice Administrator Email</label>
                             <frontend_type>text</frontend_type>
@@ -115,28 +117,15 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </EnableRR>
-                        <DefaultDisplayCode>
-                            <label>Bazaarvoice Ratings &amp; Reviews Default Display Code</label>
+                        <deployment_zone>
+                            <label>Bazaarvoice Ratings &amp; Reviews Default Deployment Zone</label>
                             <frontend_type>text</frontend_type>
-                            <comment><![CDATA[The display code for your Bazaarvoice R&amp;R implementation.  For example: 1234-en_us]]></comment>
+                            <comment><![CDATA[The deployment zone for your Bazaarvoice R&amp;R implementation.  For example: "Main Site"]]></comment>
                             <sort_order>20</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
-                        </DefaultDisplayCode>
-                        <DisplayCodeJavascript>
-                            <label>Display Code Javascript Function</label>
-                            <frontend_type>textarea</frontend_type>
-                            <comment><![CDATA[This preference value is expected to be valid client-side javascript.  This Bazaarvoice extension
-                                will wrap this javascript in a function(){...} block.  Your code must return a valid Bazaarvoice DisplayCode to be used for display and submission of Reviews.
-                                This preference exists so that you may customize which DisplayCode is used based upon data available client-side.  Typically this is used to select
-                                a locale-specific DisplayCode.  In the event of an error processing this javascript or that it returns nothing, the default display code specified
-                            above will be used.]]></comment>
-                            <sort_order>30</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
-                        </DisplayCodeJavascript>
+                        </deployment_zone>
                         <SubDomain>
                             <label>Bazaarvoice R&amp;R Sub Domain</label>
                             <frontend_type>text</frontend_type>
@@ -146,31 +135,6 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </SubDomain>
-                        <OnEventJavascript>
-                            <label>R&amp;R OnEvent Javascript Callback</label>
-                            <frontend_type>textarea</frontend_type>
-                            <comment><![CDATA[The Bazaarvoice javascript onEvent callback enables you to track certain actions that occur with
-                                Bazaarvoice UI components. For example, the event callback can be used to pass tracking information into your web analytics system or otherwise change
-                                the behavior of your page depending on the information it passes back about the user-generated content available on the page. This code will be wrapped
-                            in a javascript function(json){...} block.  See your Bazaarvoice Implementation manual for further information.]]></comment>
-                            <sort_order>50</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
-                        </OnEventJavascript>
-                        <DisplayTypeJavascript>
-                            <label>Display Type Javascript Function</label>
-                            <frontend_type>textarea</frontend_type>
-                            <comment><![CDATA[This preference value is expected to be valid client-side javascript.  This Bazaarvoice extension
-                                will wrap this javascript in a function(){...} block.  Your code must return a value of "mobile" or an empty string, "", depending
-                                on whether or not you want to set the displayType for R&amp;R display to a mobile device or for a full browser client.
-                                This preference exists so that you may customize which displayType is used based upon data available client-side.  Contact your Bazaarvoice
-                            Implementation Engineer for further information on the displayType configuration parameter.]]></comment>
-                            <sort_order>60</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
-                        </DisplayTypeJavascript>
                         <DoShowContentJavascript>
                             <label>DoShowContent Javascript Callback</label>
                             <frontend_type>textarea</frontend_type>
@@ -202,28 +166,15 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </EnableAA>
-                        <DefaultDisplayCode>
-                            <label>Bazaarvoice Ask &amp; Answer Default Display Code</label>
+                        <deployment_zone>
+                            <label>Bazaarvoice Ask &amp; Answer Default Deployment Zone</label>
                             <frontend_type>text</frontend_type>
-                            <comment><![CDATA[The display code for your Bazaarvoice A&amp;A implementation.  For example: 1234-en_us]]></comment>
+                            <comment><![CDATA[The deployment zone for your Bazaarvoice A&amp;A implementation.  For example: "Main Site"]]></comment>
                             <sort_order>20</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
-                        </DefaultDisplayCode>
-                        <DisplayCodeJavascript>
-                            <label>Display Code Javascript Function</label>
-                            <frontend_type>textarea</frontend_type>
-                            <comment><![CDATA[This preference value is expected to be valid client-side javascript.  This Bazaarvoice extension
-                                will wrap this javascript in a function(){...} block.  Your code must return a valid Bazaarvoice DisplayCode to be used for display and submission of A&amp;A.
-                                This preference exists so that you may customize which DisplayCode is used based upon data available client-side.  Typically this is used to select
-                                a locale-specific DisplayCode.  In the event of an error processing this javascript or that it returns nothing, the default display code specified
-                            above will be used.]]></comment>
-                            <sort_order>30</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
-                        </DisplayCodeJavascript>
+                        </deployment_zone>
                         <SubDomain>
                             <label>Bazaarvoice A&amp;A Sub Domain</label>
                             <frontend_type>text</frontend_type>
@@ -233,20 +184,8 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </SubDomain>
-                        <OnEventJavascript>
-                            <label>A&amp;A OnEvent Javascript Callback</label>
-                            <frontend_type>textarea</frontend_type>
-                            <comment><![CDATA[The Bazaarvoice javascript onEvent callback enables you to track certain actions that occur with
-                                Bazaarvoice UI components. For example, the event callback can be used to pass tracking information into your web analytics system or otherwise change
-                                the behavior of your page depending on the information it passes back about the user-generated content available on the page. This code will be wrapped
-                            in a javascript function(json){...} block.  See your Bazaarvoice Implementation manual for further information.]]></comment>
-                            <sort_order>50</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
-                        </OnEventJavascript>
-                        <DoShowContentJavascript>
-                            <label>DoShowContent Javascript Callback</label>
+                        <do_show_content_js_product_page>
+                            <label>Q&A Show Q&A in Tab (product page)</label>
                             <frontend_type>textarea</frontend_type>
                             <comment><![CDATA[The Bazaarvoice doShowContent javascript callback is triggered when the "read all Q&A" link in the question/answer summary is clicked.
                                 You may provide code here that you wish to execute on said click event.  For example, you may want to activate a specific tab on the page.  This
@@ -255,7 +194,18 @@
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
-                        </DoShowContentJavascript>
+                        </do_show_content_js_product_page>
+                        <do_show_content_js_category_page>
+                            <label>Q&A Show Q&A in Tab (category page)</label>
+                            <frontend_type>textarea</frontend_type>
+                            <comment><![CDATA[The Bazaarvoice doShowContent javascript callback is triggered when the "read all Q&A" link in the question/answer summary is clicked.
+                                You may provide code here that you wish to execute on said click event.  For example, you may want to activate a specific tab on the page.  This
+                            code will be wrapped in a javascript function(){...} block. See your Bazaarvoice Implementation manual for further information.]]></comment>
+                            <sort_order>71</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </do_show_content_js_category_page>
                     </fields>
                 </AA>
                 <CP translate="label">
