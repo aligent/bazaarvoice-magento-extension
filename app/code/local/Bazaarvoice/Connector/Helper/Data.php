@@ -257,13 +257,13 @@ class Bazaarvoice_Connector_Helper_Data extends Mage_Core_Helper_Abstract
         $ret = '';
 
         if (Mage::getStoreConfig('bazaarvoice/SmartSEOFeed/EnableSmartSEO') === '1') {
-            $displayCode = $this->getDisplayCodeForBVProduct($bvProduct);
+            $deploymentZone = $this->getDeploymentZoneForBVProduct($bvProduct);
             if ($pageFormat != '') {
                 $pageFormat += '/';
             }
 
             $baseFolder = Mage::getBaseDir('var') . DS . 'import' . DS . 'bvfeeds' . DS . 'bvsmartseo' . DS;
-            $smartSEOFile = $baseFolder . $displayCode . DS . $bvProduct . DS . $bvSubjectArr[$this->BV_SUBJECT_TYPE] . DS . '1' . DS . $pageFormat . $bvSubjectArr[$this->BV_EXTERNAL_SUBJECT_ID] . '.htm';
+            $smartSEOFile = $baseFolder . $deploymentZone . DS . $bvProduct . DS . $bvSubjectArr[$this->BV_SUBJECT_TYPE] . DS . '1' . DS . $pageFormat . $bvSubjectArr[$this->BV_EXTERNAL_SUBJECT_ID] . '.htm';
 
             if (isset($_REQUEST[$this->CONST_SMARTSEO_BVRRP])) {
                 $smartSEOFile = $baseFolder . $_REQUEST[$this->CONST_SMARTSEO_BVRRP];
@@ -310,10 +310,10 @@ class Bazaarvoice_Connector_Helper_Data extends Mage_Core_Helper_Abstract
         $hostSubdomain = $this->getSubDomainForBVProduct('activeprofiles') . '/';
         $hostDomain = 'ugc.bazaarvoice.com';
         $bvStaging = $this->getBvStaging();
-        $bvDisplayCode = $this->getDisplayCodeForBVProduct('activeprofiles');
+        $deploymentZone = $this->getDeploymentZoneForBVProduct('activeprofiles');
         $bvUAS = $this->encryptReviewerId($userID);
 
-        return $protocol . '://' . $hostSubdomain . $hostDomain . $bvStaging . 'profiles/' . $bvDisplayCode . '/editprofile.htm?user=' . $bvUAS;
+        return $protocol . '://' . $hostSubdomain . $hostDomain . $bvStaging . 'profiles/' . $deploymentZone . '/editprofile.htm?user=' . $bvUAS;
     }
 
     /**
@@ -341,25 +341,52 @@ class Bazaarvoice_Connector_Helper_Data extends Mage_Core_Helper_Abstract
         $hostSubdomain = $this->getSubDomainForBVProduct($bvProduct);
         $hostDomain = 'ugc.bazaarvoice.com';
         $bvStaging = $this->getBvStaging();
-        $bvDisplayCode = $this->getDisplayCodeForBVProduct($bvProduct);
+        $deploymentZone = $this->getDeploymentZoneForBVProduct($bvProduct);
         $stat = ($isStatic === 1) ? 'static/' : '';
 
-        return $protocol . '://' . $hostSubdomain . '.' . $hostDomain . $bvStaging . $stat . $bvDisplayCode;
+        return $protocol . '://' . $hostSubdomain . '.' . $hostDomain . $bvStaging . $stat . $deploymentZone;
     }
 
     /**
+     * Get url to bvapi.js javascript API file
+     *
+     * C2013 staging call:
+     * ----------------------
+     * <code>
+     *   src="//display-stg.ugc.bazaarvoice.com/static/{{ClientName}}/{{DeploymentZoneName}}/{{Locale}}/bvapi.js"
+     * </code>
+     *
      * @static
      * @param  $isStatic
      * @return string
      */
-    public function getBvApiHostUrl($isStatic)
+    public function getBvApiHostUrl($isStatic, $store = null)
     {
+        // Build protocol based on current page
         $protocol = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != '') ? 'https' : 'http';
-        $apiHostname = Mage::getStoreConfig('bazaarvoice/General/CustomerName') . '.ugc.bazaarvoice.com';
-        $bvStaging = $this->getBvStaging();
-        $bvDisplayCode = $this->getDefaultDisplayCode();
-
-        return $protocol . '://' . $apiHostname . $bvStaging . 'static/' . $bvDisplayCode;
+        // Build hostname based on environment setting
+        $environment = Mage::getStoreConfig('bazaarvoice/General/environment', $store);
+        if ($enviornment == 'staging') {
+            $apiHostname =  'display-stg.ugc.bazaarvoice.com';
+        }
+        else {
+            $apiHostname =  'display.ugc.bazaarvoice.com';
+        }
+        // Build static dir name based on param
+        if($isStatic) {
+            $static = 'static/';
+        }
+        else {
+            $static = '';
+        }
+        // Lookup other config settings
+        $customerName = Mage::getStoreConfig('bazaarvoice/General/CustomerName', $store);
+        $deploymnetZoneName = Mage::getStoreConfig('bazaarvoice/RR/deployment_zone', $store);
+        $localeCode = Mage::getStoreConfig('general/locale/code', $store);
+        // Build url string
+        $url = $protocol . '://' . $apiHostname . '/' . urlencode($static . $customerName . '/' . $deploymnetZoneName . '/' . $localeCode);
+        // Return final url
+        return $url;
     }
 
     /**
@@ -394,16 +421,16 @@ class Bazaarvoice_Connector_Helper_Data extends Mage_Core_Helper_Abstract
      * @static
      * @return string representing the default display code to be used across all available BV products
      */
-    public function getDefaultDisplayCode()
+    public function getDefaultDeploymentZone()
     {
-        $dc = $this->getDisplayCodeForBVProduct('reviews');
-        if (empty($dc)) {
-            $dc = $this->getDisplayCodeForBVProduct('questions');
+        $deploymentZone = $this->getDeploymentZoneForBVProduct('reviews');
+        if (empty($deploymentZone)) {
+            $deploymentZone = $this->getDeploymentZoneForBVProduct('questions');
         }
-        if (empty($dc)) {
-            $dc = $this->getDisplayCodeForBVProduct('activeprofiles');
+        if (empty($deploymentZone)) {
+            $deploymentZone = $this->getDeploymentZoneForBVProduct('activeprofiles');
         }
-        return $dc;
+        return $deploymentZone;
     }
 
     /**
@@ -411,9 +438,9 @@ class Bazaarvoice_Connector_Helper_Data extends Mage_Core_Helper_Abstract
      * @param  $bvProduct String indicating the BV product to get the displaycode for ('reviews', 'questions', 'activeprofiles')
      * @return string
      */
-    public function getDisplayCodeForBVProduct($bvProduct)
+    public function getDeploymentZoneForBVProduct($bvProduct)
     {
-        return $this->getConfigPropertyForBVProduct($bvProduct, 'DefaultDisplayCode');
+        return $this->getConfigPropertyForBVProduct($bvProduct, 'deployment_zone');
     }
 
     /**

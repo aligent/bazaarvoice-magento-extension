@@ -4,14 +4,14 @@ if(Mage::getStoreConfig("bazaarvoice/RR/EnableRR") === "1") {
     $bvSubject = Mage::helper('bazaarvoice')->getExternalSubjectForPage($this);
 
     //Obtain SmartSEO content
-    $content = Mage::helper('bazaarvoice')->getSmartSEOContent("reviews", $bvSubject, "");
+    //$content = Mage::helper('bazaarvoice')->getSmartSEOContent("reviews", $bvSubject, "");
 
     $bvURL = Mage::helper('bazaarvoice')->getBvUrl(false, "reviews");
     $prodId = $bvSubject[Mage::helper('bazaarvoice')->BV_EXTERNAL_SUBJECT_ID];
     $prodName = $bvSubject[Mage::helper('bazaarvoice')->BV_EXTERNAL_SUBJECT_NAME];
 ?>
-<div id="BVReviewsContainer">
-    <?php echo $content; ?>
+<div id="BVRRContainer">
+    <?php //echo $content; ?>
 </div>
 <div id="BVRRLinkContainer"><a href="<?php echo $bvURL . "/" . $prodId; ?>/reviews.htm">Read all <?php echo $prodName; ?> reviews</a></div>
 <script type="text/javascript" language="javascript">
@@ -21,7 +21,7 @@ if(Mage::getStoreConfig("bazaarvoice/RR/EnableRR") === "1") {
         }catch(e){
             //The JS in the try-catch above is user-definable.  Catch and suppress any errors and just return a default.
         }
-        return "<?php echo Mage::helper('bazaarvoice')->getDisplayCodeForBVProduct("reviews"); ?>";
+        return "<?php echo Mage::helper('bazaarvoice')->getDeploymentZoneForBVProduct("reviews"); ?>";
     }
     function getRRDisplayType() {
         try {
