@@ -50,6 +50,10 @@ class Bazaarvoice_Connector_Model_ExportProductFeed extends Mage_Core_Model_Abst
     // Hard code export path and filename in class constants
     const EXPORT_PATH       = '/import-inbox';
     const EXPORT_FILENAME   = 'productfeed.xml';
+    // Magento Brand Attrbute Code
+    // The following attribute code will be used to locate the brand of products
+    // which is sent in the product feed:
+    const MAGE_BRAND_ATTRIBUTE  = 'manufacturer';
 
     private $_categoryIdList = array();    
 
@@ -288,7 +292,7 @@ class Bazaarvoice_Connector_Model_ExportProductFeed extends Mage_Core_Model_Abst
                 // Load product object
                 $product->load($productId->getId());
                 // Set bazaarvoice specific attributes
-                $brand = htmlspecialchars($product->getAttributeText('manufacturer'));
+                $brand = htmlspecialchars($product->getAttributeText(Bazaarvoice_Connector_Model_ExportProductFeed::MAGE_BRAND_ATTRIBUTE));
                 $product->setBrand($brand);
                 // Set default product
                 if($group->getDefaultStoreId() == $store->getStoreId()) {
