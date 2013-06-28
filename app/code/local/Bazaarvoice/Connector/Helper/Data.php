@@ -178,7 +178,7 @@ class Bazaarvoice_Connector_Helper_Data extends Mage_Core_Helper_Abstract
         // Establish a connection to the FTP host
         Mage::log('    BV - beginning file download');
         $connection = ftp_connect($this->getSFTPHost());
-        $login = ftp_login($connection, Mage::getStoreConfig('bazaarvoice/General/CustomerName'), Mage::getStoreConfig('bazaarvoice/General/FTPPassword'));
+        $login = ftp_login($connection, Mage::getStoreConfig('bazaarvoice/General/client_name'), Mage::getStoreConfig('bazaarvoice/General/FTPPassword'));
         ftp_pasv($connection, true);
         if (!$connection || !$login) {
             Mage::log('    BV - FTP connection attempt failed!');
@@ -212,7 +212,7 @@ class Bazaarvoice_Connector_Helper_Data extends Mage_Core_Helper_Abstract
         Mage::log('    BV - starting upload to Bazaarvoice server');
 
         $connection = ftp_connect($this->getSFTPHost($store));
-        $login = ftp_login($connection, Mage::getStoreConfig('bazaarvoice/General/CustomerName', $store->getId()), Mage::getStoreConfig('bazaarvoice/General/FTPPassword', $store->getId()));
+        $login = ftp_login($connection, Mage::getStoreConfig('bazaarvoice/General/client_name', $store->getId()), Mage::getStoreConfig('bazaarvoice/General/FTPPassword', $store->getId()));
         ftp_pasv($connection, true);
         if (!$connection || !$login) {
             Mage::log('    BV - FTP connection attempt failed!');
@@ -380,11 +380,13 @@ class Bazaarvoice_Connector_Helper_Data extends Mage_Core_Helper_Abstract
             $static = '';
         }
         // Lookup other config settings
-        $customerName = Mage::getStoreConfig('bazaarvoice/General/CustomerName', $store);
+        $clientName = Mage::getStoreConfig('bazaarvoice/General/client_name', $store);
         $deploymnetZoneName = Mage::getStoreConfig('bazaarvoice/RR/deployment_zone', $store);
-        $localeCode = Mage::getStoreConfig('general/locale/code', $store);
+        //$localeCode = Mage::getStoreConfig('general/locale/code', $store);
+        // Don't get locale code from Magento, instead get it from BV config, this will allow clients to override this and map it as they see fit
+        $localeCode = Mage::getStoreConfig('bazaarvoice/RR/locale', $store);
         // Build url string
-        $url = $protocol . '://' . $apiHostname . '/' . urlencode($static . $customerName . '/' . $deploymnetZoneName . '/' . $localeCode);
+        $url = $protocol . '://' . $apiHostname . '/' . $static . $clientName . '/' . urlencode($deploymnetZoneName) . '/' . $localeCode;
         // Return final url
         return $url;
     }

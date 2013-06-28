@@ -124,16 +124,15 @@
         <bazaarvoice>
             <General>
                 <environment>staging</environment>
+                <enable_product_feed>1</enable_product_feed>
             </General>
             <RR>
                 <EnableRR>1</EnableRR>
-                <SubDomain>reviews</SubDomain>
                 <DoShowContentJavascript><![CDATA[
                     // code to execute when read reviews link is clicked
                 ]]></DoShowContentJavascript>
             </RR>
             <AA>
-                <SubDomain>answers</SubDomain>
                 <do_show_content_js_product_page><![CDATA[
                     // code to execute when read answers link is clicked
                 ]]></do_show_content_js_product_page>
@@ -150,9 +149,6 @@
                     // no-op
                 ]]></OnEventJavascript>
             </CP>
-            <ProductFeed>
-                <EnableProductFeed>1</EnableProductFeed>
-            </ProductFeed>
 <!--  Temp disable as part of MGP-103         
             <InlineRatingFeed>
                 <EnableInlineRatings>1</EnableInlineRatings>

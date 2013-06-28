@@ -50,6 +50,10 @@ class Bazaarvoice_Connector_Model_ExportProductFeed extends Mage_Core_Model_Abst
     // Hard code export path and filename in class constants
     const EXPORT_PATH       = '/import-inbox';
     const EXPORT_FILENAME   = 'productfeed.xml';
+    // Magento Brand Attrbute Code
+    // The following attribute code will be used to locate the brand of products
+    // which is sent in the product feed:
+    const MAGE_BRAND_ATTRIBUTE  = 'manufacturer';
 
     private $_categoryIdList = array();    
 
@@ -74,7 +78,7 @@ class Bazaarvoice_Connector_Model_ExportProductFeed extends Mage_Core_Model_Abst
         /** @var $group Mage_Core_Model_Store_Group */
         foreach ($groups as $group) {
             try {
-                if (Mage::getStoreConfig('bazaarvoice/ProductFeed/EnableProductFeed', $group->getDefaultStoreId()) === '1') {
+                if (Mage::getStoreConfig('bazaarvoice/General/enable_product_feed', $group->getDefaultStoreId()) === '1') {
                     if(count($group->getStores()) > 0) {
                         Mage::log('    BV - Exporting product feed for store group: ' . $group->getName(), Zend_Log::INFO);
                         $this->exportDailyProductFeedForStoreGroup($group);
@@ -108,7 +112,7 @@ class Bazaarvoice_Connector_Model_ExportProductFeed extends Mage_Core_Model_Abst
      */
     public function exportDailyProductFeedForStoreGroup($group)
     {
-        if (Mage::getStoreConfig('bazaarvoice/ProductFeed/EnableProductFeed', $group->getDefaultStoreId()) === '1') {
+        if (Mage::getStoreConfig('bazaarvoice/General/enable_product_feed', $group->getDefaultStoreId()) === '1') {
             
             $productFeedFilePath = Mage::getBaseDir('var') . DS . 'export' . DS . 'bvfeeds';
             $productFeedFileName = 'productFeed-' . $group->getGroupId() . '-' . date('U') . '.xml';
@@ -127,7 +131,7 @@ class Bazaarvoice_Connector_Model_ExportProductFeed extends Mage_Core_Model_Abst
                 $ioObject->streamWrite("<?xml version=\"1.0\" encoding=\"UTF-8\"?>".
                     "<Feed xmlns=\"http://www.bazaarvoice.com/xs/PRR/ProductFeed/5.2\"".
                     " generator=\"Magento Extension r" . Mage::helper('bazaarvoice')->getExtensionVersion() . "\"".
-                    "  name=\"".Mage::getStoreConfig("bazaarvoice/General/CustomerName", $group->getDefaultStoreId())."\"".
+                    "  name=\"".Mage::getStoreConfig("bazaarvoice/General/client_name", $group->getDefaultStoreId())."\"".
                     "  incremental=\"false\"".
                     "  extractDate=\"".date('Y-m-d')."T".date('H:i:s').".000000\">\n");
 
@@ -288,7 +292,7 @@ class Bazaarvoice_Connector_Model_ExportProductFeed extends Mage_Core_Model_Abst
                 // Load product object
                 $product->load($productId->getId());
                 // Set bazaarvoice specific attributes
-                $brand = htmlspecialchars($product->getAttributeText('manufacturer'));
+                $brand = htmlspecialchars($product->getAttributeText(Bazaarvoice_Connector_Model_ExportProductFeed::MAGE_BRAND_ATTRIBUTE));
                 $product->setBrand($brand);
                 // Set default product
                 if($group->getDefaultStoreId() == $store->getStoreId()) {
