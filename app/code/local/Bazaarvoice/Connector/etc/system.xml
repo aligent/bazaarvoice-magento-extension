@@ -37,15 +37,6 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </environment>
-                        <FacebookXdReceiverUrl>
-                            <label>Facebook Cross-Domain Channel Policy File URL</label>
-                            <frontend_type>text</frontend_type>
-                            <comment><![CDATA[For example, http://www.yourdomain.com/path/to/facebook_xd_receiver.htm]]></comment>
-                            <sort_order>50</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
-                        </FacebookXdReceiverUrl>
                         <SubmissionURL>
                             <label>Bazaarvoice Submission URL</label>
                             <frontend_type>text</frontend_type>
@@ -64,6 +55,7 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </AdminEmail>
+<!-- Comment this out until we use it                        
                         <EncodingKey>
                             <label>Bazaarvoice Encoding Key</label>
                             <frontend_type>text</frontend_type>
@@ -73,6 +65,7 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </EncodingKey>
+-->                        
                         <FTPPassword>
                             <label>Bazaarvoice FTP Password</label>
                             <frontend_type>text</frontend_type>
@@ -121,15 +114,6 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </deployment_zone>
-                        <SubDomain>
-                            <label>Bazaarvoice R&amp;R Sub Domain</label>
-                            <frontend_type>text</frontend_type>
-                            <comment><![CDATA[The sub domain name for the Bazaarvoice Ratings and Reviews. Typically, this is just "reviews".]]></comment>
-                            <sort_order>40</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
-                        </SubDomain>
                         <DoShowContentJavascript>
                             <label>DoShowContent Javascript Callback</label>
                             <frontend_type>textarea</frontend_type>
@@ -170,15 +154,6 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </deployment_zone>
-                        <SubDomain>
-                            <label>Bazaarvoice A&amp;A Sub Domain</label>
-                            <frontend_type>text</frontend_type>
-                            <comment><![CDATA[The sub domain name for the Bazaarvoice Ask &amp; Answer.  Typically, this is just "answers".]]></comment>
-                            <sort_order>40</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
-                        </SubDomain>
                         <do_show_content_js_product_page>
                             <label>Q&amp;A Show Q&amp;A in Tab (product page)</label>
                             <frontend_type>textarea</frontend_type>

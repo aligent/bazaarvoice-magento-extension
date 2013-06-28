@@ -128,13 +128,11 @@
             </General>
             <RR>
                 <EnableRR>1</EnableRR>
-                <SubDomain>reviews</SubDomain>
                 <DoShowContentJavascript><![CDATA[
                     // code to execute when read reviews link is clicked
                 ]]></DoShowContentJavascript>
             </RR>
             <AA>
-                <SubDomain>answers</SubDomain>
                 <do_show_content_js_product_page><![CDATA[
                     // code to execute when read answers link is clicked
                 ]]></do_show_content_js_product_page>
