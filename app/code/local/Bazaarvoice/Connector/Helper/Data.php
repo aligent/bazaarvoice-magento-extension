@@ -382,7 +382,9 @@ class Bazaarvoice_Connector_Helper_Data extends Mage_Core_Helper_Abstract
         // Lookup other config settings
         $clientName = Mage::getStoreConfig('bazaarvoice/General/client_name', $store);
         $deploymnetZoneName = Mage::getStoreConfig('bazaarvoice/RR/deployment_zone', $store);
-        $localeCode = Mage::getStoreConfig('general/locale/code', $store);
+        //$localeCode = Mage::getStoreConfig('general/locale/code', $store);
+        // Don't get locale code from Magento, instead get it from BV config, this will allow clients to override this and map it as they see fit
+        $localeCode = Mage::getStoreConfig('bazaarvoice/RR/locale', $store);
         // Build url string
         $url = $protocol . '://' . $apiHostname . '/' . urlencode($static . $clientName . '/' . $deploymnetZoneName . '/' . $localeCode);
         // Return final url
