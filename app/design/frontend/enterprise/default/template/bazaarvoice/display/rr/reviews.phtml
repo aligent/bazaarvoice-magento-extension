@@ -1,5 +1,6 @@
+<?php if(Mage::getStoreConfig("bazaarvoice/RR/EnableRR") === "1"): ?>
+
 <?php
-if(Mage::getStoreConfig("bazaarvoice/RR/EnableRR") === "1") {
     //Determine if we are rendering on a product or category page
     $bvSubject = Mage::helper('bazaarvoice')->getExternalSubjectForPage($this);
 
@@ -10,42 +11,12 @@ if(Mage::getStoreConfig("bazaarvoice/RR/EnableRR") === "1") {
     $prodId = $bvSubject[Mage::helper('bazaarvoice')->BV_EXTERNAL_SUBJECT_ID];
     $prodName = $bvSubject[Mage::helper('bazaarvoice')->BV_EXTERNAL_SUBJECT_NAME];
 ?>
+
 <div id="BVRRContainer">
     <?php //echo $content; ?>
 </div>
 <div id="BVRRLinkContainer"><a href="<?php echo $bvURL . "/" . $prodId; ?>/reviews.htm">Read all <?php echo $prodName; ?> reviews</a></div>
 <script type="text/javascript" language="javascript">
-    function getRRDisplayCode() {
-        try {
-            <?php echo Mage::helper('bazaarvoice')->getConfigPropertyForBVProduct("reviews", "DisplayCodeJavascript"); ?>
-        }catch(e){
-            //The JS in the try-catch above is user-definable.  Catch and suppress any errors and just return a default.
-        }
-        return "<?php echo Mage::helper('bazaarvoice')->getDeploymentZoneForBVProduct("reviews"); ?>";
-    }
-    function getRRDisplayType() {
-        try {
-            <?php echo Mage::helper('bazaarvoice')->getConfigPropertyForBVProduct("reviews", "DisplayTypeJavascript"); ?>
-        } catch (e) {
-            //The JS in the try-catch above is user-definable.  Catch and suppress any errors and just return a default.
-        }
-        return "";
-    }
-
-    var configData = {};
-    configData.displayCode = getRRDisplayCode();
-    configData.productId = "<?php echo $bvSubject[Mage::helper('bazaarvoice')->BV_EXTERNAL_SUBJECT_ID]; ?>";
-    configData.summaryContainerDiv = "BVCustomerRatings";
-    configData.contentContainerDiv = "BVReviewsContainer";
-    configData.onEvent = function(json) {
-        <?php echo Mage::helper('bazaarvoice')->getConfigPropertyForBVProduct("reviews", "OnEventJavascript") . "\n"; ?>
-    };
-    if (getRRDisplayType() != "") {
-        configData.displayType = getRRDisplayType();
-    }
-    configData.doShowContent = function () {
-    	<?php echo Mage::helper('bazaarvoice')->getConfigPropertyForBVProduct("reviews", "DoShowContentJavascript") . "\n"; ?>
-    };
-    $BV.ui("rr", "show_reviews", configData);
 </script>
-<?php } ?>
+
+<?php endif; ?>
