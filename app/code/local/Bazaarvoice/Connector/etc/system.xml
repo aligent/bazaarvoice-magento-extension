@@ -82,6 +82,16 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </FTPPassword>
+                        <enable_product_feed>
+                            <label>Enable Bazaarvoice Product Feed</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <comment><![CDATA[Turn on Product Feed generation. This will enable generation of a product feed to be sent to the Bazaarvoice FTP server.]]></comment>
+                            <sort_order>120</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </enable_product_feed>
                     </fields>
                 </General>
                 <RR translate="label">
@@ -260,26 +270,6 @@
                         </RenderEditProfileLink>
                     </fields>
                 </CP>
-                <ProductFeed translate="label">
-                    <label>Product Feed Export</label>
-                    <frontend_type>text</frontend_type>
-                    <sort_order>150</sort_order>
-                    <show_in_default>1</show_in_default>
-                    <show_in_website>1</show_in_website>
-                    <show_in_store>1</show_in_store>
-                    <fields>
-                        <EnableProductFeed>
-                            <label>Enable Bazaarvoice Product Feed</label>
-                            <frontend_type>select</frontend_type>
-                            <source_model>adminhtml/system_config_source_yesno</source_model>
-                            <comment><![CDATA[Turn on Product Feed generation. This will enable generation of a product feed to be sent to the Bazaarvoice FTP server.]]></comment>
-                            <sort_order>10</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
-                        </EnableProductFeed>
-                    </fields>
-                </ProductFeed>
 <!--  Temp disable as part of MGP-103         
                 <InlineRatingFeed translate="label">
                     <label>Inline Ratings Feed Import</label>
