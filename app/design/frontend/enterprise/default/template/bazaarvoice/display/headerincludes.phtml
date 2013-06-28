@@ -17,10 +17,10 @@ if (strpos($_SERVER["REQUEST_URI"], "bazaarvoice/profile/display") === false) {
 
 <script type="text/javascript" src="<?php echo $bvApiUrl ?>/bvapi.js"></script>
 <script type="text/javascript" language="javascript">
-
-    var profileDisplayContainerPageName = "bazaarvoice/profile/display";
+    <?php // Comment out extra features until we know we need them ?>
+    <?php //var profileDisplayContainerPageName = "bazaarvoice/profile/display"; ?>
     var configData = {};
-    <?php if (!empty($submissionContainerUrl)) {
+    <?php if (false) { //!empty($submissionContainerUrl)) {
         echo "    configData.submissionContainerUrl = \"".$submissionContainerUrl."\";\n";
     } ?>
     $BV.configure("global", configData);
