@@ -15,11 +15,11 @@
             <action method="setTemplate"><template>page/1column.phtml</template></action>
         </reference>
         <reference name="head">
-            <block type="bazaarvoice/bazaarvoice" name="headerincludes" template="bazaarvoice/submit/headerincludes.phtml" after="-" />
+            <block type="bazaarvoice/bazaarvoice" name="headerincludes" template="bazaarvoice/display/headerincludes.phtml" after="-" />
             <action method="setRobots"><value>noindex, nofollow</value></action>
         </reference>
         <reference name="content">
-            <block type="bazaarvoice/submissioncontainer" name="submissioncontainer" template="bazaarvoice/submit/other/submissioncontainer.phtml" />
+            <block type="bazaarvoice/submissioncontainer" name="submissioncontainer" template="bazaarvoice/submit/submissioncontainer.phtml" />
         </reference>
     </bazaarvoice_index_index>
 

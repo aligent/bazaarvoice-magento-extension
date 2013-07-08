@@ -13,7 +13,13 @@ class Bazaarvoice_Connector_IndexController extends Mage_Core_Controller_Front_A
 
     public function indexAction()
     {
-        $this->loadLayout();
-        $this->renderLayout();
+        if(Mage::getStoreConfig('bazaarvoice/General/enable_bv') === '1') {
+            $this->loadLayout();
+            $this->renderLayout();
+        }
+        else {
+            // Send customer to 404 page
+            $this->_forward('defaultNoRoute');
+        }
     }
 }
