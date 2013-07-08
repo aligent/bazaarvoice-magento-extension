@@ -366,7 +366,7 @@ class Bazaarvoice_Connector_Helper_Data extends Mage_Core_Helper_Abstract
         $protocol = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != '') ? 'https' : 'http';
         // Build hostname based on environment setting
         $environment = Mage::getStoreConfig('bazaarvoice/General/environment', $store);
-        if ($enviornment == 'staging') {
+        if ($environment == 'staging') {
             $apiHostname =  'display-stg.ugc.bazaarvoice.com';
         }
         else {
