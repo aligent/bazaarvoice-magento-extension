@@ -24,44 +24,6 @@
     </bazaarvoice_index_index>
 
     <!--
-    This is the submission container page for Active Profiles
-    It can be accessed at the root of your magento URL context.  For example:
-        www.yourdomain.com/bazaarvoice/profile/edit      (assuming magento runs your entire site)
-        or
-        www.yourdomain.com/magento/bazaarvoice/profile/edit
-    -->
-    <bazaarvoice_profile_edit>
-        <reference name="root">
-            <action method="setTemplate"><template>page/1column.phtml</template></action>
-        </reference>
-        <reference name="head">
-            <block type="bazaarvoice/bazaarvoice" name="headerincludes" template="bazaarvoice/submit/headerincludes.phtml" after="-" />
-        </reference>
-        <reference name="content">
-            <block type="bazaarvoice/bazaarvoice" name="submissioncontainer" template="bazaarvoice/submit/cp/submissioncontainer.phtml" />
-        </reference>
-    </bazaarvoice_profile_edit>
-
-    <!--
-    This is the display container page for Active Profiles
-    It can be accessed at the root of your magento URL context.  For example:
-        www.yourdomain.com/bazaarvoice/profile/display      (assuming magento runs your entire site)
-        or
-        www.yourdomain.com/magento/bazaarvoice/profile/display
-    -->
-    <bazaarvoice_profile_display>
-        <reference name="root">
-            <action method="setTemplate"><template>page/1column.phtml</template></action>
-        </reference>
-        <reference name="head">
-            <block type="bazaarvoice/bazaarvoice" name="headerincludes" template="bazaarvoice/display/headerincludes.phtml" after="-" />
-        </reference>
-        <reference name="content">
-            <block type="bazaarvoice/bazaarvoice" name="displaycontainer" template="bazaarvoice/display/cp/profile.phtml" />
-        </reference>
-    </bazaarvoice_profile_display>
-
-    <!--
     Set up BV content to be injectable on all product and category pages.  Note that the head inclusion of bvapi.js will be
     made on all pages, regardless of whether or not any other blocks are inserted into the template (like bv_reviews).
     -->

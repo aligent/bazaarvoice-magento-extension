@@ -139,15 +139,6 @@
 // If the container is hidden (such as behind a tab), put code here to make it visible (open the tab).
                 ]]></do_show_content_js>
             </qa>
-            <CP>
-                <SubDomain>ugc</SubDomain>
-                <DisplayCodeJavascript><![CDATA[
-                    // no-op
-                ]]></DisplayCodeJavascript>
-                <OnEventJavascript><![CDATA[
-                    // no-op
-                ]]></OnEventJavascript>
-            </CP>
 <!--  Temp disable as part of MGP-103         
             <InlineRatingFeed>
                 <EnableInlineRatings>1</EnableInlineRatings>

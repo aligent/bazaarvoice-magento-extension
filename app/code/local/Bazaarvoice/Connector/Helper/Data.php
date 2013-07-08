@@ -302,23 +302,6 @@ class Bazaarvoice_Connector_Helper_Data extends Mage_Core_Helper_Abstract
     /**
      * @static
      * @param  $userID
-     * @return string
-     */
-    public function getActiveProfilesEditProfileLink($userID)
-    {
-        $protocol = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != '') ? 'https' : 'http';
-        $hostSubdomain = $this->getSubDomainForBVProduct('activeprofiles') . '/';
-        $hostDomain = 'ugc.bazaarvoice.com';
-        $bvStaging = $this->getBvStaging();
-        $deploymentZone = $this->getDeploymentZoneForBVProduct('activeprofiles');
-        $bvUAS = $this->encryptReviewerId($userID);
-
-        return $protocol . '://' . $hostSubdomain . $hostDomain . $bvStaging . 'profiles/' . $deploymentZone . '/editprofile.htm?user=' . $bvUAS;
-    }
-
-    /**
-     * @static
-     * @param  $userID
      * @param  $sharedkey
      * @return string
      */
@@ -332,7 +315,7 @@ class Bazaarvoice_Connector_Helper_Data extends Mage_Core_Helper_Abstract
     /**
      * @static
      * @param  $isStatic boolean indicating whether or not to return a URL to fetch static BV resources
-     * @param  $bvProduct String indicating the BV product to get the URL for ('reviews', 'questions', 'activeprofiles')
+     * @param  $bvProduct String indicating the BV product to get the URL for ('reviews', 'questions')
      * @return string
      */
     public function getBvUrl($isStatic, $bvProduct)
@@ -425,29 +408,22 @@ class Bazaarvoice_Connector_Helper_Data extends Mage_Core_Helper_Abstract
      */
     public function getDefaultDeploymentZone()
     {
-        $deploymentZone = $this->getDeploymentZoneForBVProduct('reviews');
-        if (empty($deploymentZone)) {
-            $deploymentZone = $this->getDeploymentZoneForBVProduct('questions');
-        }
-        if (empty($deploymentZone)) {
-            $deploymentZone = $this->getDeploymentZoneForBVProduct('activeprofiles');
-        }
-        return $deploymentZone;
-    }
-
-    /**
-     * @static
-     * @param  $bvProduct String indicating the BV product to get the displaycode for ('reviews', 'questions', 'activeprofiles')
-     * @return string
-     */
-    public function getDeploymentZoneForBVProduct($bvProduct)
-    {
         return Mage::getStoreConfig('bazaarvoice/General/deployment_zone');
     }
 
     /**
      * @static
-     * @param  $bvProduct String indicating the BV product to get the sub-domain for ('reviews', 'questions', 'activeprofiles')
+     * @param  $bvProduct String indicating the BV product to get the displaycode for ('reviews', 'questions')
+     * @return string
+     */
+    public function getDeploymentZoneForBVProduct($bvProduct)
+    {
+        return getDefaultDeploymentZone();
+    }
+
+    /**
+     * @static
+     * @param  $bvProduct String indicating the BV product to get the sub-domain for ('reviews', 'questions')
      * @return string
      */
     public function getSubDomainForBVProduct($bvProduct)
@@ -463,8 +439,6 @@ class Bazaarvoice_Connector_Helper_Data extends Mage_Core_Helper_Abstract
         $code = 'rr';
         if ($bvProduct === 'questions') {
             $code = 'qa';
-        } else if ($bvProduct === 'activeprofiles') {
-            $code = 'CP';
         }
 
         return Mage::getStoreConfig('bazaarvoice/'.$code.'/'.$propertyName);
