@@ -366,7 +366,7 @@ class Bazaarvoice_Connector_Helper_Data extends Mage_Core_Helper_Abstract
         $protocol = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != '') ? 'https' : 'http';
         // Build hostname based on environment setting
         $environment = Mage::getStoreConfig('bazaarvoice/General/environment', $store);
-        if ($enviornment == 'staging') {
+        if ($environment == 'staging') {
             $apiHostname =  'display-stg.ugc.bazaarvoice.com';
         }
         else {
@@ -381,10 +381,10 @@ class Bazaarvoice_Connector_Helper_Data extends Mage_Core_Helper_Abstract
         }
         // Lookup other config settings
         $clientName = Mage::getStoreConfig('bazaarvoice/General/client_name', $store);
-        $deploymnetZoneName = Mage::getStoreConfig('bazaarvoice/RR/deployment_zone', $store);
+        $deploymnetZoneName = Mage::getStoreConfig('bazaarvoice/General/deployment_zone', $store);
         //$localeCode = Mage::getStoreConfig('general/locale/code', $store);
         // Don't get locale code from Magento, instead get it from BV config, this will allow clients to override this and map it as they see fit
-        $localeCode = Mage::getStoreConfig('bazaarvoice/RR/locale', $store);
+        $localeCode = Mage::getStoreConfig('bazaarvoice/General/locale', $store);
         // Build url string
         $url = $protocol . '://' . $apiHostname . '/' . $static . $clientName . '/' . urlencode($deploymnetZoneName) . '/' . $localeCode;
         // Return final url
@@ -442,7 +442,7 @@ class Bazaarvoice_Connector_Helper_Data extends Mage_Core_Helper_Abstract
      */
     public function getDeploymentZoneForBVProduct($bvProduct)
     {
-        return $this->getConfigPropertyForBVProduct($bvProduct, 'deployment_zone');
+        return Mage::getStoreConfig('bazaarvoice/General/deployment_zone');
     }
 
     /**
@@ -460,9 +460,9 @@ class Bazaarvoice_Connector_Helper_Data extends Mage_Core_Helper_Abstract
 
     public function getConfigPropertyForBVProduct($bvProduct, $propertyName)
     {
-        $code = 'RR';
+        $code = 'rr';
         if ($bvProduct === 'questions') {
-            $code = 'AA';
+            $code = 'qa';
         } else if ($bvProduct === 'activeprofiles') {
             $code = 'CP';
         }

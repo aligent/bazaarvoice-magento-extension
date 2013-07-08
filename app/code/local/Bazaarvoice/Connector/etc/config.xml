@@ -123,23 +123,22 @@
     <default>
         <bazaarvoice>
             <General>
+                <enable_bv>0</enable_bv>
                 <environment>staging</environment>
                 <enable_product_feed>1</enable_product_feed>
             </General>
-            <RR>
-                <EnableRR>1</EnableRR>
-                <DoShowContentJavascript><![CDATA[
-                    // code to execute when read reviews link is clicked
-                ]]></DoShowContentJavascript>
-            </RR>
-            <AA>
-                <do_show_content_js_product_page><![CDATA[
-                    // code to execute when read answers link is clicked
-                ]]></do_show_content_js_product_page>
-                <do_show_content_js_category_page><![CDATA[
-                    // code to execute when read answers link is clicked
-                ]]></do_show_content_js_category_page>
-            </AA>
+            <rr>
+                <enable_rr>1</enable_rr>
+                <do_show_content_js><![CDATA[
+// If the container is hidden (such as behind a tab), put code here to make it visible (open the tab).
+                ]]></do_show_content_js>
+            </rr>
+            <qa>
+                <enable_qa>1</enable_qa>
+                <do_show_content_js><![CDATA[
+// If the container is hidden (such as behind a tab), put code here to make it visible (open the tab).
+                ]]></do_show_content_js>
+            </qa>
             <CP>
                 <SubDomain>ugc</SubDomain>
                 <DisplayCodeJavascript><![CDATA[
