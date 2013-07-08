@@ -88,9 +88,6 @@
         <reference name="content">
             <reference name="category.products">
                 <reference name="product_list" >
-                    <!-- Review Summary and List blocks intentionally omitted here.  RR is not supported on categories.  -->
-                    <block type="bazaarvoice/bazaarvoice" name="questionsummary" as="bv_questionsummary" template="bazaarvoice/display/qa/questionsummary.phtml" />
-                    <block type="bazaarvoice/bazaarvoice" name="questions" as="bv_questions" template="bazaarvoice/display/qa/questions.phtml" />
                 </reference>
             </reference>
         </reference>
