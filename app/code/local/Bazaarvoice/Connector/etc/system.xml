@@ -37,6 +37,24 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </environment>
+                        <deployment_zone>
+                            <label>Bazaarvoice Deployment Zone</label>
+                            <frontend_type>text</frontend_type>
+                            <comment><![CDATA[The deployment zone for your Bazaarvoice R&amp;R and Ask &amp; Answer implementations.  For example: "Main Site"]]></comment>
+                            <sort_order>20</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </deployment_zone>
+                        <locale>
+                            <label>Bazaarvoice Locale Setting</label>
+                            <frontend_type>text</frontend_type>
+                            <comment><![CDATA[The locale for your Bazaarvoice R&amp;R and Ask &amp; Answer implementations.  For example: "en_US"]]></comment>
+                            <sort_order>21</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </locale>
                         <SubmissionURL>
                             <label>Bazaarvoice Submission URL</label>
                             <frontend_type>text</frontend_type>
@@ -105,24 +123,6 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </EnableRR>
-                        <deployment_zone>
-                            <label>Bazaarvoice Ratings &amp; Reviews Default Deployment Zone</label>
-                            <frontend_type>text</frontend_type>
-                            <comment><![CDATA[The deployment zone for your Bazaarvoice R&amp;R implementation.  For example: "Main Site"]]></comment>
-                            <sort_order>20</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
-                        </deployment_zone>
-                        <locale>
-                            <label>Bazaarvoice Ratings &amp; Reviews Locale Setting</label>
-                            <frontend_type>text</frontend_type>
-                            <comment><![CDATA[The locale for your Bazaarvoice R&amp;R implementation.  For example: "en_US"]]></comment>
-                            <sort_order>21</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
-                        </locale>
                         <DoShowContentJavascript>
                             <label>DoShowContent Javascript Callback</label>
                             <frontend_type>textarea</frontend_type>
@@ -154,24 +154,6 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </EnableAA>
-                        <deployment_zone>
-                            <label>Bazaarvoice Ask &amp; Answer Default Deployment Zone</label>
-                            <frontend_type>text</frontend_type>
-                            <comment><![CDATA[The deployment zone for your Bazaarvoice A&amp;A implementation.  For example: "Main Site"]]></comment>
-                            <sort_order>20</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
-                        </deployment_zone>
-                        <locale>
-                            <label>Bazaarvoice Ask &amp; Answer Locale Setting</label>
-                            <frontend_type>text</frontend_type>
-                            <comment><![CDATA[The locale for your Bazaarvoice A&amp;A implementation.  For example: "en_US"]]></comment>
-                            <sort_order>21</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
-                        </locale>
                         <do_show_content_js_product_page>
                             <label>Q&amp;A Show Q&amp;A in Tab (product page)</label>
                             <frontend_type>textarea</frontend_type>
