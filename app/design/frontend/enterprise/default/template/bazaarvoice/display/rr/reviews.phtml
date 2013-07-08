@@ -1,10 +1,13 @@
+<?php
+$doShowContentJs = Mage::getStoreConfig('bazaarvoice/RR/do_show_content_js');
+?>
 <?php if(Mage::getStoreConfig("bazaarvoice/RR/EnableRR") === "1"): ?>
 <div id="BVRRContainer"></div>
 <script type="text/javascript">
   $BV.ui( 'rr', 'show_reviews', {
     doShowContent : function () {
-    // If the container is hidden (such as behind a tab), put code here to make it visible (open the tab).
-  }
-});    
+      <?php echo $doShowContentJs ?>
+    }
+  });    
 </script>
 <?php endif; ?>

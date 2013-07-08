@@ -123,7 +123,7 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </EnableRR>
-                        <DoShowContentJavascript>
+                        <do_show_content_js>
                             <label>DoShowContent Javascript Callback</label>
                             <frontend_type>textarea</frontend_type>
                             <comment><![CDATA[The Bazaarvoice doShowContent javascript callback is triggered when the "read all reviews" link in the review summary is clicked.
@@ -133,7 +133,7 @@
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
-                        </DoShowContentJavascript>
+                        </do_show_content_js>
                     </fields>
                 </RR>
                 <AA translate="label">
@@ -154,8 +154,8 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </EnableAA>
-                        <do_show_content_js_product_page>
-                            <label>Q&amp;A Show Q&amp;A in Tab (product page)</label>
+                        <do_show_content_js>
+                            <label>Q&amp;A Show Q&amp;A in Tab</label>
                             <frontend_type>textarea</frontend_type>
                             <comment><![CDATA[The Bazaarvoice doShowContent javascript callback is triggered when the "read all Q&A" link in the question/answer summary is clicked.
                                 You may provide code here that you wish to execute on said click event.  For example, you may want to activate a specific tab on the page.  This
@@ -164,18 +164,7 @@
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
-                        </do_show_content_js_product_page>
-                        <do_show_content_js_category_page>
-                            <label>Q&amp;A Show Q&amp;A in Tab (category page)</label>
-                            <frontend_type>textarea</frontend_type>
-                            <comment><![CDATA[The Bazaarvoice doShowContent javascript callback is triggered when the "read all Q&A" link in the question/answer summary is clicked.
-                                You may provide code here that you wish to execute on said click event.  For example, you may want to activate a specific tab on the page.  This
-                            code will be wrapped in a javascript function(){...} block. See your Bazaarvoice Implementation manual for further information.]]></comment>
-                            <sort_order>71</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
-                        </do_show_content_js_category_page>
+                        </do_show_content_js>
                     </fields>
                 </AA>
                 <CP translate="label">

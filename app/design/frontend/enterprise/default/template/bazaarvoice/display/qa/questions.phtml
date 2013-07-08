@@ -1,11 +1,13 @@
-
+<?php
+$doShowContentJs = Mage::getStoreConfig('bazaarvoice/AA/do_show_content_js');
+?>
 <?php if(Mage::getStoreConfig("bazaarvoice/AA/EnableAA") === "1"): ?>
 <div id="BVQAContainer"></div>
 <script type="text/javascript">
   $BV.ui( 'qa', 'show_questions', {
-  doShowContent : function () {
-    // If the container is hidden (such as behind a tab), put code here to make it visible (open the tab).
-  }
-});
+    doShowContent : function () {
+      <?php echo $doShowContentJs ?>
+    }
+  });
 </script>
 <?php endif; ?>

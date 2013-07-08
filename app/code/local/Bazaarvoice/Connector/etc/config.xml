@@ -128,17 +128,14 @@
             </General>
             <RR>
                 <EnableRR>1</EnableRR>
-                <DoShowContentJavascript><![CDATA[
-                    // code to execute when read reviews link is clicked
-                ]]></DoShowContentJavascript>
+                <do_show_content_js><![CDATA[
+// If the container is hidden (such as behind a tab), put code here to make it visible (open the tab).
+                ]]></do_show_content_js>
             </RR>
             <AA>
-                <do_show_content_js_product_page><![CDATA[
-                    // code to execute when read answers link is clicked
-                ]]></do_show_content_js_product_page>
-                <do_show_content_js_category_page><![CDATA[
-                    // code to execute when read answers link is clicked
-                ]]></do_show_content_js_category_page>
+                <do_show_content_js><![CDATA[
+// If the container is hidden (such as behind a tab), put code here to make it visible (open the tab).
+                ]]></do_show_content_js>
             </AA>
             <CP>
                 <SubDomain>ugc</SubDomain>
