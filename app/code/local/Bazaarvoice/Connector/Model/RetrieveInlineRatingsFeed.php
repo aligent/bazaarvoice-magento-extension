@@ -19,7 +19,8 @@ class Bazaarvoice_Connector_Model_RetrieveInlineRatingsFeed extends Mage_Core_Mo
         /** @var $group Mage_Core_Model_Store_Group */
         foreach ($groups as $group) {
             try {
-                if (Mage::getStoreConfig('bazaarvoice/InlineRatingFeed/EnableInlineRatings', $group->getDefaultStoreId()) === '1') {
+                if (Mage::getStoreConfig('bazaarvoice/InlineRatingFeed/EnableInlineRatings', $group->getDefaultStoreId()) === '1'
+                    && Mage::getStoreConfig('bazaarvoice/General/enable_bv', $group->getDefaultStoreId()) === '1') {
                     if(count($group->getStores()) > 0) {
                         Mage::log('    BV - Importing Inline Ratings feed for store group: ' . $group->getName(), Zend_Log::INFO);
                         $this->retrieveInlineRatingsFeedForStoreGroup($group);

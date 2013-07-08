@@ -1,3 +1,4 @@
+<?php if(Mage::getStoreConfig("bazaarvoice/General/enable_bv") === "1"): ?>
 <?php
 $doShowContentJs = Mage::getStoreConfig('bazaarvoice/rr/do_show_content_js');
 ?>
@@ -10,4 +11,5 @@ $doShowContentJs = Mage::getStoreConfig('bazaarvoice/rr/do_show_content_js');
     }
   });    
 </script>
+<?php endif; ?>
 <?php endif; ?>

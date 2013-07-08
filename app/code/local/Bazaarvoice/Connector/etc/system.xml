@@ -18,6 +18,16 @@
                     <show_in_website>1</show_in_website>
                     <show_in_store>1</show_in_store>
                     <fields>
+                        <enable_bv>
+                            <label>Enable Bazaarvoice Extension</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <comment><![CDATA[Enable or disable all BazaarVoice Magento Extension Features.]]></comment>
+                            <sort_order>1</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </enable_bv>
                         <client_name translate="label comment">
                             <label>Bazaarvoice Client Name</label>
                             <frontend_type>text</frontend_type>

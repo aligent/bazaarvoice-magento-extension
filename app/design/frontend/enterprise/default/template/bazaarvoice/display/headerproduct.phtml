@@ -1,3 +1,5 @@
+<?php if(Mage::getStoreConfig("bazaarvoice/General/enable_bv") === "1"): ?>
+
 <?php
 $product = Mage::registry('product');
 $productId = '';
@@ -22,5 +24,7 @@ var configData = {};
 } ?>
 $BV.configure("global", configData);
 </script>
+
+<?php endif; ?>
 
 <?php endif; ?>

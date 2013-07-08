@@ -1,3 +1,5 @@
+<?php if(Mage::getStoreConfig("bazaarvoice/General/enable_bv") === "1"): ?>
 <script>
 $BV.container('global', {});
 </script>
+<?php endif;?>

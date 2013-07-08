@@ -1,3 +1,5 @@
+<?php if(Mage::getStoreConfig("bazaarvoice/General/enable_bv") === "1"): ?>
+
 <?php
 $bvApiUrl = Mage::helper('bazaarvoice')->getBvApiHostUrl(true);
 
@@ -16,3 +18,5 @@ if (strpos($_SERVER["REQUEST_URI"], "bazaarvoice/profile/display") === false) {
 ?>
 
 <script type="text/javascript" src="<?php echo $bvApiUrl ?>/bvapi.js"></script>
+
+<?php endif; ?>

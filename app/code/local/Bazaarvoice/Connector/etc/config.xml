@@ -123,6 +123,7 @@
     <default>
         <bazaarvoice>
             <General>
+                <enable_bv>0</enable_bv>
                 <environment>staging</environment>
                 <enable_product_feed>1</enable_product_feed>
             </General>

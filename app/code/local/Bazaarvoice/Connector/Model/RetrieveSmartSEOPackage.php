@@ -19,7 +19,8 @@ class Bazaarvoice_Connector_Model_RetrieveSmartSEOPackage extends Mage_Core_Mode
         /** @var $group Mage_Core_Model_Store_Group */
         foreach ($groups as $group) {
             try {
-                if (Mage::getStoreConfig('bazaarvoice/SmartSEOFeed/EnableSmartSEO', $group->getDefaultStoreId()) === '1') {
+                if (Mage::getStoreConfig('bazaarvoice/SmartSEOFeed/EnableSmartSEO', $group->getDefaultStoreId()) === '1'
+                    && Mage::getStoreConfig('bazaarvoice/General/enable_bv', $group->getDefaultStoreId()) === '1') {                    
                     if(count($group->getStores()) > 0) {
                         Mage::log('    BV - Importing Smart SEO feed for store group: ' . $group->getName(), Zend_Log::INFO);
                         $this->retrieveSmartSEOPackageForStoreGroup($group);

@@ -1,3 +1,4 @@
+<?php if(Mage::getStoreConfig("bazaarvoice/General/enable_bv") === "1"): ?>
 <?php
 $bvApiUrl = Mage::helper('bazaarvoice')->getBvApiHostUrl(true);
 $bvFBXdReceiverUrl = Mage::getStoreConfig("bazaarvoice/General/FacebookXdReceiverUrl");
@@ -17,3 +18,4 @@ if($customerSession->isLoggedIn()) {
     }
     $BV.configure("global", configData);
 </script>
+<?php endif;?>
