@@ -79,6 +79,8 @@
 
 /app/design/frontend/*
 !/app/design/frontend/enterprise/
+/app/design/frontend/enterprise/sandbox/
+/app/design/frontend/enterprise/test/
 /app/design/frontend/enterprise/iphone/
 /app/design/frontend/enterprise/default/etc/
 /app/design/frontend/enterprise/default/locale/
