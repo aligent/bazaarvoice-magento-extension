@@ -153,6 +153,9 @@
                 <EnablePurchaseFeed>1</EnablePurchaseFeed>
                 <TriggeringEvent>shipping</TriggeringEvent>
             </PurchaseFeed>
+            <roibeacon>
+                <enable_roibeacon>1</enable_roibeacon>
+            </roibeacon>
         </bazaarvoice>
     </default>
 

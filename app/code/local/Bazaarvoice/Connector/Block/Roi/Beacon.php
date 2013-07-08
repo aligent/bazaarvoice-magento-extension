@@ -6,7 +6,8 @@ class Bazaarvoice_Connector_Block_Roi_Beacon extends Mage_Core_Block_Template
     public function _construct()
     {
         // enabled/disabled in admin
-        $this->_isEnabled = Mage::getStoreConfig('bazaarvoice/ROIBeacon/EnableROIBeacon') === '1';
+        $this->_isEnabled = Mage::getStoreConfig('bazaarvoice/roibeacon/enable_roibeacon') === '1'
+                                && Mage::getStoreConfig('bazaarvoice/General/enable_bv') === '1';
     }
 
     /**
