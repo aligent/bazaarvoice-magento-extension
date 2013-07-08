@@ -40,7 +40,7 @@
                         <deployment_zone>
                             <label>Bazaarvoice Deployment Zone</label>
                             <frontend_type>text</frontend_type>
-                            <comment><![CDATA[The deployment zone for your Bazaarvoice R&amp;R and Ask &amp; Answer implementations.  For example: "Main Site"]]></comment>
+                            <comment><![CDATA[The deployment zone for your Bazaarvoice R&amp;R and Q &amp; A implementations.  For example: "Main Site"]]></comment>
                             <sort_order>20</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
@@ -49,7 +49,7 @@
                         <locale>
                             <label>Bazaarvoice Locale Setting</label>
                             <frontend_type>text</frontend_type>
-                            <comment><![CDATA[The locale for your Bazaarvoice R&amp;R and Ask &amp; Answer implementations.  For example: "en_US"]]></comment>
+                            <comment><![CDATA[The locale for your Bazaarvoice R&amp;R and A &amp; A implementations.  For example: "en_US"]]></comment>
                             <sort_order>21</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
@@ -105,7 +105,7 @@
                         </enable_product_feed>
                     </fields>
                 </General>
-                <RR translate="label">
+                <rr translate="label">
                     <label>Ratings and Reviews</label>
                     <frontend_type>text</frontend_type>
                     <sort_order>110</sort_order>
@@ -113,7 +113,7 @@
                     <show_in_website>1</show_in_website>
                     <show_in_store>1</show_in_store>
                     <fields>
-                        <EnableRR>
+                        <enable_rr>
                             <label>Enable Bazaarvoice R&amp;R</label>
                             <frontend_type>select</frontend_type>
                             <source_model>adminhtml/system_config_source_yesno</source_model>
@@ -122,7 +122,7 @@
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
-                        </EnableRR>
+                        </enable_rr>
                         <do_show_content_js>
                             <label>DoShowContent Javascript Callback</label>
                             <frontend_type>textarea</frontend_type>
@@ -135,29 +135,29 @@
                             <show_in_store>1</show_in_store>
                         </do_show_content_js>
                     </fields>
-                </RR>
-                <AA translate="label">
-                    <label>Ask and Answer</label>
+                </rr>
+                <qa translate="label">
+                    <label>Questions and Answers</label>
                     <frontend_type>text</frontend_type>
                     <sort_order>120</sort_order>
                     <show_in_default>1</show_in_default>
                     <show_in_website>1</show_in_website>
                     <show_in_store>1</show_in_store>
                     <fields>
-                        <EnableAA>
-                            <label>Enable Bazaarvoice A&amp;A</label>
+                        <enable_qa>
+                            <label>Enable Bazaarvoice Q&amp;A</label>
                             <frontend_type>select</frontend_type>
                             <source_model>adminhtml/system_config_source_yesno</source_model>
-                            <comment><![CDATA[Turn on Bazaarvoice Ask &amp; Answer. This will enable display of A&amp;A content on your product and category pages.]]></comment>
+                            <comment><![CDATA[Turn on Bazaarvoice Q &amp; A. This will enable display of Q&amp;A content on your product and category pages.]]></comment>
                             <sort_order>10</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
-                        </EnableAA>
+                        </enable_qa>
                         <do_show_content_js>
                             <label>Q&amp;A Show Q&amp;A in Tab</label>
                             <frontend_type>textarea</frontend_type>
-                            <comment><![CDATA[The Bazaarvoice doShowContent javascript callback is triggered when the "read all Q&A" link in the question/answer summary is clicked.
+                            <comment><![CDATA[The Bazaarvoice doShowContent javascript callback is triggered when the "read all Q&amp;A" link in the question/answer summary is clicked.
                                 You may provide code here that you wish to execute on said click event.  For example, you may want to activate a specific tab on the page.  This
                             code will be wrapped in a javascript function(){...} block. See your Bazaarvoice Implementation manual for further information.]]></comment>
                             <sort_order>70</sort_order>
@@ -166,7 +166,7 @@
                             <show_in_store>1</show_in_store>
                         </do_show_content_js>
                     </fields>
-                </AA>
+                </qa>
                 <CP translate="label">
                     <label>Active Profiles</label>
                     <frontend_type>text</frontend_type>

@@ -1,7 +1,7 @@
 <?php
-$doShowContentJs = Mage::getStoreConfig('bazaarvoice/AA/do_show_content_js');
+$doShowContentJs = Mage::getStoreConfig('bazaarvoice/qa/do_show_content_js');
 ?>
-<?php if(Mage::getStoreConfig("bazaarvoice/AA/EnableAA") === "1"): ?>
+<?php if(Mage::getStoreConfig("bazaarvoice/qa/enable_qa") === "1"): ?>
 <div id="BVQAContainer"></div>
 <script type="text/javascript">
   $BV.ui( 'qa', 'show_questions', {

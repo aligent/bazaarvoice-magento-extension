@@ -126,17 +126,18 @@
                 <environment>staging</environment>
                 <enable_product_feed>1</enable_product_feed>
             </General>
-            <RR>
-                <EnableRR>1</EnableRR>
+            <rr>
+                <enable_rr>1</enable_rr>
                 <do_show_content_js><![CDATA[
 // If the container is hidden (such as behind a tab), put code here to make it visible (open the tab).
                 ]]></do_show_content_js>
-            </RR>
-            <AA>
+            </rr>
+            <qa>
+                <enable_qa>1</enable_qa>
                 <do_show_content_js><![CDATA[
 // If the container is hidden (such as behind a tab), put code here to make it visible (open the tab).
                 ]]></do_show_content_js>
-            </AA>
+            </qa>
             <CP>
                 <SubDomain>ugc</SubDomain>
                 <DisplayCodeJavascript><![CDATA[

@@ -460,9 +460,9 @@ class Bazaarvoice_Connector_Helper_Data extends Mage_Core_Helper_Abstract
 
     public function getConfigPropertyForBVProduct($bvProduct, $propertyName)
     {
-        $code = 'RR';
+        $code = 'rr';
         if ($bvProduct === 'questions') {
-            $code = 'AA';
+            $code = 'qa';
         } else if ($bvProduct === 'activeprofiles') {
             $code = 'CP';
         }
