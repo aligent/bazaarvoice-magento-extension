@@ -67,6 +67,7 @@
     <catalog_product_view>
         <reference name="head">
             <block type="bazaarvoice/bazaarvoice" name="headerincludes" template="bazaarvoice/display/headerincludes.phtml" after="-" />
+            <block type="bazaarvoice/bazaarvoice" name="headerproduct" template="bazaarvoice/display/headerproduct.phtml" after="headerincludes" />
         </reference>
         <reference name="content">
             <reference name="product.info">
