@@ -10,6 +10,8 @@ class Bazaarvoice_Connector_Helper_Data extends Mage_Core_Helper_Abstract
     const CONST_SMARTSEO_BVRRP = 'bvrrp';
     const CONST_SMARTSEO_BVQAP = 'bvqap';
     const CONST_SMARTSEO_BVSYP = 'bvsyp';
+    
+    const USE_MAGENTO_CATEGORY_ID = false;
 
     public function getInlineRatingsHtml($product, $pageContext)
     {
@@ -56,7 +58,6 @@ class Bazaarvoice_Connector_Helper_Data extends Mage_Core_Helper_Abstract
      */
     public function getProductId($product)
     {
-
         $rawProductId = $product->getSku();
 
         // >> Customizations go here
@@ -107,15 +108,19 @@ class Bazaarvoice_Connector_Helper_Data extends Mage_Core_Helper_Abstract
      */
     public function getCategoryId($category)
     {
-
-        $rawCategoryId = $category->getUrlKey();
-
-        // >> Customizations go here
-        //
-        // << No further customizations after this
-
-        return $this->replaceIllegalCharacters($rawCategoryId);
-
+        // Check config setting to see if we should use Magento category id
+        if(Bazaarvoice_Connector_Helper_Data::USE_MAGENTO_CATEGORY_ID) {
+            return $category->getId();
+        }
+        else {
+            // Generate a unique id based on category path
+            // Start with url path
+            $rawCategoryId = $category->getUrlPath();
+            // Replace slashes with dashes in url path
+            $rawCategoryId = str_replace('/', '-', $rawCategoryId);
+            // Replace any illegal characters
+            return $this->replaceIllegalCharacters($rawCategoryId);
+        }
     }
 
     /**

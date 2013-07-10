@@ -213,14 +213,6 @@ class Bazaarvoice_Connector_Model_ExportProductFeed extends Mage_Core_Model_Abst
             $categoryName = htmlspecialchars($categoryDefault->getName(), ENT_QUOTES, 'UTF-8');
             $categoryPageUrl = htmlspecialchars($categoryDefault->getCategoryIdUrl(), ENT_QUOTES, 'UTF-8');
 
-            /*
-             * We are now filtering the collection to eliminate these cats             
-            if (!$category->getIsActive() || empty($categoryExternalId) || is_null($categoryExternalId) || $category->getLevel() == 1) {
-                Mage::log('        BV - Skipping category: ' . $category->getUrlKey());
-                continue;
-            }
-            */
-
             $parentExtId = '';
             $parentCategory = Mage::getModel('catalog/category')->load($categoryId->getParentId());
             // If parent category is the root category, then ignore it
@@ -308,15 +300,6 @@ class Bazaarvoice_Connector_Model_ExportProductFeed extends Mage_Core_Model_Abst
             // Generate product external ID from SKU, this is the same for all groups / stores / views
             $productExternalId = Mage::helper('bazaarvoice')->getProductId($productDefault);
 
-            // A status of 1 means enabled, 0 means disabled
-            // We already filtered collection by status, and SKU is always guaranteed to be non-null, so we can skip this check
-            /*
-            if ($product->getStatus() != 1 || empty($productExternalId) || is_null($productExternalId)) {
-                Mage::log('        BV - Skipping product: ' . $product->getSku());
-                continue;
-            }
-            */
-            
             $ioObject->streamWrite("<Product>\n".
                 '    <ExternalId>'.$productExternalId."</ExternalId>\n".
                 '    <Name>'.htmlspecialchars($productDefault->getName(), ENT_QUOTES, 'UTF-8')."</Name>\n".
