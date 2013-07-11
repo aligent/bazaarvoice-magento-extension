@@ -5,6 +5,11 @@
 class Bazaarvoice_Connector_Model_RetrieveInlineRatingsFeed extends Mage_Core_Model_Abstract
 {
 
+    // Set this value to true to enable the the inline ratings feed on a scheduled basis
+    const INLINE_RATINGS_FEED_ENABLED = false;
+    // Hard code feed file name in const for easy customization
+    const FEED_FILENAME   = 'bv_ratings.xml.gz';
+
     protected function _construct()
     {
     }
@@ -19,8 +24,7 @@ class Bazaarvoice_Connector_Model_RetrieveInlineRatingsFeed extends Mage_Core_Mo
         /** @var $group Mage_Core_Model_Store_Group */
         foreach ($groups as $group) {
             try {
-                if (Mage::getStoreConfig('bazaarvoice/InlineRatingFeed/EnableInlineRatings', $group->getDefaultStoreId()) === '1'
-                    && Mage::getStoreConfig('bazaarvoice/General/enable_bv', $group->getDefaultStoreId()) === '1') {
+                if (self::INLINE_RATINGS_FEED_ENABLED && Mage::getStoreConfig('bazaarvoice/General/enable_bv', $group->getDefaultStoreId()) === '1') {
                     if(count($group->getStores()) > 0) {
                         Mage::log('    BV - Importing Inline Ratings feed for store group: ' . $group->getName(), Zend_Log::INFO);
                         $this->retrieveInlineRatingsFeedForStoreGroup($group);
@@ -50,12 +54,12 @@ class Bazaarvoice_Connector_Model_RetrieveInlineRatingsFeed extends Mage_Core_Mo
      */
     public function retrieveInlineRatingsFeedForStoreGroup($group)
     {
-        if (Mage::getStoreConfig('bazaarvoice/InlineRatingFeed/EnableInlineRatings', $group->getDefaultStoreId()) === '1') {
+        if (self::INLINE_RATINGS_FEED_ENABLED && Mage::getStoreConfig('bazaarvoice/General/enable_bv', $group->getDefaultStoreId()) === '1') {
             $localFilePath = Mage::getBaseDir('var') . DS . 'import' . DS . 'bvfeeds';
             $localFileName = 'inline-ratings-' . $group->getGroupId() . '-' . date('U') . '.xml';
             $gzLocalFilename = $localFileName . '.gz';
             // Hard code feed file path
-            $remoteFile = '/feeds/' . Mage::getStoreConfig('bazaarvoice/InlineRatingFeed/FeedFileName', $group->getDefaultStoreId());
+            $remoteFile = '/feeds/' . self::FEED_FILENAME;
 
             if (!Mage::helper('bazaarvoice')->downloadFile($localFilePath, $gzLocalFilename, $remoteFile)) {
                 // Unable to download the file.  Check magento log for messages.
