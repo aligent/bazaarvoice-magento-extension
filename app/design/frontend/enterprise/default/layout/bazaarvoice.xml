@@ -4,7 +4,7 @@
     </default>
 
     <!--
-    This is the submission container page for R&R, A&A and Stories
+    This is the submission container page for R&R and Q&A
     It can be accessed at the root of your magento URL context.  For example:
         www.yourdomain.com/bazaarvoice      (assuming magento runs your entire site)
         or
@@ -68,6 +68,32 @@
             </reference>
         </reference>
     </catalog_category_layered>
+
+    <catalogsearch_result_index>
+        <reference name="head">
+            <block type="bazaarvoice/bazaarvoice" name="headerincludes" template="bazaarvoice/display/headerincludes.phtml" after="-" />
+        </reference>
+        <reference name="content">
+            <reference name="search.result">
+                <reference name="search_result_list" >
+                    <block type="bazaarvoice/ratings" name="inline_ratings" as="inline_ratings" template="bazaarvoice/display/rr/ratings.phtml" />
+                </reference>
+            </reference>
+        </reference>
+    </catalogsearch_result_index>
+
+    <catalogsearch_advanced_result>
+        <reference name="head">
+            <block type="bazaarvoice/bazaarvoice" name="headerincludes" template="bazaarvoice/display/headerincludes.phtml" after="-" />
+        </reference>
+        <reference name="content">
+            <reference name="catalogsearch_advanced_result">
+                <reference name="search_result_list" >
+                    <block type="bazaarvoice/ratings" name="inline_ratings" as="inline_ratings" template="bazaarvoice/display/rr/ratings.phtml" />
+                </reference>
+            </reference>
+        </reference>
+    </catalogsearch_advanced_result>
 
     <!--
     The feed controller is used to more easily test/debug the feed generation or import.  This should not be enabled in a production environment for security reasons.
