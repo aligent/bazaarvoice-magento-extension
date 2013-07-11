@@ -40,12 +40,17 @@ class Bazaarvoice_Connector_Block_Roi_Beacon extends Mage_Core_Block_Template
                 $orderDetails['userId'] = $order->getCustomerId();
                 $orderDetails['email'] = $order->getCustomerEmail();
                 $orderDetails['nickname'] = $order->getCustomerEmail();
-                $orderDetails['locale'] = Mage::getStoreConfig('general/locale/code', $order->getStoreId());
+                // Don't get locale code from Magento, instead get it from BV config, this will allow clients to override this and map it as they see fit
+                //$orderDetails['locale'] = Mage::getStoreConfig('general/locale/code', $order->getStoreId());
+                $orderDetails['locale'] = Mage::getStoreConfig('bazaarvoice/General/locale', $order->getStoreId());
 
                 $address = $order->getBillingAddress();
                 $orderDetails['city'] = $address->getCity();
                 $orderDetails['state'] = Mage::getModel('directory/region')->load($address->getRegionId())->getCode();
                 $orderDetails['country'] = $address->getCountryId();
+
+                // Add partner_source field
+                $orderDetails['partner_source'] = 'Magento Extension plug-in';
                     
                 $orderDetails['items'] = array();
                 $items = $order->getAllVisibleItems();
