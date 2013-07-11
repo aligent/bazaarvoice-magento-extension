@@ -9,7 +9,7 @@
 
 /**
  *
- * BazaarVoice product feed should be in the following format:
+ * Bazaarvoice product feed should be in the following format:
  *
  * <?xml version="1.0" encoding="UTF-8"?>
  * <Feed xmlns="http://www.bazaarvoice.com/xs/PRR/ProductFeed/3.3"
@@ -63,7 +63,7 @@ class Bazaarvoice_Connector_Model_ExportProductFeed extends Mage_Core_Model_Abst
     
     /**
      *
-     * process daily feed for the BazaarVoice. The feed will be FTPed to the BV FTP server
+     * process daily feed for the Bazaarvoice. The feed will be FTPed to the BV FTP server
      *
      * Product & Catalog Feed to BV
      *
@@ -104,7 +104,7 @@ class Bazaarvoice_Connector_Model_ExportProductFeed extends Mage_Core_Model_Abst
 
     /**
      *
-     * process daily feed for the BazaarVoice. The feed will be FTPed to the BV FTP server
+     * process daily feed for the Bazaarvoice. The feed will be FTPed to the BV FTP server
      *
      * Product & Catalog Feed to BV
      *
