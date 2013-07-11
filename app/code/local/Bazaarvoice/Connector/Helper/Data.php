@@ -13,37 +13,6 @@ class Bazaarvoice_Connector_Helper_Data extends Mage_Core_Helper_Abstract
     
     const USE_MAGENTO_CATEGORY_ID = false;
 
-    public function getInlineRatingsHtml($product, $pageContext)
-    {
-        if (!empty($product)) {
-            $avgRating = $product->getBvAverageRating();
-            $ratingRange = $product->getBvRatingRange();
-            $reviewCount = $product->getBvReviewCount();
-
-            if (is_numeric($avgRating) && is_numeric($ratingRange) && is_numeric($reviewCount)) {
-                $avgRatingStr = preg_replace("/\./", '_', round($avgRating,1));
-                if (strlen($avgRatingStr) == 1) {
-                    $avgRatingStr .= '_0';
-                }
-
-                $starsFile = 'rating-' . $avgRatingStr . '.gif';
-            } else {
-                $avgRating = '0.0';
-                $ratingRange = '5';
-                $reviewCount = '0';
-                $starsFile = 'rating-0_0.gif';
-            }
-
-            $ret = "<div id=\"BVInlineRatings\">";
-            $ret .= "    <img src=\"".$pageContext->getSkinUrl('images/bazaarvoice/'.$starsFile) . "\" /> " . round($avgRating, 1) . " / " . round($ratingRange,0) . " (" . round($reviewCount,0) . ")";
-            $ret .= "</div>";
-
-            return $ret;
-        }
-        return '';
-
-    }
-
     /**
      * Get the uniquely identifying product ID for a catalog product.
      *
@@ -229,32 +198,6 @@ class Bazaarvoice_Connector_Helper_Data extends Mage_Core_Helper_Abstract
         ftp_close($connection);
 
         return $upload;
-    }
-
-    public function getExternalSubjectForPage($pageContext)
-    {
-        $ret = array();
-
-        // empty() method usage below can only take a variable, not a function invocation, so we have to request
-        // the product and category references early.
-
-        // Getting the product/category reference from the registry doesn't make any extra DB calls since we're relying
-        // upon the product/category template page to set this registry entry.  By default this is the case.
-        //  See: http://fishpig.co.uk/the-magento-registry/
-        $category = Mage::registry('current_category');
-        $product = Mage::registry('product');
-
-        if (!empty($product)) {
-            $ret[$this->BV_SUBJECT_TYPE] = 'product';
-            $ret[$this->BV_EXTERNAL_SUBJECT_NAME] = $product->getName();
-            $ret[$this->BV_EXTERNAL_SUBJECT_ID] = $this->getProductId($product);
-        } else if (!empty($category)) {
-            $ret[$this->BV_SUBJECT_TYPE] = 'category';
-            $ret[$this->BV_EXTERNAL_SUBJECT_NAME] = $category->getName();
-            $ret[$this->BV_EXTERNAL_SUBJECT_ID] = $this->getCategoryId($category);
-        }
-
-        return $ret;
     }
 
     public function getSmartSEOContent($bvProduct, $bvSubjectArr, $pageFormat)
