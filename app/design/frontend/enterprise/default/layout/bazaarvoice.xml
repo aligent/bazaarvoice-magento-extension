@@ -43,17 +43,31 @@
         </reference>
     </catalog_product_view>
 
-    <catalog_category_view>
+    <catalog_category_default>
         <reference name="head">
             <block type="bazaarvoice/bazaarvoice" name="headerincludes" template="bazaarvoice/display/headerincludes.phtml" after="-" />
         </reference>
         <reference name="content">
             <reference name="category.products">
                 <reference name="product_list" >
+                    <block type="bazaarvoice/ratings" name="inline_ratings" as="inline_ratings" template="bazaarvoice/display/rr/ratings.phtml" />
                 </reference>
             </reference>
         </reference>
-    </catalog_category_view>
+    </catalog_category_default>
+
+    <catalog_category_layered>
+        <reference name="head">
+            <block type="bazaarvoice/bazaarvoice" name="headerincludes" template="bazaarvoice/display/headerincludes.phtml" after="-" />
+        </reference>
+        <reference name="content">
+            <reference name="category.products">
+                <reference name="product_list" >
+                    <block type="bazaarvoice/ratings" name="inline_ratings" as="inline_ratings" template="bazaarvoice/display/rr/ratings.phtml" />
+                </reference>
+            </reference>
+        </reference>
+    </catalog_category_layered>
 
     <!--
     The feed controller is used to more easily test/debug the feed generation or import.  This should not be enabled in a production environment for security reasons.

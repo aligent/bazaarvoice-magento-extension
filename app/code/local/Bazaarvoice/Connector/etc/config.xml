@@ -130,6 +130,7 @@
                 <do_show_content_js><![CDATA[
 // If the container is hidden (such as behind a tab), put code here to make it visible (open the tab).
                 ]]></do_show_content_js>
+                <enable_inline_ratings>1</enable_inline_ratings>
             </rr>
             <qa>
                 <enable_qa>1</enable_qa>
@@ -137,11 +138,6 @@
 // If the container is hidden (such as behind a tab), put code here to make it visible (open the tab).
                 ]]></do_show_content_js>
             </qa>
-<!--  Temp disable as part of MGP-103         
-            <InlineRatingFeed>
-                <EnableInlineRatings>1</EnableInlineRatings>
-            </InlineRatingFeed>
--->            
             <SmartSEOFeed>
                 <EnableSmartSEO>1</EnableSmartSEO>
                 <FeedFileName>bv_(clientname)_smartseo.tar.gz</FeedFileName>
