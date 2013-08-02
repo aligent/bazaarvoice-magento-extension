@@ -89,7 +89,7 @@ class Bazaarvoice_Connector_Model_ExportPurchaseFeed extends Mage_Core_Model_Abs
                  *   <ExportPath>/ppe/inbox</ExportPath>
                  *   <ExportFileName>bazaarvoice-order-data.xml</ExportFileName>
                  */
-                $destinationFile = '/ppe/inbox/bazaarvoice-order-data.xml';
+                $destinationFile = '/ppe/inbox/bazaarvoice-order-data-' . date('U') . '.xml';
                 $sourceFile = $purchaseFeedFilePath . DS . $purchaseFeedFileName;
 
                 $upload = Mage::helper('bazaarvoice')->uploadFile($sourceFile, $destinationFile, $group->getDefaultStore());
