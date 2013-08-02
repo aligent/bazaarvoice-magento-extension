@@ -73,10 +73,10 @@ class Bazaarvoice_Connector_Helper_Data extends Mage_Core_Helper_Abstract
      * @param  $category a reference to a catalog category object
      * @return The unique category ID to be used with Bazaarvoice
      */
-    public function getCategoryId($category, $store)
+    public function getCategoryId($category, $storeId = null)
     {
         // Check config setting to see if we should use Magento category id
-        if(!Mage::getStoreConfig('bazaarvoice/bv_config/category_id_use_url_path', $store->getId())) {
+        if(!Mage::getStoreConfig('bazaarvoice/bv_config/category_id_use_url_path', $storeId)) {
             return $category->getId();
         }
         else {
@@ -125,7 +125,7 @@ class Bazaarvoice_Connector_Helper_Data extends Mage_Core_Helper_Abstract
      * @param  $remoteFile
      * @return boolean
      */
-    public function downloadFile($localFilePath, $localFileName, $remoteFile)
+    public function downloadFile($localFilePath, $localFileName, $remoteFile, $store = null)
     {
         Mage::log('    BV - starting download from Bazaarvoice server');
 
@@ -150,7 +150,11 @@ class Bazaarvoice_Connector_Helper_Data extends Mage_Core_Helper_Abstract
         // Establish a connection to the FTP host
         Mage::log('    BV - beginning file download');
         $connection = ftp_connect($this->getSFTPHost());
-        $login = ftp_login($connection, Mage::getStoreConfig('bazaarvoice/General/client_name'), Mage::getStoreConfig('bazaarvoice/General/FTPPassword'));
+        $ftpUser = Mage::getStoreConfig('bazaarvoice/General/client_name', $store);
+        $ftpPw = Mage::getStoreConfig('bazaarvoice/General/FTPPassword', $store);
+        Mage::log('Connecting with ftp user: ' . $ftpUser);
+        Mage::log('Connecting with ftp pw: ' . $ftpPw);
+        $login = ftp_login($connection, $ftpUser, $ftpPw);
         ftp_pasv($connection, true);
         if (!$connection || !$login) {
             Mage::log('    BV - FTP connection attempt failed!');
@@ -183,8 +187,17 @@ class Bazaarvoice_Connector_Helper_Data extends Mage_Core_Helper_Abstract
     {
         Mage::log('    BV - starting upload to Bazaarvoice server');
 
+        $ftpUser = Mage::getStoreConfig('bazaarvoice/General/client_name', $store->getId());
+        $ftpPw = Mage::getStoreConfig('bazaarvoice/General/FTPPassword', $store->getId());
+        Mage::log('Connecting with ftp user: ' . $ftpUser);
+        //Mage::log('Connecting with ftp pw: ' . $ftpPw);
+
         $connection = ftp_connect($this->getSFTPHost($store));
-        $login = ftp_login($connection, Mage::getStoreConfig('bazaarvoice/General/client_name', $store->getId()), Mage::getStoreConfig('bazaarvoice/General/FTPPassword', $store->getId()));
+        if (!$connection) {
+            Mage::log('    BV - FTP connection attempt failed!');
+            return false;
+        }
+        $login = ftp_login($connection, $ftpUser, $ftpPw);
         ftp_pasv($connection, true);
         if (!$connection || !$login) {
             Mage::log('    BV - FTP connection attempt failed!');

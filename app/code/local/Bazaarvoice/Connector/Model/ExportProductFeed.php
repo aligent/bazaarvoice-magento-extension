@@ -70,8 +70,6 @@ class Bazaarvoice_Connector_Model_ExportProductFeed extends Mage_Core_Model_Abst
         /** @var $group Mage_Core_Model_Store_Group */
         foreach ($groups as $group) {
             try {
-                Mage::log(Mage::getStoreConfig('bazaarvoice/bv_config/product_feed_export_filename', $group->getDefaultStoreId()));
-                die;
                 if (Mage::getStoreConfig('bazaarvoice/General/enable_product_feed', $group->getDefaultStoreId()) === '1'
                     && Mage::getStoreConfig('bazaarvoice/General/enable_bv', $group->getDefaultStoreId()) === '1') {
                     if(count($group->getStores()) > 0) {
@@ -202,7 +200,7 @@ class Bazaarvoice_Connector_Model_ExportProductFeed extends Mage_Core_Model_Abst
             }
 
             // Get external id
-            $categoryExternalId = Mage::helper('bazaarvoice')->getCategoryId($categoryDefault);
+            $categoryExternalId = Mage::helper('bazaarvoice')->getCategoryId($categoryDefault, $group->getDefaultStoreId());
 
             $categoryName = htmlspecialchars($categoryDefault->getName(), ENT_QUOTES, 'UTF-8');
             $categoryPageUrl = htmlspecialchars($categoryDefault->getCategoryIdUrl(), ENT_QUOTES, 'UTF-8');
@@ -211,7 +209,7 @@ class Bazaarvoice_Connector_Model_ExportProductFeed extends Mage_Core_Model_Abst
             $parentCategory = Mage::getModel('catalog/category')->load($categoryId->getParentId());
             // If parent category is the root category, then ignore it
             if (!is_null($parentCategory) && $parentCategory->getLevel() != 1) {
-                $parentExtId = '    <ParentExternalId>' . Mage::helper('bazaarvoice')->getCategoryId($parentCategory) . "</ParentExternalId>\n";
+                $parentExtId = '    <ParentExternalId>' . Mage::helper('bazaarvoice')->getCategoryId($parentCategory, $group->getDefaultStoreId()) . "</ParentExternalId>\n";
             }
             
             array_push($this->_categoryIdList, $categoryExternalId);
@@ -310,7 +308,7 @@ class Bazaarvoice_Connector_Model_ExportProductFeed extends Mage_Core_Model_Abst
                 foreach ($parentCategories as $parentCategoryId) {
                     $parentCategory = Mage::getModel('catalog/category')->load($parentCategoryId);
                     if ($parentCategory != null) {
-                        $categoryExternalId = Mage::helper('bazaarvoice')->getCategoryId($parentCategory);
+                        $categoryExternalId = Mage::helper('bazaarvoice')->getCategoryId($parentCategory, $group->getDefaultStoreId() );
                         if (in_array($categoryExternalId, $this->_categoryIdList)) {
                             $ioObject->streamWrite('    <CategoryExternalId>' . $categoryExternalId . "</CategoryExternalId>\n");
                             break;
@@ -319,8 +317,15 @@ class Bazaarvoice_Connector_Model_ExportProductFeed extends Mage_Core_Model_Abst
                 }                
             }
             
-            $ioObject->streamWrite('    <ProductPageUrl>'.$productDefault->getProductUrl()."</ProductPageUrl>\n".
-                '    <ImageUrl>'.$productDefault->getImageUrl()."</ImageUrl>\n");
+            $ioObject->streamWrite('    <ProductPageUrl>'.$productDefault->getProductUrl()."</ProductPageUrl>\n");
+            try {
+                $imageUrl = $productDefault->getImageUrl();
+                $ioObject->streamWrite('    <ImageUrl>'.$imageUrl."</ImageUrl>\n");
+            }
+            catch(Exception $e) {
+                Mage::log('Failed to get image URL for product sku: ' . $productDefault->getSku());
+                Mage::log('Continuing generating feed.');
+            }
 
             // Write out localized <Names>
             $ioObject->streamWrite("    <Names>\n");
@@ -343,7 +348,14 @@ class Bazaarvoice_Connector_Model_ExportProductFeed extends Mage_Core_Model_Abst
             // Write out localized <ImageUrls>
             $ioObject->streamWrite("    <ImageUrls>\n");
             foreach($productViews as $curLocale => $curProduct) {
-                $ioObject->streamWrite('        <ImageUrl locale="' . $curLocale . '">' . $curProduct->getImageUrl() . "</ImageUrl>\n");
+                try {
+                    $imageUrl = $curProduct->getImageUrl();
+                    $ioObject->streamWrite('        <ImageUrl locale="' . $curLocale . '">' . $imageUrl . "</ImageUrl>\n");
+                }
+                catch(Exception $e) {
+                    Mage::log('Failed to get image URL for product sku: ' . $productDefault->getSku());
+                    Mage::log('Continuing generating feed.');
+                }
             }
             $ioObject->streamWrite("    </ImageUrls>\n");            
 
