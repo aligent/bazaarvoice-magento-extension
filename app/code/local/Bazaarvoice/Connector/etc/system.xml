@@ -48,25 +48,25 @@
                             <show_in_store>1</show_in_store>
                         </environment>
                         <deployment_zone>
-                            <label>Bazaarvoice Deployment Zone</label>
+                            <label>Deployment Zone</label>
                             <frontend_type>text</frontend_type>
-                            <comment><![CDATA[The deployment zone for your Bazaarvoice R&amp;R and Q &amp; A implementations.  For example: "Main Site"]]></comment>
+                            <comment><![CDATA[The deployment zone for your Bazaarvoice R&amp;R and Q&amp;A implementations.  For example: "Main Site"]]></comment>
                             <sort_order>20</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </deployment_zone>
                         <locale>
-                            <label>Bazaarvoice Locale Setting</label>
+                            <label>Locale Setting</label>
                             <frontend_type>text</frontend_type>
-                            <comment><![CDATA[The locale for your Bazaarvoice R&amp;R and A &amp; A implementations.  For example: "en_US"]]></comment>
+                            <comment><![CDATA[The locale for your Bazaarvoice R&amp;R and Q&amp;A implementations.  For example: "en_US"]]></comment>
                             <sort_order>21</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </locale>
                         <SubmissionURL>
-                            <label>Bazaarvoice Submission URL</label>
+                            <label>Submission Container URL</label>
                             <frontend_type>text</frontend_type>
                             <comment><![CDATA[The URL of the Bazaarvoice submission page.  This extension provides a submission container page, located at the "bazaarvoice" context root.  For example: http://yourdomain.com/magento/bazaarvoice]]></comment>
                             <sort_order>60</sort_order>
@@ -75,7 +75,7 @@
                             <show_in_store>1</show_in_store>
                         </SubmissionURL>
                         <AdminEmail>
-                            <label>Bazaavoice Administrator Email</label>
+                            <label>Administrator Email</label>
                             <frontend_type>text</frontend_type>
                             <comment><![CDATA[The email address of the Bazaarvoice administrator. This is where feed notifications are sent.]]></comment>
                             <sort_order>80</sort_order>
@@ -95,7 +95,7 @@
                         </EncodingKey>
 -->                        
                         <FTPPassword>
-                            <label>Bazaarvoice FTP Password</label>
+                            <label>FTP Password</label>
                             <frontend_type>text</frontend_type>
                             <comment><![CDATA[Provided by your Implementation Engineer.]]></comment>
                             <sort_order>110</sort_order>
@@ -104,7 +104,7 @@
                             <show_in_store>1</show_in_store>
                         </FTPPassword>
                         <enable_product_feed>
-                            <label>Enable Bazaarvoice Product Feed</label>
+                            <label>Enable Product Feed</label>
                             <frontend_type>select</frontend_type>
                             <source_model>adminhtml/system_config_source_yesno</source_model>
                             <comment><![CDATA[Turn on Product Feed generation. This will enable generation of a product feed to be sent to the Bazaarvoice FTP server.]]></comment>
@@ -124,7 +124,7 @@
                     <show_in_store>1</show_in_store>
                     <fields>
                         <enable_rr>
-                            <label>Enable Bazaarvoice R&amp;R</label>
+                            <label>Enable Ratings &amp; Reviews</label>
                             <frontend_type>select</frontend_type>
                             <source_model>adminhtml/system_config_source_yesno</source_model>
                             <comment><![CDATA[Turn on Bazaarvoice Ratings &amp; Reviews. This will enable display of R&amp;R content on your product pages.]]></comment>
@@ -134,7 +134,7 @@
                             <show_in_store>1</show_in_store>
                         </enable_rr>
                         <do_show_content_js>
-                            <label>DoShowContent Javascript Callback</label>
+                            <label>JS Callback function to display R&amp;R content (doShowContent)</label>
                             <frontend_type>textarea</frontend_type>
                             <comment><![CDATA[The Bazaarvoice doShowContent javascript callback is triggered when the "read all reviews" link in the review summary is clicked.
                                 You may provide code here that you wish to execute on said click event.  For example, you may want to activate a specific tab on the page.  This
@@ -145,7 +145,7 @@
                             <show_in_store>1</show_in_store>
                         </do_show_content_js>
                         <enable_inline_ratings>
-                            <label>Enable Bazaarvoice Inline Ratings</label>
+                            <label>Enable Inline Ratings</label>
                             <frontend_type>select</frontend_type>
                             <source_model>adminhtml/system_config_source_yesno</source_model>
                             <comment><![CDATA[Turn on Inline Ratings. This will enable display of ratings as inline star ratings in search results and category pages.]]></comment>
@@ -165,17 +165,17 @@
                     <show_in_store>1</show_in_store>
                     <fields>
                         <enable_qa>
-                            <label>Enable Bazaarvoice Q&amp;A</label>
+                            <label>Enable Questions &amp; Answers</label>
                             <frontend_type>select</frontend_type>
                             <source_model>adminhtml/system_config_source_yesno</source_model>
-                            <comment><![CDATA[Turn on Bazaarvoice Q &amp; A. This will enable display of Q&amp;A content on your product and category pages.]]></comment>
+                            <comment><![CDATA[Turn on Bazaarvoice Q&amp;A. This will enable display of Q&amp;A content on your product and category pages.]]></comment>
                             <sort_order>10</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </enable_qa>
                         <do_show_content_js>
-                            <label>Q&amp;A Show Q&amp;A in Tab</label>
+                            <label>JS Callback function to display Q&amp;A content (doShowContent)</label>
                             <frontend_type>textarea</frontend_type>
                             <comment><![CDATA[The Bazaarvoice doShowContent javascript callback is triggered when the "read all Q&amp;A" link in the question/answer summary is clicked.
                                 You may provide code here that you wish to execute on said click event.  For example, you may want to activate a specific tab on the page.  This
