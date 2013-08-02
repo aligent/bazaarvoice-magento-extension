@@ -40,8 +40,6 @@ class Bazaarvoice_Connector_Block_Roi_Beacon extends Mage_Core_Block_Template
                 $orderDetails['userId'] = $order->getCustomerId();
                 $orderDetails['email'] = $order->getCustomerEmail();
                 $orderDetails['nickname'] = $order->getCustomerEmail();
-                // Don't get locale code from Magento, instead get it from BV config, this will allow clients to override this and map it as they see fit
-                //$orderDetails['locale'] = Mage::getStoreConfig('general/locale/code', $order->getStoreId());
                 $orderDetails['locale'] = Mage::getStoreConfig('bazaarvoice/General/locale', $order->getStoreId());
 
                 $address = $order->getBillingAddress();

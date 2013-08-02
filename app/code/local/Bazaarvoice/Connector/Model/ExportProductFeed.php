@@ -202,7 +202,7 @@ class Bazaarvoice_Connector_Model_ExportProductFeed extends Mage_Core_Model_Abst
                     $categoryDefault = $category;
                 }
                 // Get store locale
-                $localeCode = Mage::getStoreConfig('general/locale/code', $store->getId());
+                $localeCode = Mage::getStoreConfig('bazaarvoice/General/locale', $store->getId());
                 // Add product to array
                 $categoryViews[$localeCode] = $category;
             }
@@ -292,7 +292,7 @@ class Bazaarvoice_Connector_Model_ExportProductFeed extends Mage_Core_Model_Abst
                     $productDefault = $product;
                 }
                 // Get store locale
-                $localeCode = Mage::getStoreConfig('general/locale/code', $store->getId());
+                $localeCode = Mage::getStoreConfig('bazaarvoice/General/locale', $store->getId());
                 // Add product to array
                 $productViews[$localeCode] = $product;
             }

@@ -164,7 +164,7 @@ class Bazaarvoice_Connector_Model_ExportPurchaseFeed extends Mage_Core_Model_Abs
 
             $ioObject->streamWrite("<Interaction>\n");
             $ioObject->streamWrite('    <EmailAddress>' . $order->getCustomerEmail() . "</EmailAddress>\n");
-            $ioObject->streamWrite('    <Locale>' . $store->getConfig('general/locale/code') . "</Locale>\n");
+            $ioObject->streamWrite('    <Locale>' . $store->getConfig('bazaarvoice/General/locale') . "</Locale>\n");
             $ioObject->streamWrite('    <UserName>' . $order->getCustomerName() . "</UserName>\n");
             $ioObject->streamWrite('    <UserID>' . $order->getCustomerId() . "</UserID>\n");
             $ioObject->streamWrite('    <TransactionDate>' . $this->getTriggeringEventDate($order, $triggeringEvent) . "</TransactionDate>\n");
