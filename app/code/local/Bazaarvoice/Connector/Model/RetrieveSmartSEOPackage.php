@@ -11,6 +11,9 @@ class Bazaarvoice_Connector_Model_RetrieveSmartSEOPackage extends Mage_Core_Mode
 
     public function retrieveSmartSEOPackage()
     {
+        // Disable smart SEO feed for now
+        Mage::log('Smart SEO feed import is not enabled!');
+        return;
         // Log
         Mage::log('Start Bazaarvoice Smart SEO feed import');
         // Iterate through all stores / groups in this instance

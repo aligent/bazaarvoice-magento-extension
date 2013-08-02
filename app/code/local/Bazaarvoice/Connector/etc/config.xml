@@ -99,14 +99,18 @@
                     <model>bazaarvoice/retrieveInlineRatingsFeed::retrieveInlineRatingsFeed</model>
                 </run>
             </bazaarvoice_download_inlineratings>
+<!-- Disable SEO feed, replacing is with cloud SEO -->
+<!-- Every day at 2 AM -->
+<!--
             <bazaarvoice_download_smartseo>
                 <schedule>
-                    <cron_expr>0 2 * * *</cron_expr><!-- Every day at 2 AM -->
+                    <cron_expr>0 2 * * *</cron_expr>
                 </schedule>
                 <run>
                     <model>bazaarvoice/retrieveSmartSEOPackage::retrieveSmartSEOPackage</model>
                 </run>
             </bazaarvoice_download_smartseo>
+-->
             <bazaarvoice_purchase_feed>
                 <schedule>
                     <cron_expr>30 2 * * 6</cron_expr><!-- Every Saturday at 2:30 AM -->
@@ -138,10 +142,13 @@
 // If the container is hidden (such as behind a tab), put code here to make it visible (open the tab).
                 ]]></do_show_content_js>
             </qa>
+<!-- Disable SEO feed, replacing is with cloud SEO -->
+<!--            
             <SmartSEOFeed>
                 <EnableSmartSEO>1</EnableSmartSEO>
                 <FeedFileName>bv_(clientname)_smartseo.tar.gz</FeedFileName>
             </SmartSEOFeed>
+-->
             <PurchaseFeed>
                 <EnablePurchaseFeed>1</EnablePurchaseFeed>
                 <TriggeringEvent>shipping</TriggeringEvent>
