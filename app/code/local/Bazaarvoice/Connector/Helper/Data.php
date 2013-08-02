@@ -353,10 +353,10 @@ class Bazaarvoice_Connector_Helper_Data extends Mage_Core_Helper_Abstract
     {
         $environment = Mage::getStoreConfig('bazaarvoice/General/environment', $store);
         if ($environment == 'staging') {
-            $sftpHost = 'sftp-stg.bazaarvoice.com';
+            $sftpHost = 'ftp-stg.bazaarvoice.com';
         }
         else {
-            $sftpHost = 'sftp.bazaarvoice.com';
+            $sftpHost = 'ftp.bazaarvoice.com';
         }
         return $sftpHost;
     }
