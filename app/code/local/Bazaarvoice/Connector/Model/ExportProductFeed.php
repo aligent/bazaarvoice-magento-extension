@@ -219,13 +219,13 @@ class Bazaarvoice_Connector_Model_ExportProductFeed extends Mage_Core_Model_Abst
             $ioObject->streamWrite("<Category>\n".
                 "    <ExternalId>".$categoryExternalId."</ExternalId>\n".
                 $parentExtId .
-                "    <Name>".$categoryName."</Name>\n".
+                "    <Name><![CDATA[".$categoryName."]]></Name>\n".
                 "    <CategoryPageUrl>".$categoryPageUrl."</CategoryPageUrl>\n");
                 
             // Write out localized <Names>
             $ioObject->streamWrite("    <Names>\n");
             foreach($categoryViews as $curLocale => $curCategory) {
-                $ioObject->streamWrite('        <Name locale="' . $curLocale . '">' . htmlspecialchars($curCategory->getName(), ENT_QUOTES, 'UTF-8') . "</Name>\n");
+                $ioObject->streamWrite('        <Name locale="' . $curLocale . '"><![CDATA[' . htmlspecialchars($curCategory->getName(), ENT_QUOTES, 'UTF-8') . "]]></Name>\n");
             }
             $ioObject->streamWrite("    </Names>\n");
             // Write out localized <CategoryPageUrls>
@@ -296,8 +296,8 @@ class Bazaarvoice_Connector_Model_ExportProductFeed extends Mage_Core_Model_Abst
 
             $ioObject->streamWrite("<Product>\n".
                 '    <ExternalId>'.$productExternalId."</ExternalId>\n".
-                '    <Name>'.htmlspecialchars($productDefault->getName(), ENT_QUOTES, 'UTF-8')."</Name>\n".
-                '    <Description>'.htmlspecialchars($productDefault->getShortDescription(), ENT_QUOTES, 'UTF-8')."</Description>\n");
+                '    <Name><![CDATA['.htmlspecialchars($productDefault->getName(), ENT_QUOTES, 'UTF-8')."]]></Name>\n".
+                '    <Description><![CDATA['.htmlspecialchars($productDefault->getShortDescription(), ENT_QUOTES, 'UTF-8')."]]></Description>\n");
 
             $brand = $productDefault->getBrand();
             if (!is_null($brand) && !empty($brand)) {
@@ -325,13 +325,13 @@ class Bazaarvoice_Connector_Model_ExportProductFeed extends Mage_Core_Model_Abst
             // Write out localized <Names>
             $ioObject->streamWrite("    <Names>\n");
             foreach($productViews as $curLocale => $curProduct) {
-                $ioObject->streamWrite('        <Name locale="' . $curLocale . '">' . htmlspecialchars($curProduct->getName(), ENT_QUOTES, 'UTF-8')."</Name>\n");
+                $ioObject->streamWrite('        <Name locale="' . $curLocale . '"><![CDATA[' . htmlspecialchars($curProduct->getName(), ENT_QUOTES, 'UTF-8')."]]></Name>\n");
             }
             $ioObject->streamWrite("    </Names>\n");
             // Write out localized <Descriptions>
             $ioObject->streamWrite("    <Descriptions>\n");
             foreach($productViews as $curLocale => $curProduct) {
-                $ioObject->streamWrite('         <Description locale="' . $curLocale . '">' . htmlspecialchars($curProduct->getShortDescription(), ENT_QUOTES, 'UTF-8')."</Description>\n");
+                $ioObject->streamWrite('         <Description locale="' . $curLocale . '"><![CDATA[' . htmlspecialchars($curProduct->getShortDescription(), ENT_QUOTES, 'UTF-8')."]]></Description>\n");
             }
             $ioObject->streamWrite("    </Descriptions>\n");
             // Write out localized <ProductPageUrls>
