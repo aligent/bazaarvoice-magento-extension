@@ -155,10 +155,10 @@
                             <show_in_store>1</show_in_store>
                         </do_show_content_js>
                         <enable_inline_ratings>
-                            <label>Enable Inline Ratings</label>
+                            <label>Enable Hosted Inline Ratings</label>
                             <frontend_type>select</frontend_type>
                             <source_model>adminhtml/system_config_source_yesno</source_model>
-                            <comment><![CDATA[Turn on Inline Ratings. This will enable display of ratings as inline star ratings in search results and category pages.]]></comment>
+                            <comment><![CDATA[Turn on Hosted Inline Ratings. This will enable display of ratings as inline star ratings in search results and category pages.]]></comment>
                             <sort_order>10</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
