@@ -35,7 +35,7 @@
         <reference name="content">
             <reference name="product.info">
                 <block type="bazaarvoice/bazaarvoice" name="reviewsummary" as="bv_reviewsummary" template="bazaarvoice/display/rr/reviewsummary.phtml" />
-                <block type="bazaarvoice/bazaarvoice" name="reviews" as="bv_reviews" template="bazaarvoice/display/rr/reviews.phtml" />
+                <block type="bazaarvoice/reviews" name="reviews" as="bv_reviews" template="bazaarvoice/display/rr/reviews.phtml" />
 
                 <block type="bazaarvoice/bazaarvoice" name="questionsummary" as="bv_questionsummary" template="bazaarvoice/display/qa/questionsummary.phtml" />
                 <block type="bazaarvoice/bazaarvoice" name="questions" as="bv_questions" template="bazaarvoice/display/qa/questions.phtml" />

@@ -160,6 +160,9 @@
             <!-- These config settings are intended to be overriden with installation-specific values in
                  app/etc/local.xml file -->    
             <bv_config>
+                <!-- Display code - We still need this for Cloud SEO -->
+                <display_code>1234-en_us</display_code>
+                
                 <!-- Hard code export path and filename in class constants -->
                 <product_feed_export_filename>productfeed.xml</product_feed_export_filename>
                 <!-- Hard code export path and filename in class constants -->
