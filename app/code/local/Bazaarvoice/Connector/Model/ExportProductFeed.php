@@ -47,14 +47,6 @@
 class Bazaarvoice_Connector_Model_ExportProductFeed extends Mage_Core_Model_Abstract
 {
 
-    // Hard code export path and filename in class constants
-    const EXPORT_PATH       = '/import-inbox';
-    const EXPORT_FILENAME   = 'productfeed.xml';
-    // Magento Brand Attrbute Code
-    // The following attribute code will be used to locate the brand of products
-    // which is sent in the product feed:
-    const MAGE_BRAND_ATTRIBUTE  = 'manufacturer';
-
     private $_categoryIdList = array();    
 
     protected function _construct()
@@ -78,6 +70,8 @@ class Bazaarvoice_Connector_Model_ExportProductFeed extends Mage_Core_Model_Abst
         /** @var $group Mage_Core_Model_Store_Group */
         foreach ($groups as $group) {
             try {
+                Mage::log(Mage::getStoreConfig('bazaarvoice/bv_config/product_feed_export_filename', $group->getDefaultStoreId()));
+                die;
                 if (Mage::getStoreConfig('bazaarvoice/General/enable_product_feed', $group->getDefaultStoreId()) === '1'
                     && Mage::getStoreConfig('bazaarvoice/General/enable_bv', $group->getDefaultStoreId()) === '1') {
                     if(count($group->getStores()) > 0) {
@@ -147,8 +141,8 @@ class Bazaarvoice_Connector_Model_ExportProductFeed extends Mage_Core_Model_Abst
                 $ioObject->streamClose();
 
                 // Hard code path and filename in class constants
-                $destinationFile = Bazaarvoice_Connector_Model_ExportProductFeed::EXPORT_PATH . '/' . 
-                    Bazaarvoice_Connector_Model_ExportProductFeed::EXPORT_FILENAME;
+                $destinationFile = Mage::getStoreConfig('bazaarvoice/bv_config/product_feed_export_export_path', $group->getDefaultStoreId()) . '/' . 
+                    Mage::getStoreConfig('bazaarvoice/bv_config/product_feed_export_filename', $group->getDefaultStoreId());
                 $sourceFile = $productFeedFilePath . DS . $productFeedFileName;
                 $upload = Mage::helper('bazaarvoice')->uploadFile($sourceFile, $destinationFile, $group->getDefaultStore());
 
@@ -285,7 +279,7 @@ class Bazaarvoice_Connector_Model_ExportProductFeed extends Mage_Core_Model_Abst
                 // Load product object
                 $product->load($productId->getId());
                 // Set bazaarvoice specific attributes
-                $brand = htmlspecialchars($product->getAttributeText(Bazaarvoice_Connector_Model_ExportProductFeed::MAGE_BRAND_ATTRIBUTE));
+                $brand = htmlspecialchars($product->getAttributeText(Mage::getStoreConfig('bazaarvoice/bv_config/product_feed_brand_attribute_code', $store->getId())));
                 $product->setBrand($brand);
                 // Set default product
                 if($group->getDefaultStoreId() == $store->getStoreId()) {

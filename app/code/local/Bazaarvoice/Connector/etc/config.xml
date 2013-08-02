@@ -156,7 +156,25 @@
             <roibeacon>
                 <enable_roibeacon>1</enable_roibeacon>
             </roibeacon>
+        
+            <!-- These config settings are intended to be overriden with installation-specific values in
+                 app/etc/local.xml file -->    
+            <bv_config>
+                <!-- Hard code export path and filename in class constants -->
+                <product_feed_export_filename>productfeed.xml</product_feed_export_filename>
+                <!-- Hard code export path and filename in class constants -->
+                <product_feed_export_export_path>/import-inbox</product_feed_export_export_path>
+                <!-- Magento Brand Attrbute Code
+                     The following attribute code will be used to locate the brand of products
+                     which is sent in the product feed: -->
+                <product_feed_brand_attribute_code>manufacturer</product_feed_brand_attribute_code>
+                
+                <!-- If true, use Magento category URL path as category id, otherwise use Mage category entity primary key -->
+                <category_id_use_url_path>true</category_id_use_url_path>
+
+            </bv_config>
         </bazaarvoice>
     </default>
+
 
 </config>

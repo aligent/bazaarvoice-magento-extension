@@ -11,8 +11,6 @@ class Bazaarvoice_Connector_Helper_Data extends Mage_Core_Helper_Abstract
     const CONST_SMARTSEO_BVQAP = 'bvqap';
     const CONST_SMARTSEO_BVSYP = 'bvsyp';
     
-    const USE_MAGENTO_CATEGORY_ID = false;
-
     /**
      * Get the uniquely identifying product ID for a catalog product.
      *
@@ -75,10 +73,10 @@ class Bazaarvoice_Connector_Helper_Data extends Mage_Core_Helper_Abstract
      * @param  $category a reference to a catalog category object
      * @return The unique category ID to be used with Bazaarvoice
      */
-    public function getCategoryId($category)
+    public function getCategoryId($category, $store)
     {
         // Check config setting to see if we should use Magento category id
-        if(Bazaarvoice_Connector_Helper_Data::USE_MAGENTO_CATEGORY_ID) {
+        if(!Mage::getStoreConfig('bazaarvoice/bv_config/category_id_use_url_path', $store->getId())) {
             return $category->getId();
         }
         else {
@@ -341,7 +339,7 @@ class Bazaarvoice_Connector_Helper_Data extends Mage_Core_Helper_Abstract
     public function getSFTPHost($store = null)
     {
         $environment = Mage::getStoreConfig('bazaarvoice/General/environment', $store);
-        if ($enviornment == 'staging') {
+        if ($environment == 'staging') {
             $sftpHost = 'sftp-stg.bazaarvoice.com';
         }
         else {
