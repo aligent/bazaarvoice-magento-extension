@@ -56,6 +56,25 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </FTPPassword>
+                        <authentication_method>
+                            <label>Authentication Method</label>
+                            <frontend_type>select</frontend_type>
+                            <comment><![CDATA[With BV Hosted authentication method, users click the "write a review" link on a product page and authenticate by using just their email address provided in content submission page.  With Magento Site authentication, users are redirected to login to the Magento site before the user can access the BV submission page.]]></comment>
+                            <source_model>bazaarvoice/source_authenticationMethod</source_model>
+                            <sort_order>17</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </authentication_method>
+                        <shared_encoding_key>
+                            <label>Shared Encoding Key</label>
+                            <frontend_type>text</frontend_type>
+                            <comment><![CDATA[Key used to encode BV user authentication string. Only required when Magento Site Authentication is selected.  Defined in your BV platform account.]]></comment>
+                            <sort_order>18</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </shared_encoding_key>
                         <deployment_zone>
                             <label>Deployment Zone</label>
                             <frontend_type>text</frontend_type>
@@ -92,17 +111,6 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </AdminEmail>
-<!-- Comment this out until we use it                        
-                        <EncodingKey>
-                            <label>Bazaarvoice Encoding Key</label>
-                            <frontend_type>text</frontend_type>
-                            <comment><![CDATA[Key used to encode Bazaarvoice user authentication string.  Provided by your Implementation Engineer.]]></comment>
-                            <sort_order>90</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
-                        </EncodingKey>
--->                        
                         <enable_product_feed>
                             <label>Enable Product Feed</label>
                             <frontend_type>select</frontend_type>
