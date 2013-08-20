@@ -145,7 +145,7 @@
             </qa>
             <feeds>
                 <enable_product_feed>1</enable_product_feed>
-                <EnablePurchaseFeed>1</EnablePurchaseFeed>
+                <enable_purchase_feed>1</enable_purchase_feed>
                 <TriggeringEvent>shipping</TriggeringEvent>
             </feeds>
         
