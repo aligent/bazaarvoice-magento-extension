@@ -47,7 +47,7 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </client_name>
-                        <FTPPassword>
+                        <ftp_password>
                             <label>FTP Password</label>
                             <frontend_type>text</frontend_type>
                             <comment><![CDATA[Password used to access the BV FTP server for feed upload/download processes.]]></comment>
@@ -55,7 +55,7 @@
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
-                        </FTPPassword>
+                        </ftp_password>
                         <authentication_method>
                             <label>Authentication Method</label>
                             <frontend_type>select</frontend_type>
