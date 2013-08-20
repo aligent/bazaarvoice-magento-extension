@@ -93,7 +93,7 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </locale>
-                        <SubmissionURL>
+                        <submission_url>
                             <label>Submission Container URL</label>
                             <frontend_type>text</frontend_type>
                             <comment><![CDATA[The URL of the Bazaarvoice submission page.  This extension provides a submission container page, located at the "bazaarvoice" context root.  For example: http://yourdomain.com/magento/bazaarvoice]]></comment>
@@ -101,7 +101,7 @@
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
-                        </SubmissionURL>
+                        </submission_url>
                         <enable_cloud_seo>
                             <label>Enable Cloud SEO</label>
                             <frontend_type>select</frontend_type>
