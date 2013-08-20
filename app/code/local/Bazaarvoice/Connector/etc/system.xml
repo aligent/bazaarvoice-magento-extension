@@ -245,7 +245,7 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </enable_purchase_feed>
-                        <TriggeringEvent>
+                        <triggering_event>
                             <label>Purchase Feed Triggering Event</label>
                             <frontend_type>select</frontend_type>
                             <comment><![CDATA[This determines whether to use the purchase date or ship date when calculating which purchases to include in the purchase feed.]]></comment>
@@ -254,7 +254,7 @@
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
-                        </TriggeringEvent>
+                        </triggering_event>
                         <AdminEmail>
                             <label>Administrator Email</label>
                             <frontend_type>text</frontend_type>

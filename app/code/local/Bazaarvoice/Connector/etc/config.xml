@@ -146,7 +146,7 @@
             <feeds>
                 <enable_product_feed>1</enable_product_feed>
                 <enable_purchase_feed>1</enable_purchase_feed>
-                <TriggeringEvent>shipping</TriggeringEvent>
+                <triggering_event>shipping</triggering_event>
             </feeds>
         
             <!-- These config settings are intended to be overriden with installation-specific values in

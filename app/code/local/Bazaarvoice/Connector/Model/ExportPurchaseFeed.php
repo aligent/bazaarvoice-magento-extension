@@ -115,11 +115,11 @@ class Bazaarvoice_Connector_Model_ExportPurchaseFeed extends Mage_Core_Model_Abs
     {
 
         // Gather settings for how this feed should be generated
-        $triggeringEvent = Mage::getStoreConfig("bazaarvoice/feeds/TriggeringEvent") === Bazaarvoice_Connector_Model_Source_TriggeringEvent::SHIPPING? self::TRIGGER_EVENT_SHIP : self::TRIGGER_EVENT_PURCHASE;
+        $triggeringEvent = Mage::getStoreConfig("bazaarvoice/feeds/triggering_event") === Bazaarvoice_Connector_Model_Source_triggering_event::SHIPPING? self::TRIGGER_EVENT_SHIP : self::TRIGGER_EVENT_PURCHASE;
         // Hard code former settings
         $numDaysLookback = 30;
         $delayDaysSinceEvent = 1;
-        Mage::log("    BV - Config {TriggeringEvent: " . $triggeringEvent
+        Mage::log("    BV - Config {triggering_event: " . $triggeringEvent
             . ", NumDaysLookback: " . $numDaysLookback
             . ", NumDaysLookbackStartDate: " . $this->getNumDaysLookbackStartDate($numDaysLookback)
             . ", DelayDaysSinceEvent: " . $delayDaysSinceEvent
