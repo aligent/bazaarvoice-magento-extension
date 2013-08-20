@@ -22,44 +22,53 @@
                             <label>Enable Bazaarvoice Extension</label>
                             <frontend_type>select</frontend_type>
                             <source_model>adminhtml/system_config_source_yesno</source_model>
-                            <comment><![CDATA[Enable or disable all Bazaarvoice Magento Extension Features.]]></comment>
+                            <comment><![CDATA[Enable all Bazaarvoice Magento extension features at this Magento Scope]]></comment>
                             <sort_order>1</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </enable_bv>
-                        <client_name translate="label comment">
-                            <label>Bazaarvoice Client Name</label>
-                            <frontend_type>text</frontend_type>
-                            <comment><![CDATA[i.e. yourcompany]]></comment>
-                            <sort_order>10</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
-                        </client_name>
                         <environment>
                             <label>Environment</label>
                             <frontend_type>select</frontend_type>
                             <source_model>bazaarvoice/source_environment</source_model>
-                            <comment><![CDATA[Select current environment.]]></comment>
-                            <sort_order>14</sort_order>
+                            <comment><![CDATA[BV environment that this Magento scope is integrating with]]></comment>
+                            <sort_order>10</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </environment>
+                        <client_name translate="label comment">
+                            <label>Client Name</label>
+                            <frontend_type>text</frontend_type>
+                            <comment><![CDATA[Client Name as defined in your BV platform account]]></comment>
+                            <sort_order>14</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </client_name>
+                        <FTPPassword>
+                            <label>FTP Password</label>
+                            <frontend_type>text</frontend_type>
+                            <comment><![CDATA[Password used to access the BV FTP server for feed upload/download processes.]]></comment>
+                            <sort_order>15</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </FTPPassword>
                         <deployment_zone>
                             <label>Deployment Zone</label>
                             <frontend_type>text</frontend_type>
-                            <comment><![CDATA[The deployment zone for your Bazaarvoice R&amp;R and Q&amp;A implementations.  For example: "Main Site"]]></comment>
+                            <comment><![CDATA[Deployment Zone Name as defined in your BV platform account]]></comment>
                             <sort_order>20</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </deployment_zone>
                         <locale>
-                            <label>Locale Setting</label>
+                            <label>Locale</label>
                             <frontend_type>text</frontend_type>
-                            <comment><![CDATA[The locale for your Bazaarvoice R&amp;R and Q&amp;A implementations.  For example: "en_US"]]></comment>
+                            <comment><![CDATA[The BV locale for this Magento Configuration Scope.  For example: "en_US".  The locale must be enabled within your BV platform account.]]></comment>
                             <sort_order>21</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
@@ -77,7 +86,7 @@
                         <AdminEmail>
                             <label>Administrator Email</label>
                             <frontend_type>text</frontend_type>
-                            <comment><![CDATA[The email address of the Bazaarvoice administrator. This is where feed notifications are sent.]]></comment>
+                            <comment><![CDATA[All notifications for BV-related DW job schedules will be sent to this email address.]]></comment>
                             <sort_order>80</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
@@ -94,20 +103,11 @@
                             <show_in_store>1</show_in_store>
                         </EncodingKey>
 -->                        
-                        <FTPPassword>
-                            <label>FTP Password</label>
-                            <frontend_type>text</frontend_type>
-                            <comment><![CDATA[Provided by your Implementation Engineer.]]></comment>
-                            <sort_order>110</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
-                        </FTPPassword>
                         <enable_product_feed>
                             <label>Enable Product Feed</label>
                             <frontend_type>select</frontend_type>
                             <source_model>adminhtml/system_config_source_yesno</source_model>
-                            <comment><![CDATA[Turn on Product Feed generation. This will enable generation of a product feed to be sent to the Bazaarvoice FTP server.]]></comment>
+                            <comment><![CDATA[Turn on Product Feed generation. This will enable generation of a product feed to be sent to the BV FTP server.  See documentation for additional steps to setup a scheduled job in Magento for this feature to take effect.]]></comment>
                             <sort_order>120</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
@@ -127,7 +127,7 @@
                             <label>Enable Ratings &amp; Reviews</label>
                             <frontend_type>select</frontend_type>
                             <source_model>adminhtml/system_config_source_yesno</source_model>
-                            <comment><![CDATA[Turn on Bazaarvoice Ratings &amp; Reviews. This will enable display of R&amp;R content on your product pages.]]></comment>
+                            <comment><![CDATA[Turn on BV Ratings &amp; Reviews. This will enable display of R&amp;R content on your product pages.  See documentation for additional steps that must be completed for this feature to take effect.]]></comment>
                             <sort_order>10</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
@@ -148,7 +148,7 @@
                             <label>Enable Hosted Inline Ratings</label>
                             <frontend_type>select</frontend_type>
                             <source_model>adminhtml/system_config_source_yesno</source_model>
-                            <comment><![CDATA[Turn on Hosted Inline Ratings. This will enable display of ratings as inline star ratings in search results and category pages.]]></comment>
+                            <comment><![CDATA[Turn on BV JS-based inline ratings. This will enable display of product rating statistics on your category and search results pages.  See documentation for additional steps that must be completed for this feature to take effect.]]></comment>
                             <sort_order>30</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
@@ -158,7 +158,7 @@
                             <label>Enable Cloud SEO</label>
                             <frontend_type>select</frontend_type>
                             <source_model>adminhtml/system_config_source_yesno</source_model>
-                            <comment><![CDATA[Turn on cloud SEO content.]]></comment>
+                            <comment><![CDATA[Turn on the BV SEO solution.  This will include SEO-friendly content (located in the BV SEO cloud) in your product pages.  See documentation for additional steps that must be completed for this feature to take effect.]]></comment>
                             <sort_order>40</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
@@ -167,7 +167,7 @@
                         <cloud_seo_key>
                             <label>Cloud SEO Key</label>
                             <frontend_type>text</frontend_type>
-                            <comment><![CDATA[Cloud SEO key provided by Bazaarvoice.]]></comment>
+                            <comment><![CDATA[SEO Cloud key value as defined in your BV platform account.  This key is only required if Cloud SEO is enabled.]]></comment>
                             <sort_order>50</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
@@ -187,7 +187,7 @@
                             <label>Enable Questions &amp; Answers</label>
                             <frontend_type>select</frontend_type>
                             <source_model>adminhtml/system_config_source_yesno</source_model>
-                            <comment><![CDATA[Turn on Bazaarvoice Q&amp;A. This will enable display of Q&amp;A content on your product and category pages.]]></comment>
+                            <comment><![CDATA[Turn on BV Questions &amp; Answers. This will enable display of Q&amp;A content on your product pages.  See documentation for additional steps that must be completed for this feature to take effect.]]></comment>
                             <sort_order>10</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
@@ -261,14 +261,14 @@
                             <label>Enable Purchase Feed</label>
                             <frontend_type>select</frontend_type>
                             <source_model>adminhtml/system_config_source_yesno</source_model>
-                            <comment><![CDATA[Turn on Purchase Feed generation. This will enable generation of a purchase feed to be sent to the Bazaarvoice FTP server to be used to send post-interaction emails to your customers, in order to solicit review submission.]]></comment>
+                            <comment><![CDATA[Turn on Purchase Feed generation. This will enable generation of a purchase feed to be sent to the BV FTP server to be used to send post-interaction emails to your customers in order to solicit review submission.  See documentation for additional steps to setup a scheduled job for this feature to take effect.]]></comment>
                             <sort_order>10</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </EnablePurchaseFeed>
                         <TriggeringEvent>
-                            <label>Triggering Event</label>
+                            <label>Purchase Feed Triggering Event</label>
                             <frontend_type>select</frontend_type>
                             <comment><![CDATA[This determines whether to use the purchase date or ship date when calculating which purchases to include in the purchase feed.]]></comment>
                             <source_model>bazaarvoice/source_triggeringEvent</source_model>
@@ -291,7 +291,7 @@
                             <label>Enable ROI Beacon</label>
                             <frontend_type>select</frontend_type>
                             <source_model>adminhtml/system_config_source_yesno</source_model>
-                            <comment><![CDATA[Turn on Bazaarvoice ROI Beacon. This will enable transmission of order details to Bazaarvoice on the order confirmation page.]]></comment>
+                            <comment><![CDATA[Turn on the BV ROI beacon tag on the purchase transaction (checkout) page.  See documentation for additional steps that must be completed for this feature to take effect.]]></comment>
                             <sort_order>10</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
