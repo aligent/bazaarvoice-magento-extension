@@ -67,8 +67,7 @@ class Bazaarvoice_Connector_Block_Roi_Beacon extends Mage_Core_Block_Template
                 $orderDetails['locale'] = Mage::getStoreConfig('bazaarvoice/general/locale', $order->getStoreId());
 
                 // Add partnerSource field
-                $orderDetails['partnerSource'] = 'Magento Extension plug-in';
-                    
+                $orderDetails['partnerSource'] = 'Magento Extension r' . Mage::helper('bazaarvoice')->getExtensionVersion();
             }
         }
 
