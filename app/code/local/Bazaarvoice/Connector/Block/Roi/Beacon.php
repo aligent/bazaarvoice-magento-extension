@@ -6,8 +6,8 @@ class Bazaarvoice_Connector_Block_Roi_Beacon extends Mage_Core_Block_Template
     public function _construct()
     {
         // enabled/disabled in admin
-        $this->_isEnabled = Mage::getStoreConfig('bazaarvoice/General/enable_roibeacon') === '1'
-                                && Mage::getStoreConfig('bazaarvoice/General/enable_bv') === '1';
+        $this->_isEnabled = Mage::getStoreConfig('bazaarvoice/general/enable_roibeacon') === '1'
+                                && Mage::getStoreConfig('bazaarvoice/general/enable_bv') === '1';
     }
 
     /**
@@ -64,7 +64,7 @@ class Bazaarvoice_Connector_Block_Roi_Beacon extends Mage_Core_Block_Template
                 $orderDetails['email'] = $order->getCustomerEmail();
                 $orderDetails['nickname'] = $order->getCustomerEmail();
                 // There is no 'deliveryDate' yet
-                $orderDetails['locale'] = Mage::getStoreConfig('bazaarvoice/General/locale', $order->getStoreId());
+                $orderDetails['locale'] = Mage::getStoreConfig('bazaarvoice/general/locale', $order->getStoreId());
 
                 // Add partnerSource field
                 $orderDetails['partnerSource'] = 'Magento Extension plug-in';

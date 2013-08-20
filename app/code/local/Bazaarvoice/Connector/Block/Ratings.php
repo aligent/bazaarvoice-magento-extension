@@ -9,7 +9,7 @@ class Bazaarvoice_Connector_Block_Ratings extends Mage_Core_Block_Template
         // enabled/disabled in admin
         $this->_isEnabled = Mage::getStoreConfig('bazaarvoice/rr/enable_inline_ratings') === '1'
                                 && Mage::getStoreConfig('bazaarvoice/rr/enable_rr') === '1' 
-                                && Mage::getStoreConfig('bazaarvoice/General/enable_bv') === '1';
+                                && Mage::getStoreConfig('bazaarvoice/general/enable_bv') === '1';
     }
 
     /**

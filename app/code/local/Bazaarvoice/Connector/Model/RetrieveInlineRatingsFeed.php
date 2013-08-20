@@ -24,7 +24,7 @@ class Bazaarvoice_Connector_Model_RetrieveInlineRatingsFeed extends Mage_Core_Mo
         /** @var $group Mage_Core_Model_Store_Group */
         foreach ($groups as $group) {
             try {
-                if (self::INLINE_RATINGS_FEED_ENABLED && Mage::getStoreConfig('bazaarvoice/General/enable_bv', $group->getDefaultStoreId()) === '1') {
+                if (self::INLINE_RATINGS_FEED_ENABLED && Mage::getStoreConfig('bazaarvoice/general/enable_bv', $group->getDefaultStoreId()) === '1') {
                     if(count($group->getStores()) > 0) {
                         Mage::log('    BV - Importing Inline Ratings feed for store group: ' . $group->getName(), Zend_Log::INFO);
                         $this->retrieveInlineRatingsFeedForStoreGroup($group);
@@ -54,7 +54,7 @@ class Bazaarvoice_Connector_Model_RetrieveInlineRatingsFeed extends Mage_Core_Mo
      */
     public function retrieveInlineRatingsFeedForStoreGroup($group)
     {
-        if (self::INLINE_RATINGS_FEED_ENABLED && Mage::getStoreConfig('bazaarvoice/General/enable_bv', $group->getDefaultStoreId()) === '1') {
+        if (self::INLINE_RATINGS_FEED_ENABLED && Mage::getStoreConfig('bazaarvoice/general/enable_bv', $group->getDefaultStoreId()) === '1') {
             $localFilePath = Mage::getBaseDir('var') . DS . 'import' . DS . 'bvfeeds';
             $localFileName = 'inline-ratings-' . $group->getGroupId() . '-' . date('U') . '.xml';
             $gzLocalFilename = $localFileName . '.gz';

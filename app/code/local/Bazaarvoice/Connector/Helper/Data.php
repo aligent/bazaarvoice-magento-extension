@@ -150,8 +150,8 @@ class Bazaarvoice_Connector_Helper_Data extends Mage_Core_Helper_Abstract
         // Establish a connection to the FTP host
         Mage::log('    BV - beginning file download');
         $connection = ftp_connect($this->getSFTPHost());
-        $ftpUser = Mage::getStoreConfig('bazaarvoice/General/client_name', $store);
-        $ftpPw = Mage::getStoreConfig('bazaarvoice/General/FTPPassword', $store);
+        $ftpUser = Mage::getStoreConfig('bazaarvoice/general/client_name', $store);
+        $ftpPw = Mage::getStoreConfig('bazaarvoice/general/FTPPassword', $store);
         Mage::log('Connecting with ftp user: ' . $ftpUser);
         Mage::log('Connecting with ftp pw: ' . $ftpPw);
         $login = ftp_login($connection, $ftpUser, $ftpPw);
@@ -187,8 +187,8 @@ class Bazaarvoice_Connector_Helper_Data extends Mage_Core_Helper_Abstract
     {
         Mage::log('    BV - starting upload to Bazaarvoice server');
 
-        $ftpUser = Mage::getStoreConfig('bazaarvoice/General/client_name', $store->getId());
-        $ftpPw = Mage::getStoreConfig('bazaarvoice/General/FTPPassword', $store->getId());
+        $ftpUser = Mage::getStoreConfig('bazaarvoice/general/client_name', $store->getId());
+        $ftpPw = Mage::getStoreConfig('bazaarvoice/general/FTPPassword', $store->getId());
         Mage::log('Connecting with ftp user: ' . $ftpUser);
         //Mage::log('Connecting with ftp pw: ' . $ftpPw);
 
@@ -266,7 +266,7 @@ class Bazaarvoice_Connector_Helper_Data extends Mage_Core_Helper_Abstract
      */
     public function encryptReviewerId($userID)
     {
-        $sharedKey = Mage::getStoreConfig('bazaarvoice/General/EncodingKey');
+        $sharedKey = Mage::getStoreConfig('bazaarvoice/general/EncodingKey');
         $userStr = 'date=' . date('Ymd') . '&userid=' . $userID;
         return md5($sharedKey . $userStr) . bin2hex($userStr);
     }
@@ -307,7 +307,7 @@ class Bazaarvoice_Connector_Helper_Data extends Mage_Core_Helper_Abstract
         // Build protocol based on current page
         $protocol = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != '') ? 'https' : 'http';
         // Build hostname based on environment setting
-        $environment = Mage::getStoreConfig('bazaarvoice/General/environment', $store);
+        $environment = Mage::getStoreConfig('bazaarvoice/general/environment', $store);
         if ($environment == 'staging') {
             $apiHostname =  'display-stg.ugc.bazaarvoice.com';
         }
@@ -322,11 +322,11 @@ class Bazaarvoice_Connector_Helper_Data extends Mage_Core_Helper_Abstract
             $static = '';
         }
         // Lookup other config settings
-        $clientName = Mage::getStoreConfig('bazaarvoice/General/client_name', $store);
-        $deploymnetZoneName = Mage::getStoreConfig('bazaarvoice/General/deployment_zone', $store);
+        $clientName = Mage::getStoreConfig('bazaarvoice/general/client_name', $store);
+        $deploymnetZoneName = Mage::getStoreConfig('bazaarvoice/general/deployment_zone', $store);
         // Get locale code from BV config, 
         // Note that this doesn't use Magento's locale, this will allow clients to override this and map it as they see fit
-        $localeCode = Mage::getStoreConfig('bazaarvoice/General/locale', $store);
+        $localeCode = Mage::getStoreConfig('bazaarvoice/general/locale', $store);
         // Build url string
         $url = $protocol . '://' . $apiHostname . '/' . $static . $clientName . '/' . urlencode($deploymnetZoneName) . '/' . $localeCode;
         // Return final url
@@ -339,7 +339,7 @@ class Bazaarvoice_Connector_Helper_Data extends Mage_Core_Helper_Abstract
      */
     public function getBvStaging()
     {
-        $environment = Mage::getStoreConfig('bazaarvoice/General/environment');
+        $environment = Mage::getStoreConfig('bazaarvoice/general/environment');
         if ($enviornment == 'staging') {
             $bvStaging = '/bvstaging/';
         }
@@ -351,7 +351,7 @@ class Bazaarvoice_Connector_Helper_Data extends Mage_Core_Helper_Abstract
 
     public function getSFTPHost($store = null)
     {
-        $environment = Mage::getStoreConfig('bazaarvoice/General/environment', $store);
+        $environment = Mage::getStoreConfig('bazaarvoice/general/environment', $store);
         if ($environment == 'staging') {
             $sftpHost = 'ftp-stg.bazaarvoice.com';
         }
@@ -367,7 +367,7 @@ class Bazaarvoice_Connector_Helper_Data extends Mage_Core_Helper_Abstract
      */
     public function getDefaultDeploymentZone()
     {
-        return Mage::getStoreConfig('bazaarvoice/General/deployment_zone');
+        return Mage::getStoreConfig('bazaarvoice/general/deployment_zone');
     }
 
     /**

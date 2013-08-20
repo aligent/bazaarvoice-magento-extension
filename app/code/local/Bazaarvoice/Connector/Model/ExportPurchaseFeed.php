@@ -23,7 +23,7 @@ class Bazaarvoice_Connector_Model_ExportPurchaseFeed extends Mage_Core_Model_Abs
         foreach ($groups as $group) {
             try {
                 if (Mage::getStoreConfig('bazaarvoice/feeds/EnablePurchaseFeed', $group->getDefaultStoreId()) === '1'
-                    && Mage::getStoreConfig('bazaarvoice/General/enable_bv', $group->getDefaultStoreId()) === '1') {
+                    && Mage::getStoreConfig('bazaarvoice/general/enable_bv', $group->getDefaultStoreId()) === '1') {
                     if(count($group->getStores()) > 0) {
                         Mage::log('    BV - Exporting purchase feed for store group: ' . $group->getName(), Zend_Log::INFO);
                         $this->exportPurchaseFeedForStoreGroup($group);
@@ -164,7 +164,7 @@ class Bazaarvoice_Connector_Model_ExportPurchaseFeed extends Mage_Core_Model_Abs
 
             $ioObject->streamWrite("<Interaction>\n");
             $ioObject->streamWrite('    <EmailAddress>' . $order->getCustomerEmail() . "</EmailAddress>\n");
-            $ioObject->streamWrite('    <Locale>' . $store->getConfig('bazaarvoice/General/locale') . "</Locale>\n");
+            $ioObject->streamWrite('    <Locale>' . $store->getConfig('bazaarvoice/general/locale') . "</Locale>\n");
             $ioObject->streamWrite('    <UserName>' . $order->getCustomerName() . "</UserName>\n");
             $ioObject->streamWrite('    <UserID>' . $order->getCustomerId() . "</UserID>\n");
             $ioObject->streamWrite('    <TransactionDate>' . $this->getTriggeringEventDate($order, $triggeringEvent) . "</TransactionDate>\n");

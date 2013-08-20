@@ -124,12 +124,12 @@
 
     <default>
         <bazaarvoice>
-            <General>
+            <general>
                 <enable_bv>0</enable_bv>
                 <environment>staging</environment>
                 <authentication_method>bv</authentication_method>
                 <enable_roibeacon>1</enable_roibeacon>
-            </General>
+            </general>
             <rr>
                 <enable_rr>1</enable_rr>
                 <do_show_content_js><![CDATA[

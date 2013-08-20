@@ -71,7 +71,7 @@ class Bazaarvoice_Connector_Model_ExportProductFeed extends Mage_Core_Model_Abst
         foreach ($groups as $group) {
             try {
                 if (Mage::getStoreConfig('bazaarvoice/feeds/enable_product_feed', $group->getDefaultStoreId()) === '1'
-                    && Mage::getStoreConfig('bazaarvoice/General/enable_bv', $group->getDefaultStoreId()) === '1') {
+                    && Mage::getStoreConfig('bazaarvoice/general/enable_bv', $group->getDefaultStoreId()) === '1') {
                     if(count($group->getStores()) > 0) {
                         Mage::log('    BV - Exporting product feed for store group: ' . $group->getName(), Zend_Log::INFO);
                         $this->exportDailyProductFeedForStoreGroup($group);
@@ -124,7 +124,7 @@ class Bazaarvoice_Connector_Model_ExportProductFeed extends Mage_Core_Model_Abst
                 $ioObject->streamWrite("<?xml version=\"1.0\" encoding=\"UTF-8\"?>".
                     "<Feed xmlns=\"http://www.bazaarvoice.com/xs/PRR/ProductFeed/5.2\"".
                     " generator=\"Magento Extension r" . Mage::helper('bazaarvoice')->getExtensionVersion() . "\"".
-                    "  name=\"".Mage::getStoreConfig("bazaarvoice/General/client_name", $group->getDefaultStoreId())."\"".
+                    "  name=\"".Mage::getStoreConfig("bazaarvoice/general/client_name", $group->getDefaultStoreId())."\"".
                     "  incremental=\"false\"".
                     "  extractDate=\"".date('Y-m-d')."T".date('H:i:s').".000000\">\n");
 
@@ -194,7 +194,7 @@ class Bazaarvoice_Connector_Model_ExportProductFeed extends Mage_Core_Model_Abst
                     $categoryDefault = $category;
                 }
                 // Get store locale
-                $localeCode = Mage::getStoreConfig('bazaarvoice/General/locale', $store->getId());
+                $localeCode = Mage::getStoreConfig('bazaarvoice/general/locale', $store->getId());
                 // Add product to array
                 $categoryViews[$localeCode] = $category;
             }
@@ -284,7 +284,7 @@ class Bazaarvoice_Connector_Model_ExportProductFeed extends Mage_Core_Model_Abst
                     $productDefault = $product;
                 }
                 // Get store locale
-                $localeCode = Mage::getStoreConfig('bazaarvoice/General/locale', $store->getId());
+                $localeCode = Mage::getStoreConfig('bazaarvoice/general/locale', $store->getId());
                 // Add product to array
                 $productViews[$localeCode] = $product;
             }

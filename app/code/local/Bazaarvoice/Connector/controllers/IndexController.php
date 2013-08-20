@@ -13,7 +13,7 @@ class Bazaarvoice_Connector_IndexController extends Mage_Core_Controller_Front_A
 
     public function indexAction()
     {
-        if(Mage::getStoreConfig('bazaarvoice/General/enable_bv') === '1') {
+        if(Mage::getStoreConfig('bazaarvoice/general/enable_bv') === '1') {
             $this->loadLayout();
             $this->renderLayout();
         }

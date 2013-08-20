@@ -10,7 +10,7 @@
             <show_in_website>1</show_in_website>
             <show_in_store>1</show_in_store>
             <groups>
-                <General translate="label">
+                <general translate="label">
                     <label>General</label>
                     <frontend_type>text</frontend_type>
                     <sort_order>100</sort_order>
@@ -132,7 +132,7 @@
                             <show_in_store>1</show_in_store>
                         </enable_roibeacon>
                     </fields>
-                </General>
+                </general>
                 <rr translate="label">
                     <label>Ratings and Reviews</label>
                     <frontend_type>text</frontend_type>
