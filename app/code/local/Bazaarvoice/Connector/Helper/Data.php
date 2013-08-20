@@ -405,7 +405,7 @@ class Bazaarvoice_Connector_Helper_Data extends Mage_Core_Helper_Abstract
 
     public function sendNotificationEmail($subject, $text)
     {
-        $toEmail = Mage::getStoreConfig('bazaarvoice/General/AdminEmail');
+        $toEmail = Mage::getStoreConfig('bazaarvoice/feeds/AdminEmail');
         $fromEmail = Mage::getStoreConfig('trans_email/ident_general/email');   // The 'General' contact identity is a default setting in Magento
         if (empty($fromEmail)) {
             $fromEmail = $toEmail;

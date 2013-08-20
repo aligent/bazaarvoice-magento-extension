@@ -22,7 +22,7 @@ class Bazaarvoice_Connector_Model_ExportPurchaseFeed extends Mage_Core_Model_Abs
         /** @var $group Mage_Core_Model_Store_Group */
         foreach ($groups as $group) {
             try {
-                if (Mage::getStoreConfig('bazaarvoice/PurchaseFeed/EnablePurchaseFeed', $group->getDefaultStoreId()) === '1'
+                if (Mage::getStoreConfig('bazaarvoice/feeds/EnablePurchaseFeed', $group->getDefaultStoreId()) === '1'
                     && Mage::getStoreConfig('bazaarvoice/General/enable_bv', $group->getDefaultStoreId()) === '1') {
                     if(count($group->getStores()) > 0) {
                         Mage::log('    BV - Exporting purchase feed for store group: ' . $group->getName(), Zend_Log::INFO);
@@ -115,7 +115,7 @@ class Bazaarvoice_Connector_Model_ExportPurchaseFeed extends Mage_Core_Model_Abs
     {
 
         // Gather settings for how this feed should be generated
-        $triggeringEvent = Mage::getStoreConfig("bazaarvoice/PurchaseFeed/TriggeringEvent") === Bazaarvoice_Connector_Model_Source_TriggeringEvent::SHIPPING? self::TRIGGER_EVENT_SHIP : self::TRIGGER_EVENT_PURCHASE;
+        $triggeringEvent = Mage::getStoreConfig("bazaarvoice/feeds/TriggeringEvent") === Bazaarvoice_Connector_Model_Source_TriggeringEvent::SHIPPING? self::TRIGGER_EVENT_SHIP : self::TRIGGER_EVENT_PURCHASE;
         // Hard code former settings
         $numDaysLookback = 30;
         $delayDaysSinceEvent = 1;

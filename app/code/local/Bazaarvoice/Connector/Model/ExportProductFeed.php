@@ -70,7 +70,7 @@ class Bazaarvoice_Connector_Model_ExportProductFeed extends Mage_Core_Model_Abst
         /** @var $group Mage_Core_Model_Store_Group */
         foreach ($groups as $group) {
             try {
-                if (Mage::getStoreConfig('bazaarvoice/General/enable_product_feed', $group->getDefaultStoreId()) === '1'
+                if (Mage::getStoreConfig('bazaarvoice/feeds/enable_product_feed', $group->getDefaultStoreId()) === '1'
                     && Mage::getStoreConfig('bazaarvoice/General/enable_bv', $group->getDefaultStoreId()) === '1') {
                     if(count($group->getStores()) > 0) {
                         Mage::log('    BV - Exporting product feed for store group: ' . $group->getName(), Zend_Log::INFO);
@@ -105,7 +105,7 @@ class Bazaarvoice_Connector_Model_ExportProductFeed extends Mage_Core_Model_Abst
      */
     public function exportDailyProductFeedForStoreGroup($group)
     {
-        if (Mage::getStoreConfig('bazaarvoice/General/enable_product_feed', $group->getDefaultStoreId()) === '1') {
+        if (Mage::getStoreConfig('bazaarvoice/feeds/enable_product_feed', $group->getDefaultStoreId()) === '1') {
             
             $productFeedFilePath = Mage::getBaseDir('var') . DS . 'export' . DS . 'bvfeeds';
             $productFeedFileName = 'productFeed-' . $group->getGroupId() . '-' . date('U') . '.xml';

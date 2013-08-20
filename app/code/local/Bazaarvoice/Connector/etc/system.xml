@@ -102,25 +102,35 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </SubmissionURL>
-                        <AdminEmail>
-                            <label>Administrator Email</label>
-                            <frontend_type>text</frontend_type>
-                            <comment><![CDATA[All notifications for BV-related DW job schedules will be sent to this email address.]]></comment>
+                        <enable_cloud_seo>
+                            <label>Enable Cloud SEO</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <comment><![CDATA[Turn on the BV SEO solution.  This will include SEO-friendly content (located in the BV SEO cloud) in your product pages.  See documentation for additional steps that must be completed for this feature to take effect.]]></comment>
                             <sort_order>80</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
-                        </AdminEmail>
-                        <enable_product_feed>
-                            <label>Enable Product Feed</label>
-                            <frontend_type>select</frontend_type>
-                            <source_model>adminhtml/system_config_source_yesno</source_model>
-                            <comment><![CDATA[Turn on Product Feed generation. This will enable generation of a product feed to be sent to the BV FTP server.  See documentation for additional steps to setup a scheduled job in Magento for this feature to take effect.]]></comment>
-                            <sort_order>120</sort_order>
+                        </enable_cloud_seo>
+                        <cloud_seo_key>
+                            <label>Cloud SEO Key</label>
+                            <frontend_type>text</frontend_type>
+                            <comment><![CDATA[SEO Cloud key value as defined in your BV platform account.  This key is only required if Cloud SEO is enabled.]]></comment>
+                            <sort_order>90</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
-                        </enable_product_feed>
+                        </cloud_seo_key>
+                        <enable_roibeacon>
+                            <label>Enable ROI Beacon</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <comment><![CDATA[Turn on the BV ROI beacon tag on the purchase transaction (checkout) page.  See documentation for additional steps that must be completed for this feature to take effect.]]></comment>
+                            <sort_order>100</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </enable_roibeacon>
                     </fields>
                 </General>
                 <rr translate="label">
@@ -162,25 +172,6 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </enable_inline_ratings>
-                        <enable_cloud_seo>
-                            <label>Enable Cloud SEO</label>
-                            <frontend_type>select</frontend_type>
-                            <source_model>adminhtml/system_config_source_yesno</source_model>
-                            <comment><![CDATA[Turn on the BV SEO solution.  This will include SEO-friendly content (located in the BV SEO cloud) in your product pages.  See documentation for additional steps that must be completed for this feature to take effect.]]></comment>
-                            <sort_order>40</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
-                        </enable_cloud_seo>
-                        <cloud_seo_key>
-                            <label>Cloud SEO Key</label>
-                            <frontend_type>text</frontend_type>
-                            <comment><![CDATA[SEO Cloud key value as defined in your BV platform account.  This key is only required if Cloud SEO is enabled.]]></comment>
-                            <sort_order>50</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
-                        </cloud_seo_key>
                     </fields>
                 </rr>
                 <qa translate="label">
@@ -226,51 +217,30 @@
                     </fields>
                 </InlineRatingFeed>
 -->
-<!--  Disable SEO Feed, replacing it with cloud SEO
-                <SmartSEOFeed translate="label">
-                    <label>Smart SEO Feed Import</label>
+                <feeds translate="label">
+                    <label>Feeds</label>
                     <frontend_type>text</frontend_type>
-                    <sort_order>170</sort_order>
+                    <sort_order>200</sort_order>
                     <show_in_default>1</show_in_default>
                     <show_in_website>1</show_in_website>
                     <show_in_store>1</show_in_store>
                     <fields>
-                        <EnableSmartSEO>
-                            <label>Smart SEO Enabled</label>
+                        <enable_product_feed>
+                            <label>Enable Product Feed</label>
                             <frontend_type>select</frontend_type>
                             <source_model>adminhtml/system_config_source_yesno</source_model>
-                            <comment><![CDATA[Turn on Smart SEO. This will enable importing Smart SEO archives from the Bazaarvoice FTP server and present them to search engine crawlers on product pages.]]></comment>
+                            <comment><![CDATA[Turn on Product Feed generation. This will enable generation of a product feed to be sent to the BV FTP server.  See documentation for additional steps to setup a scheduled job in Magento for this feature to take effect.]]></comment>
                             <sort_order>10</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
-                        </EnableSmartSEO>
-                        <FeedFileName>
-                            <label>Smart SEO Feed Filename</label>
-                            <frontend_type>text</frontend_type>
-                            <comment><![CDATA[Typically, this should be "bv_(clientname)_smartseo.tar.gz".]]></comment>
-                            <sort_order>30</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
-                        </FeedFileName>
-                    </fields>
-                </SmartSEOFeed>
--->
-                <PurchaseFeed translate="label">
-                    <label>Post-Purchase Feed Export</label>
-                    <frontend_type>text</frontend_type>
-                    <sort_order>180</sort_order>
-                    <show_in_default>1</show_in_default>
-                    <show_in_website>1</show_in_website>
-                    <show_in_store>1</show_in_store>
-                    <fields>
+                        </enable_product_feed>
                         <EnablePurchaseFeed>
                             <label>Enable Purchase Feed</label>
                             <frontend_type>select</frontend_type>
                             <source_model>adminhtml/system_config_source_yesno</source_model>
                             <comment><![CDATA[Turn on Purchase Feed generation. This will enable generation of a purchase feed to be sent to the BV FTP server to be used to send post-interaction emails to your customers in order to solicit review submission.  See documentation for additional steps to setup a scheduled job for this feature to take effect.]]></comment>
-                            <sort_order>10</sort_order>
+                            <sort_order>20</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
@@ -280,33 +250,22 @@
                             <frontend_type>select</frontend_type>
                             <comment><![CDATA[This determines whether to use the purchase date or ship date when calculating which purchases to include in the purchase feed.]]></comment>
                             <source_model>bazaarvoice/source_triggeringEvent</source_model>
-                            <sort_order>40</sort_order>
+                            <sort_order>30</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </TriggeringEvent>
-                    </fields>
-                </PurchaseFeed>
-                <roibeacon translate="label">
-                    <label>ROI Beacon</label>
-                    <frontend_type>text</frontend_type>
-                    <sort_order>190</sort_order>
-                    <show_in_default>1</show_in_default>
-                    <show_in_website>1</show_in_website>
-                    <show_in_store>1</show_in_store>
-                    <fields>
-                        <enable_roibeacon>
-                            <label>Enable ROI Beacon</label>
-                            <frontend_type>select</frontend_type>
-                            <source_model>adminhtml/system_config_source_yesno</source_model>
-                            <comment><![CDATA[Turn on the BV ROI beacon tag on the purchase transaction (checkout) page.  See documentation for additional steps that must be completed for this feature to take effect.]]></comment>
-                            <sort_order>10</sort_order>
+                        <AdminEmail>
+                            <label>Administrator Email</label>
+                            <frontend_type>text</frontend_type>
+                            <comment><![CDATA[All notifications for BV-related DW job schedules will be sent to this email address.]]></comment>
+                            <sort_order>70</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
-                        </enable_roibeacon>
+                        </AdminEmail>
                     </fields>
-                </roibeacon>
+                </feeds>
             </groups>
         </bazaarvoice>
     </sections>
