@@ -135,6 +135,7 @@
                 <enable_product_feed>1</enable_product_feed>
                 <enable_purchase_feed>1</enable_purchase_feed>
                 <triggering_event>shipping</triggering_event>
+                <generation_scope>website</generation_scope>
             </feeds>
         
             <!-- These config settings are intended to be overriden with installation-specific values in
