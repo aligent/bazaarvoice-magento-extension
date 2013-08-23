@@ -142,13 +142,13 @@
                  app/etc/local.xml file -->    
             <bv_config>
                 <!-- Display code - We still need this for Cloud SEO -->
-                <display_code>1234-en_us</display_code>
+                <display_code></display_code>
                 
                 <!-- Hard code export path and filename in class constants -->
                 <product_feed_export_filename>productfeed.xml</product_feed_export_filename>
                 <!-- Hard code export path and filename in class constants -->
                 <product_feed_export_export_path>/import-inbox</product_feed_export_export_path>
-                <!-- Magento Brand Attrbute Code
+                <!-- Magento Brand Attribute Code
                      The following attribute code will be used to locate the brand of products
                      which is sent in the product feed: -->
                 <product_feed_brand_attribute_code>manufacturer</product_feed_brand_attribute_code>
