@@ -27,8 +27,19 @@ class Bazaarvoice_Connector_Block_Reviews extends Mage_Core_Block_Template
     {
         $seoContent = '';
         if(Mage::getStoreConfig('bazaarvoice/general/enable_cloud_seo') === '1' && $this->getIsEnabled()) {
+            // Check if admin has configured a legacy display code
+            if(strlen(Mage::getStoreConfig('bazaarvoice/bv_config/display_code'))) {
+                $deploymentZoneId =
+                    Mage::getStoreConfig('bazaarvoice/general/display_code') .
+                    '-' . Mage::getStoreConfig('bazaarvoice/general/locale');
+            }
+            else {
+                $deploymentZoneId =
+                    str_replace(' ', '_', Mage::getStoreConfig('bazaarvoice/general/deployment_zone')) .
+                    '/' . Mage::getStoreConfig('bazaarvoice/general/locale');
+            }
             $bv = new BV(array(
-                'deployment_zone_id' => Mage::getStoreConfig('bazaarvoice/bv_config/display_code'), // replace with your display code (BV provided)
+                'deployment_zone_id' => $deploymentZoneId, // replace with your display code (BV provided)
                 'product_id' => Mage::helper('bazaarvoice')->getProductId(Mage::registry('current_product')), // replace with product id 
                 'cloud_key' => Mage::getStoreConfig('bazaarvoice/general/cloud_seo_key'), // BV provided value
                 'staging' => TRUE
