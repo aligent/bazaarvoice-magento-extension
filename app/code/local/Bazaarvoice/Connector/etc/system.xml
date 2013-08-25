@@ -56,6 +56,8 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </ftp_password>
+                        <!-- Site Auth Disabled for now -->
+                        <!--
                         <authentication_method>
                             <label>Authentication Method</label>
                             <frontend_type>select</frontend_type>
@@ -75,6 +77,7 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </shared_encoding_key>
+                        -->
                         <deployment_zone>
                             <label>Deployment Zone</label>
                             <frontend_type>text</frontend_type>
@@ -87,12 +90,15 @@
                         <locale>
                             <label>Locale</label>
                             <frontend_type>text</frontend_type>
-                            <comment><![CDATA[The BV locale for this Magento Configuration Scope.  For example: "en_US".  The locale must be enabled within your BV platform account.]]></comment>
+                            <comment>
+                                <![CDATA[The BV locale for this Magento Configuration Scope.  For example: "en_US".  The locale must be enabled within your BV platform account.]]></comment>
                             <sort_order>21</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </locale>
+                        <!-- Site Auth Disabled for now -->
+                        <!--
                         <submission_url>
                             <label>Submission Container URL</label>
                             <frontend_type>text</frontend_type>
@@ -102,11 +108,13 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </submission_url>
+                        -->
                         <enable_cloud_seo>
                             <label>Enable Cloud SEO</label>
                             <frontend_type>select</frontend_type>
                             <source_model>adminhtml/system_config_source_yesno</source_model>
-                            <comment><![CDATA[Turn on the BV SEO solution.  This will include SEO-friendly content (located in the BV SEO cloud) in your product pages.  See documentation for additional steps that must be completed for this feature to take effect.]]></comment>
+                            <comment>
+                                <![CDATA[Turn on the BV SEO solution.  This will include SEO-friendly content (located in the BV SEO cloud) in your product pages.  See documentation for additional steps that must be completed for this feature to take effect.]]></comment>
                             <sort_order>80</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
@@ -115,7 +123,8 @@
                         <cloud_seo_key>
                             <label>Cloud SEO Key</label>
                             <frontend_type>text</frontend_type>
-                            <comment><![CDATA[SEO Cloud key value as defined in your BV platform account.  This key is only required if Cloud SEO is enabled.]]></comment>
+                            <comment>
+                                <![CDATA[SEO Cloud key value as defined in your BV platform account.  This key is only required if Cloud SEO is enabled.]]></comment>
                             <sort_order>90</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
@@ -125,7 +134,8 @@
                             <label>Enable ROI Beacon</label>
                             <frontend_type>select</frontend_type>
                             <source_model>adminhtml/system_config_source_yesno</source_model>
-                            <comment><![CDATA[Turn on the BV ROI beacon tag on the purchase transaction (checkout) page.  See documentation for additional steps that must be completed for this feature to take effect.]]></comment>
+                            <comment>
+                                <![CDATA[Turn on the BV ROI beacon tag on the purchase transaction (checkout) page.  See documentation for additional steps that must be completed for this feature to take effect.]]></comment>
                             <sort_order>100</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
@@ -145,7 +155,8 @@
                             <label>Enable Ratings &amp; Reviews</label>
                             <frontend_type>select</frontend_type>
                             <source_model>adminhtml/system_config_source_yesno</source_model>
-                            <comment><![CDATA[Turn on BV Ratings &amp; Reviews. This will enable display of R&amp;R content on your product pages.  See documentation for additional steps that must be completed for this feature to take effect.]]></comment>
+                            <comment>
+                                <![CDATA[Turn on BV Ratings &amp; Reviews. This will enable display of R&amp;R content on your product pages.  See documentation for additional steps that must be completed for this feature to take effect.]]></comment>
                             <sort_order>10</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
@@ -155,8 +166,8 @@
                             <label>JS Callback function to display R&amp;R content (doShowContent)</label>
                             <frontend_type>textarea</frontend_type>
                             <comment><![CDATA[The Bazaarvoice doShowContent javascript callback is triggered when the "read all reviews" link in the review summary is clicked.
-                                You may provide code here that you wish to execute on said click event.  For example, you may want to activate a specific tab on the page.  This
-                            code will be wrapped in a javascript function(){...} block. See your Bazaarvoice Implementation manual for further information.]]></comment>
+                        You may provide code here that you wish to execute on said click event.  For example, you may want to activate a specific tab on the page.  This
+                    code will be wrapped in a javascript function(){...} block. See your Bazaarvoice Implementation manual for further information.]]></comment>
                             <sort_order>20</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
@@ -166,7 +177,8 @@
                             <label>Enable Hosted Inline Ratings</label>
                             <frontend_type>select</frontend_type>
                             <source_model>adminhtml/system_config_source_yesno</source_model>
-                            <comment><![CDATA[Turn on BV JS-based inline ratings. This will enable display of product rating statistics on your category and search results pages.  See documentation for additional steps that must be completed for this feature to take effect.]]></comment>
+                            <comment>
+                                <![CDATA[Turn on BV JS-based inline ratings. This will enable display of product rating statistics on your category and search results pages.  See documentation for additional steps that must be completed for this feature to take effect.]]></comment>
                             <sort_order>30</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
@@ -186,7 +198,8 @@
                             <label>Enable Questions &amp; Answers</label>
                             <frontend_type>select</frontend_type>
                             <source_model>adminhtml/system_config_source_yesno</source_model>
-                            <comment><![CDATA[Turn on BV Questions &amp; Answers. This will enable display of Q&amp;A content on your product pages.  See documentation for additional steps that must be completed for this feature to take effect.]]></comment>
+                            <comment>
+                                <![CDATA[Turn on BV Questions &amp; Answers. This will enable display of Q&amp;A content on your product pages.  See documentation for additional steps that must be completed for this feature to take effect.]]></comment>
                             <sort_order>10</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
@@ -196,8 +209,8 @@
                             <label>JS Callback function to display Q&amp;A content (doShowContent)</label>
                             <frontend_type>textarea</frontend_type>
                             <comment><![CDATA[The Bazaarvoice doShowContent javascript callback is triggered when the "read all Q&amp;A" link in the question/answer summary is clicked.
-                                You may provide code here that you wish to execute on said click event.  For example, you may want to activate a specific tab on the page.  This
-                            code will be wrapped in a javascript function(){...} block. See your Bazaarvoice Implementation manual for further information.]]></comment>
+                        You may provide code here that you wish to execute on said click event.  For example, you may want to activate a specific tab on the page.  This
+                    code will be wrapped in a javascript function(){...} block. See your Bazaarvoice Implementation manual for further information.]]></comment>
                             <sort_order>70</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
@@ -205,18 +218,18 @@
                         </do_show_content_js>
                     </fields>
                 </qa>
-<!--  Temp disable as part of MGP-103         
-                <InlineRatingFeed translate="label">
-                    <label>Inline Ratings Feed Import</label>
-                    <frontend_type>text</frontend_type>
-                    <sort_order>160</sort_order>
-                    <show_in_default>1</show_in_default>
-                    <show_in_website>1</show_in_website>
-                    <show_in_store>1</show_in_store>
-                    <fields>
-                    </fields>
-                </InlineRatingFeed>
--->
+                <!--  Temp disable as part of MGP-103
+                        <InlineRatingFeed translate="label">
+                            <label>Inline Ratings Feed Import</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>160</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <fields>
+                            </fields>
+                        </InlineRatingFeed>
+                -->
                 <feeds translate="label">
                     <label>Feeds</label>
                     <frontend_type>text</frontend_type>
@@ -229,7 +242,8 @@
                             <label>Enable Product Feed</label>
                             <frontend_type>select</frontend_type>
                             <source_model>adminhtml/system_config_source_yesno</source_model>
-                            <comment><![CDATA[Turn on Product Feed generation. This will enable generation of a product feed to be sent to the BV FTP server.  See documentation for additional steps to setup a scheduled job in Magento for this feature to take effect.]]></comment>
+                            <comment>
+                                <![CDATA[Turn on Product Feed generation. This will enable generation of a product feed to be sent to the BV FTP server.  See documentation for additional steps to setup a scheduled job in Magento for this feature to take effect.]]></comment>
                             <sort_order>10</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
@@ -239,7 +253,8 @@
                             <label>Enable Purchase Feed</label>
                             <frontend_type>select</frontend_type>
                             <source_model>adminhtml/system_config_source_yesno</source_model>
-                            <comment><![CDATA[Turn on Purchase Feed generation. This will enable generation of a purchase feed to be sent to the BV FTP server to be used to send post-interaction emails to your customers in order to solicit review submission.  See documentation for additional steps to setup a scheduled job for this feature to take effect.]]></comment>
+                            <comment>
+                                <![CDATA[Turn on Purchase Feed generation. This will enable generation of a purchase feed to be sent to the BV FTP server to be used to send post-interaction emails to your customers in order to solicit review submission.  See documentation for additional steps to setup a scheduled job for this feature to take effect.]]></comment>
                             <sort_order>20</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
@@ -248,7 +263,8 @@
                         <triggering_event>
                             <label>Purchase Feed Triggering Event</label>
                             <frontend_type>select</frontend_type>
-                            <comment><![CDATA[This determines whether to use the purchase date or ship date when calculating which purchases to include in the purchase feed.]]></comment>
+                            <comment>
+                                <![CDATA[This determines whether to use the purchase date or ship date when calculating which purchases to include in the purchase feed.]]></comment>
                             <source_model>bazaarvoice/source_triggeringEvent</source_model>
                             <sort_order>30</sort_order>
                             <show_in_default>1</show_in_default>
@@ -258,7 +274,8 @@
                         <admin_email>
                             <label>Administrator Email</label>
                             <frontend_type>text</frontend_type>
-                            <comment><![CDATA[All notifications for BV-related DW job schedules will be sent to this email address.]]></comment>
+                            <comment>
+                                <![CDATA[All notifications for BV-related DW job schedules will be sent to this email address.]]></comment>
                             <sort_order>70</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
@@ -267,7 +284,8 @@
                         <generation_scope>
                             <label>Feed Generation Scope</label>
                             <frontend_type>select</frontend_type>
-                            <comment><![CDATA[This determines whether separate feed files will be generated and sent to BV for each website, store or store view.]]></comment>
+                            <comment>
+                                <![CDATA[This determines whether separate feed files will be generated and sent to BV for each website, store or store view.]]></comment>
                             <source_model>bazaarvoice/source_feedGenerationScope</source_model>
                             <sort_order>90</sort_order>
                             <show_in_default>1</show_in_default>
