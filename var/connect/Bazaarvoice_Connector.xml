@@ -41,7 +41,7 @@
             <max/>
          </max>
          <files>
-            <files>             </files>
+            <files>              </files>
          </files>
       </package>
       <extension>
@@ -67,6 +67,7 @@
          <target>mageskin</target>
          <target>magelib</target>
          <target>mageweb</target>
+         <target>mageweb</target>
       </target>
       <path>
          <path/>
@@ -77,7 +78,8 @@
          <path>en_US/template/email/bazaarvoice_notification.html</path>
          <path>frontend/base/default/images/bazaarvoice</path>
          <path>Bazaarvoice</path>
-         <path>shell</path>
+         <path>shell/bv_export_order_feed.php</path>
+         <path>shell/bv_export_product_feed.php</path>
       </path>
       <type>
          <type>file</type>
@@ -88,7 +90,8 @@
          <type>file</type>
          <type>dir</type>
          <type>dir</type>
-         <type>dir</type>
+         <type>file</type>
+         <type>file</type>
       </type>
       <include>
          <include/>
@@ -99,9 +102,11 @@
          <include/>
          <include/>
          <include/>
-         <include>bv_*</include>
+         <include/>
+         <include/>
       </include>
       <ignore>
+         <ignore/>
          <ignore/>
          <ignore/>
          <ignore/>
