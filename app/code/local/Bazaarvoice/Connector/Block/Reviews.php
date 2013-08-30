@@ -28,7 +28,7 @@ class Bazaarvoice_Connector_Block_Reviews extends Mage_Core_Block_Template
         $seoContent = '';
         if(Mage::getStoreConfig('bazaarvoice/general/enable_cloud_seo') === '1' && $this->getIsEnabled()) {
             // Check if admin has configured a legacy display code
-            if(strlen(Mage::getStoreConfig('bazaarvoice/bv_config/display_code'))) {
+            if(strlen(Mage::getStoreConfig('bazaarvoice/general/display_code'))) {
                 $deploymentZoneId =
                     Mage::getStoreConfig('bazaarvoice/general/display_code') .
                     '-' . Mage::getStoreConfig('bazaarvoice/general/locale');
