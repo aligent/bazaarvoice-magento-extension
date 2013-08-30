@@ -189,7 +189,7 @@
                             <frontend_type>select</frontend_type>
                             <source_model>adminhtml/system_config_source_yesno</source_model>
                             <comment>
-                                <![CDATA[Turn on BV JS-based inline ratings. This will enable display of product rating statistics on your category and search results pages.  See documentation for additional steps that must be completed for this feature to take effect.]]></comment>
+                                <![CDATA[Turn on BV Hosted inline ratings. This will enable display of product rating statistics on your category and search results pages.  See documentation for additional steps that must be completed for this feature to take effect.]]></comment>
                             <sort_order>30</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
@@ -217,7 +217,7 @@
                             <show_in_store>1</show_in_store>
                         </enable_qa>
                         <do_show_content_js>
-                            <label>JS Callback function to display Q&amp;A content (doShowContent)</label>
+                            <label>JS Callback function to display Q&amp;A content (doShowContent)(Product Page)</label>
                             <frontend_type>textarea</frontend_type>
                             <comment><![CDATA[The Bazaarvoice doShowContent javascript callback is triggered when the "read all Q&amp;A" link in the question/answer summary is clicked.
                         You may provide code here that you wish to execute on said click event.  For example, you may want to activate a specific tab on the page.  This
@@ -286,7 +286,7 @@
                             <label>Administrator Email</label>
                             <frontend_type>text</frontend_type>
                             <comment>
-                                <![CDATA[All notifications for BV-related DW job schedules will be sent to this email address.]]></comment>
+                                <![CDATA[All notifications for BV-related Magento job schedules will be sent to this email address.]]></comment>
                             <sort_order>70</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>

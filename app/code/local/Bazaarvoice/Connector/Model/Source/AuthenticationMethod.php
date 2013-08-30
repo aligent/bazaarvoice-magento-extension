@@ -13,7 +13,7 @@ class Bazaarvoice_Connector_Model_Source_AuthenticationMethod
         return array(
             array(
                 'value' => self::BV_HOSTED_AUTH,
-                'label' => Mage::helper('bazaarvoice')->__('BV-Hosted Authentication')
+                'label' => Mage::helper('bazaarvoice')->__('BV Hosted Authentication')
             ),
             array(
                 'value' => self::MAGENTO_SITE_AUTH,
