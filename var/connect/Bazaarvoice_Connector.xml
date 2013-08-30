@@ -41,7 +41,7 @@
             <max/>
          </max>
          <files>
-            <files>           </files>
+            <files>            </files>
          </files>
       </package>
       <extension>
@@ -77,7 +77,7 @@
          <path>en_US/template/email/bazaarvoice_notification.html</path>
          <path>frontend/base/default/images/bazaarvoice</path>
          <path>Bazaarvoice</path>
-         <path>shell</path>
+         <path>shell/bv_*</path>
       </path>
       <type>
          <type>file</type>
