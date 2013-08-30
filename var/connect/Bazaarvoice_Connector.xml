@@ -1,5 +1,5 @@
 <_>
-   <form_key>UPFQBiCl7VdvFpyt</form_key>
+   <form_key>PxT64brLxKWfZ8mT</form_key>
    <_create/>
    <name>Bazaarvoice_Connector</name>
    <channel>community</channel>
@@ -41,7 +41,7 @@
             <max/>
          </max>
          <files>
-            <files>         </files>
+            <files>          </files>
          </files>
       </package>
       <extension>
@@ -66,6 +66,7 @@
          <target>magelocale</target>
          <target>mageskin</target>
          <target>magelib</target>
+         <target>mage</target>
       </target>
       <path>
          <path/>
@@ -76,6 +77,7 @@
          <path>en_US/template/email/bazaarvoice_notification.html</path>
          <path>frontend/base/default/images/bazaarvoice</path>
          <path>Bazaarvoice</path>
+         <path>docs</path>
       </path>
       <type>
          <type>file</type>
@@ -84,6 +86,7 @@
          <type>dir</type>
          <type>file</type>
          <type>file</type>
+         <type>dir</type>
          <type>dir</type>
          <type>dir</type>
       </type>
@@ -96,8 +99,10 @@
          <include/>
          <include/>
          <include/>
+         <include/>
       </include>
       <ignore>
+         <ignore/>
          <ignore/>
          <ignore/>
          <ignore/>
