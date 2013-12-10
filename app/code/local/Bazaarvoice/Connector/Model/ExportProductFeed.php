@@ -563,7 +563,7 @@ class Bazaarvoice_Connector_Model_ExportProductFeed extends Mage_Core_Model_Abst
         "    <ExternalId>" . $categoryExternalId . "</ExternalId>\n" .
         $parentExtId .
         "    <Name><![CDATA[" . $categoryName . "]]></Name>\n" .
-        "    <CategoryPageUrl>" . $categoryPageUrl . "</CategoryPageUrl>\n");
+        "    <CategoryPageUrl><![CDATA[" . $categoryPageUrl . "]]></CategoryPageUrl>\n");
 
         // Write out localized <Names>
         $ioObject->streamWrite("    <Names>\n");
@@ -577,8 +577,8 @@ class Bazaarvoice_Connector_Model_ExportProductFeed extends Mage_Core_Model_Abst
         $ioObject->streamWrite("    <CategoryPageUrls>\n");
         /* @var $curCategory Mage_Catalog_Model_Category */
         foreach ($categoriesByLocale as $curLocale => $curCategory) {
-            $ioObject->streamWrite('        <CategoryPageUrl locale="' . $curLocale . '">' .
-            htmlspecialchars($curCategory->getCategoryIdUrl(), ENT_QUOTES, 'UTF-8') . "</CategoryPageUrl>\n");
+            $ioObject->streamWrite('        <CategoryPageUrl locale="' . $curLocale . '">' . "<![CDATA[" .
+            htmlspecialchars($curCategory->getCategoryIdUrl(), ENT_QUOTES, 'UTF-8') . "]]>" . "</CategoryPageUrl>\n");
         }
         $ioObject->streamWrite("    </CategoryPageUrls>\n");
 
@@ -809,11 +809,11 @@ class Bazaarvoice_Connector_Model_ExportProductFeed extends Mage_Core_Model_Abst
             }
         }
 
-        $ioObject->streamWrite('    <ProductPageUrl>' . $productDefault->getProductUrl() . "</ProductPageUrl>\n");
+        $ioObject->streamWrite('    <ProductPageUrl>' . "<![CDATA[" . $productDefault->getProductUrl() . "]]>" . "</ProductPageUrl>\n");
         try {
             $imageUrl = $productDefault->getImageUrl();
             if (strlen($imageUrl)) {
-                $ioObject->streamWrite('    <ImageUrl>' . $imageUrl . "</ImageUrl>\n");
+                $ioObject->streamWrite('    <ImageUrl>' . "<![CDATA[" . $imageUrl . "]]>" . "</ImageUrl>\n");
             }
         }
         catch (Exception $e) {
@@ -838,8 +838,8 @@ class Bazaarvoice_Connector_Model_ExportProductFeed extends Mage_Core_Model_Abst
         // Write out localized <ProductPageUrls>
         $ioObject->streamWrite("    <ProductPageUrls>\n");
         foreach ($productsByLocale as $curLocale => $curProduct) {
-            $ioObject->streamWrite('        <ProductPageUrl locale="' . $curLocale . '">' .
-            $productDefault->getProductUrl() . "</ProductPageUrl>\n");
+            $ioObject->streamWrite('        <ProductPageUrl locale="' . $curLocale . '">' . "<![CDATA[" .
+            $productDefault->getProductUrl() . "]]>" . "</ProductPageUrl>\n");
         }
         $ioObject->streamWrite("    </ProductPageUrls>\n");
         // Write out localized <ImageUrls>
@@ -848,8 +848,8 @@ class Bazaarvoice_Connector_Model_ExportProductFeed extends Mage_Core_Model_Abst
             try {
                 $imageUrl = $productDefault->getImageUrl();
                 if (strlen($imageUrl)) {
-                    $ioObject->streamWrite('        <ImageUrl locale="' . $curLocale . '">' . $imageUrl .
-                    "</ImageUrl>\n");
+                    $ioObject->streamWrite('        <ImageUrl locale="' . $curLocale . '">' . "<![CDATA[" . $imageUrl .
+                    "]]>" . "</ImageUrl>\n");
                 }
             }
             catch (Exception $e) {
