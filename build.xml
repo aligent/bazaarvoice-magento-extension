@@ -3,8 +3,8 @@
 <project name="bazaarvoice_ext" default="build" basedir=".">
 	<!-- Properties -->
 	<property name="source" value="app/code/local/Bazaarvoice"/>
-	<property name="module_name" value="Bazaarvoice"/>
-	<property name="license_id" value="${module_name}-5.1.x.x"/>
+	<property name="module_name" value="Bazaarvoice_Connector"/>
+	<property name="license_id" value="${module_name}-6.0.x.x"/>
 	
 	<!-- Meta Targets -->
 	<target name="analyze" depends="clean,lint,parallelTasks,phpunit"/>
@@ -136,6 +136,9 @@
 		</copy>
 		<copy todir="${basedir}/build/encoded/shell">
 			<fileset dir="${basedir}/shell" erroronmissingdir="false" />
+		</copy>
+		<copy todir="${basedir}/build/encoded/lib">
+			<fileset dir="${basedir}/lib" erroronmissingdir="false" />
 		</copy>
 	</target>
 

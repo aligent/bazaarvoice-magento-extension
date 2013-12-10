@@ -1,0 +1,311 @@
+<?xml version="1.0"?>
+<config>
+    <sections>
+        <bazaarvoice translate="label">
+            <label>Bazaarvoice</label>
+            <tab>general</tab>
+            <frontend_type>text</frontend_type>
+            <sort_order>1000</sort_order>
+            <show_in_default>1</show_in_default>
+            <show_in_website>1</show_in_website>
+            <show_in_store>1</show_in_store>
+            <groups>
+                <general translate="label">
+                    <label>General</label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>100</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <fields>
+                        <enable_bv>
+                            <label>Enable Bazaarvoice Extension</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <comment><![CDATA[Enable all Bazaarvoice Magento extension features at this Magento Scope]]></comment>
+                            <sort_order>1</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </enable_bv>
+                        <environment>
+                            <label>Environment</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>bazaarvoice/source_environment</source_model>
+                            <comment><![CDATA[BV environment that this Magento scope is integrating with]]></comment>
+                            <sort_order>10</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </environment>
+                        <client_name translate="label comment">
+                            <label>Client Name</label>
+                            <frontend_type>text</frontend_type>
+                            <comment><![CDATA[Client Name as defined in your BV platform account]]></comment>
+                            <sort_order>14</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </client_name>
+                        <ftp_password>
+                            <label>FTP Password</label>
+                            <frontend_type>text</frontend_type>
+                            <comment><![CDATA[Password used to access the BV FTP server for feed upload/download processes.]]></comment>
+                            <sort_order>15</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </ftp_password>
+                        <!-- Site Auth Disabled for now -->
+                        <!--
+                        <authentication_method>
+                            <label>Authentication Method</label>
+                            <frontend_type>select</frontend_type>
+                            <comment><![CDATA[With BV Hosted authentication method, users click the "write a review" link on a product page and authenticate by using just their email address provided in content submission page.  With Magento Site authentication, users are redirected to login to the Magento site before the user can access the BV submission page.]]></comment>
+                            <source_model>bazaarvoice/source_authenticationMethod</source_model>
+                            <sort_order>17</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </authentication_method>
+                        <shared_encoding_key>
+                            <label>Shared Encoding Key</label>
+                            <frontend_type>text</frontend_type>
+                            <comment><![CDATA[Key used to encode BV user authentication string. Only required when Magento Site Authentication is selected.  Defined in your BV platform account.]]></comment>
+                            <sort_order>18</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </shared_encoding_key>
+                        -->
+                        <deployment_zone>
+                            <label>Deployment Zone</label>
+                            <frontend_type>text</frontend_type>
+                            <comment><![CDATA[Deployment Zone Name as defined in your BV platform account]]></comment>
+                            <sort_order>20</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </deployment_zone>
+                        <locale>
+                            <label>Locale</label>
+                            <frontend_type>text</frontend_type>
+                            <comment>
+                                <![CDATA[The BV locale for this Magento Configuration Scope.  For example: "en_US".  The locale must be enabled within your BV platform account.]]></comment>
+                            <sort_order>21</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </locale>
+                        <!-- Site Auth Disabled for now -->
+                        <!--
+                        <submission_url>
+                            <label>Submission Container URL</label>
+                            <frontend_type>text</frontend_type>
+                            <comment><![CDATA[The URL of the Bazaarvoice submission page.  This extension provides a submission container page, located at the "bazaarvoice" context root.  For example: http://yourdomain.com/magento/bazaarvoice]]></comment>
+                            <sort_order>60</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </submission_url>
+                        -->
+                        <enable_cloud_seo>
+                            <label>Enable Cloud SEO</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <comment>
+                                <![CDATA[Turn on the BV SEO solution.  This will include SEO-friendly content (located in the BV SEO cloud) in your product pages.  See documentation for additional steps that must be completed for this feature to take effect.]]></comment>
+                            <sort_order>80</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </enable_cloud_seo>
+                        <cloud_seo_key>
+                            <label>Cloud SEO Key</label>
+                            <frontend_type>text</frontend_type>
+                            <comment>
+                                <![CDATA[SEO Cloud key value as defined in your BV platform account.  This key is only required if Cloud SEO is enabled.]]></comment>
+                            <sort_order>90</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </cloud_seo_key>
+                        <!-- Display code - We still need this for Cloud SEO -->
+                        <display_code>
+                            <label>Legacy SEO Display Code</label>
+                            <frontend_type>text</frontend_type>
+                            <comment>
+                                <![CDATA[Set this value to override the use of Deployment Zones in Cloud SEO URLS. Only use this value if directed by a Bazaarvoice representative.]]></comment>
+                            <sort_order>95</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </display_code>
+                        <enable_roibeacon>
+                            <label>Enable ROI Beacon</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <comment>
+                                <![CDATA[Turn on the BV ROI beacon tag on the purchase transaction (checkout) page.  See documentation for additional steps that must be completed for this feature to take effect.]]></comment>
+                            <sort_order>100</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </enable_roibeacon>
+                    </fields>
+                </general>
+                <rr translate="label">
+                    <label>Ratings and Reviews</label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>110</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <fields>
+                        <enable_rr>
+                            <label>Enable Ratings &amp; Reviews</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <comment>
+                                <![CDATA[Turn on BV Ratings &amp; Reviews. This will enable display of R&amp;R content on your product pages.  See documentation for additional steps that must be completed for this feature to take effect.]]></comment>
+                            <sort_order>10</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </enable_rr>
+                        <do_show_content_js>
+                            <label>JS Callback function to display R&amp;R content (doShowContent)</label>
+                            <frontend_type>textarea</frontend_type>
+                            <comment><![CDATA[The Bazaarvoice doShowContent javascript callback is triggered when the "read all reviews" link in the review summary is clicked.
+                        You may provide code here that you wish to execute on said click event.  For example, you may want to activate a specific tab on the page.  This
+                    code will be wrapped in a javascript function(){...} block. See your Bazaarvoice Implementation manual for further information.]]></comment>
+                            <sort_order>20</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </do_show_content_js>
+                        <enable_inline_ratings>
+                            <label>Enable Hosted Inline Ratings</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <comment>
+                                <![CDATA[Turn on BV Hosted inline ratings. This will enable display of product rating statistics on your category and search results pages.  See documentation for additional steps that must be completed for this feature to take effect.]]></comment>
+                            <sort_order>30</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </enable_inline_ratings>
+                    </fields>
+                </rr>
+                <qa translate="label">
+                    <label>Questions and Answers</label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>120</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <fields>
+                        <enable_qa>
+                            <label>Enable Questions &amp; Answers</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <comment>
+                                <![CDATA[Turn on BV Questions &amp; Answers. This will enable display of Q&amp;A content on your product pages.  See documentation for additional steps that must be completed for this feature to take effect.]]></comment>
+                            <sort_order>10</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </enable_qa>
+                        <do_show_content_js>
+                            <label>JS Callback function to display Q&amp;A content (doShowContent)(Product Page)</label>
+                            <frontend_type>textarea</frontend_type>
+                            <comment><![CDATA[The Bazaarvoice doShowContent javascript callback is triggered when the "read all Q&amp;A" link in the question/answer summary is clicked.
+                        You may provide code here that you wish to execute on said click event.  For example, you may want to activate a specific tab on the page.  This
+                    code will be wrapped in a javascript function(){...} block. See your Bazaarvoice Implementation manual for further information.]]></comment>
+                            <sort_order>70</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </do_show_content_js>
+                    </fields>
+                </qa>
+                <!--  Temp disable as part of MGP-103
+                        <InlineRatingFeed translate="label">
+                            <label>Inline Ratings Feed Import</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>160</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <fields>
+                            </fields>
+                        </InlineRatingFeed>
+                -->
+                <feeds translate="label">
+                    <label>Feeds</label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>200</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <fields>
+                        <enable_product_feed>
+                            <label>Enable Product Feed</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <comment>
+                                <![CDATA[Turn on Product Feed generation. This will enable generation of a product feed to be sent to the BV FTP server.  See documentation for additional steps to setup a scheduled job in Magento for this feature to take effect.]]></comment>
+                            <sort_order>10</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </enable_product_feed>
+                        <enable_purchase_feed>
+                            <label>Enable Purchase Feed</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <comment>
+                                <![CDATA[Turn on Purchase Feed generation. This will enable generation of a purchase feed to be sent to the BV FTP server to be used to send post-interaction emails to your customers in order to solicit review submission.  See documentation for additional steps to setup a scheduled job for this feature to take effect.]]></comment>
+                            <sort_order>20</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </enable_purchase_feed>
+                        <triggering_event>
+                            <label>Purchase Feed Triggering Event</label>
+                            <frontend_type>select</frontend_type>
+                            <comment>
+                                <![CDATA[This determines whether to use the purchase date or ship date when calculating which purchases to include in the purchase feed.]]></comment>
+                            <source_model>bazaarvoice/source_triggeringEvent</source_model>
+                            <sort_order>30</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </triggering_event>
+                        <admin_email>
+                            <label>Administrator Email</label>
+                            <frontend_type>text</frontend_type>
+                            <comment>
+                                <![CDATA[All notifications for BV-related Magento job schedules will be sent to this email address.]]></comment>
+                            <sort_order>70</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </admin_email>
+                        <generation_scope>
+                            <label>Feed Generation Scope</label>
+                            <frontend_type>select</frontend_type>
+                            <comment>
+                                <![CDATA[This determines whether separate feed files will be generated and sent to BV for each website, store or store view.]]></comment>
+                            <source_model>bazaarvoice/source_feedGenerationScope</source_model>
+                            <sort_order>90</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </generation_scope>
+                    </fields>
+                </feeds>
+            </groups>
+        </bazaarvoice>
+    </sections>
+</config>

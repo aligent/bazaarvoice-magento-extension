@@ -1,0 +1,30 @@
+<?php if(Mage::getStoreConfig("bazaarvoice/general/enable_bv") === "1"): ?>
+
+<?php
+$product = Mage::registry('product');
+$productId = '';
+if(strlen($product->getId())) {
+    $productId = Mage::helper('bazaarvoice')->getProductId($product);
+}
+?>
+
+<?php if(strlen($product->getId())): ?>
+<script type="text/javascript">
+$BV.configure('global', { productId : "<?php echo $productId ?>" });
+</script>
+
+<?php else: ?>
+
+<script type="text/javascript" language="javascript">
+<?php // Comment out extra features until we know we need them ?>
+<?php //var profileDisplayContainerPageName = "bazaarvoice/profile/display"; ?>
+var configData = {};
+<?php if (false) { //!empty($submissionContainerUrl)) {
+    echo "    configData.submissionContainerUrl = \"".$submissionContainerUrl."\";\n";
+} ?>
+$BV.configure("global", configData);
+</script>
+
+<?php endif; ?>
+
+<?php endif; ?>

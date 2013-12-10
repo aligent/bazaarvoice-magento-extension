@@ -1,0 +1,15 @@
+<?php if ($this->getIsEnabled()):?>
+<script type="text/javascript">
+$BV.ui( 'rr', 'inline_ratings', {
+  productIds : {
+  <?php foreach($this->getLoadedProductCollection() as $_product): ?>
+    <?php $_productId = Mage::helper('bazaarvoice')->getProductId($_product); ?>
+    '<?php echo $_productId ?>' : {
+      url : '<?php echo $_product->getProductUrl() ?>'
+    },
+  <?php endforeach; ?>   
+  },
+  containerPrefix : 'BVRRInlineRating'
+});
+</script>
+<?php endif; ?>

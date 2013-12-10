@@ -1,9 +1,0 @@
-<?xml version="1.0"?>
-<config>
-   <modules>
-      <Bazaarvoice>
-         <active>true</active>
-         <codePool>local</codePool>
-      </Bazaarvoice>
-   </modules>
-</config>
