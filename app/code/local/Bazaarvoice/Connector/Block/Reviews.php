@@ -36,7 +36,7 @@ class Bazaarvoice_Connector_Block_Reviews extends Mage_Core_Block_Template
             else {
                 $deploymentZoneId =
                     str_replace(' ', '_', Mage::getStoreConfig('bazaarvoice/general/deployment_zone')) .
-                    '/' . Mage::getStoreConfig('bazaarvoice/general/locale');
+                    '-' . Mage::getStoreConfig('bazaarvoice/general/locale');
             }
             $bv = new BV(array(
                 'deployment_zone_id' => $deploymentZoneId, // replace with your display code (BV provided)
