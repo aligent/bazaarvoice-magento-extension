@@ -788,9 +788,9 @@ class Bazaarvoice_Connector_Model_ExportProductFeed extends Mage_Core_Model_Abst
         '    <Description><![CDATA[' . htmlspecialchars($productDefault->getData('short_description'), ENT_QUOTES, 'UTF-8') .
         "]]></Description>\n");
 
-        $brand = $productDefault->getData('brand');
-        if (!is_null($brand) && !empty($brand)) {
-            $ioObject->streamWrite('    <Brand><ExternalId>' . $brand . "</ExternalId></Brand>\n");
+        $brandId = $bvHelper->getBrandId($productDefault);
+        if (!is_null($brandId) && !empty($brandId)) {
+            $ioObject->streamWrite('    <Brand><ExternalId>' . $brandId . "</ExternalId></Brand>\n");
         }
 
         /* Make sure that CategoryExternalId is one written to Category section */

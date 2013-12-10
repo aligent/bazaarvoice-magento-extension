@@ -90,6 +90,16 @@ class Bazaarvoice_Connector_Helper_Data extends Mage_Core_Helper_Abstract
         }
     }
 
+    public function getBrandId($product)
+    {
+        // Get brand
+        $brand = $product->getData('brand');
+        // Replace any illegal characters
+        $brandId = $this->replaceIllegalCharacters($brand);
+
+        return $brandId;
+    }
+
     /**
      * This unique ID can only contain alphanumeric characters (letters and numbers
      * only) and also the asterisk, hyphen, period, and underscore characters. If your
