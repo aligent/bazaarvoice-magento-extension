@@ -350,7 +350,7 @@ class Bazaarvoice_Connector_Helper_Data extends Mage_Core_Helper_Abstract
     public function getBvStaging()
     {
         $environment = Mage::getStoreConfig('bazaarvoice/general/environment');
-        if ($enviornment == 'staging') {
+        if ($environment == 'staging') {
             $bvStaging = '/bvstaging/';
         }
         else {
