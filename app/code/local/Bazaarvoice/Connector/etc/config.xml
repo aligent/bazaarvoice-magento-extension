@@ -156,6 +156,9 @@
                 <!-- FTP Connection Host Name.  If this is not specified, the standard ftp-stg.bazaarvoice.com and
                     ftp.bazaarvoice.com will be used -->
                 <ftp_host_name></ftp_host_name>
+
+                <!-- Display code - We still need this for some clients -->
+                <display_code></display_code>
             </bv_config>
         </bazaarvoice>
     </default>
