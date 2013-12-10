@@ -150,7 +150,7 @@ class Bazaarvoice_Connector_Helper_Data extends Mage_Core_Helper_Abstract
         // Establish a connection to the FTP host
         Mage::log('    BV - beginning file download');
         $connection = ftp_connect($this->getSFTPHost());
-        $ftpUser = Mage::getStoreConfig('bazaarvoice/general/client_name', $store);
+        $ftpUser = strtolower(Mage::getStoreConfig('bazaarvoice/general/client_name', $store));
         $ftpPw = Mage::getStoreConfig('bazaarvoice/general/ftp_password', $store);
         Mage::log('Connecting with ftp user: ' . $ftpUser);
         Mage::log('Connecting with ftp pw: ' . $ftpPw);
@@ -187,7 +187,7 @@ class Bazaarvoice_Connector_Helper_Data extends Mage_Core_Helper_Abstract
     {
         Mage::log('    BV - starting upload to Bazaarvoice server');
 
-        $ftpUser = Mage::getStoreConfig('bazaarvoice/general/client_name', $store->getId());
+        $ftpUser = strtolower(Mage::getStoreConfig('bazaarvoice/general/client_name', $store->getId()));
         $ftpPw = Mage::getStoreConfig('bazaarvoice/general/ftp_password', $store->getId());
         Mage::log('Connecting with ftp user: ' . $ftpUser);
         //Mage::log('Connecting with ftp pw: ' . $ftpPw);
@@ -352,7 +352,11 @@ class Bazaarvoice_Connector_Helper_Data extends Mage_Core_Helper_Abstract
     public function getSFTPHost($store = null)
     {
         $environment = Mage::getStoreConfig('bazaarvoice/general/environment', $store);
-        if ($environment == 'staging') {
+        $ftpHostOverride = trim(Mage::getStoreConfig('bazaarvoice/bv_config/ftp_host_name', $store));
+        if(strlen($ftpHostOverride)) {
+            $sftpHost = $ftpHostOverride;
+        }
+        else if ($environment == 'staging') {
             $sftpHost = 'ftp-stg.bazaarvoice.com';
         }
         else {

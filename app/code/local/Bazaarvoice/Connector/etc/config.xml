@@ -153,6 +153,9 @@
                 <!-- If true, use Magento category URL path as category id, otherwise use Mage category entity primary key -->
                 <category_id_use_url_path>true</category_id_use_url_path>
 
+                <!-- FTP Connection Host Name.  If this is not specified, the standard ftp-stg.bazaarvoice.com and
+                    ftp.bazaarvoice.com will be used -->
+                <ftp_host_name></ftp_host_name>
             </bv_config>
         </bazaarvoice>
     </default>
