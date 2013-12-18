@@ -395,6 +395,8 @@ class Bazaarvoice_Connector_Model_ExportProductFeed extends Mage_Core_Model_Abst
                 $category->setStoreId($store->getId());
                 // Load category object
                 $category->load($categoryId->getId());
+                // Capture localized URL in extra var
+                $category->setData('localized_url', $this->getCategoryUrl($category));
                 // Set default category
                 if ($website->getDefaultGroup()->getDefaultStoreId() == $store->getId()) {
                     $categoryDefault = $category;
@@ -457,6 +459,8 @@ class Bazaarvoice_Connector_Model_ExportProductFeed extends Mage_Core_Model_Abst
                 $category->setStoreId($store->getId());
                 // Load category object
                 $category->load($categoryId->getId());
+                // Capture localized URL in extra var
+                $category->setData('localized_url', $this->getCategoryUrl($category));
                 // Set default category
                 if ($group->getDefaultStoreId() == $store->getId()) {
                     $categoryDefault = $category;
@@ -517,13 +521,14 @@ class Bazaarvoice_Connector_Model_ExportProductFeed extends Mage_Core_Model_Abst
             $categoryDefault->setStoreId($store->getId());
             // Load category object
             $categoryDefault->load($categoryId->getId());
+            // Capture localized URL in extra var
+            $categoryDefault->setData('localized_url', $this->getCategoryUrl($categoryDefault));
             // Get store locale
             $localeCode = Mage::getStoreConfig('bazaarvoice/general/locale', $store->getId());
             // Build array of category by locale
             $categoriesByLocale[$localeCode] = $categoryDefault;
             // Write category to file
             $this->writeCategory($ioObject, $categoryDefault, $categoriesByLocale);
-
         }
 
         if (count($categoryIds) > 0) {
@@ -546,7 +551,7 @@ class Bazaarvoice_Connector_Model_ExportProductFeed extends Mage_Core_Model_Abst
         $categoryExternalId = $bvHelper->getCategoryId($categoryDefault, $categoryDefault->getStoreId());
 
         $categoryName = htmlspecialchars($categoryDefault->getName(), ENT_QUOTES, 'UTF-8');
-        $categoryPageUrl = htmlspecialchars($categoryDefault->getCategoryIdUrl(), ENT_QUOTES, 'UTF-8');
+        $categoryPageUrl = htmlspecialchars($categoryDefault->getData('localized_url'), ENT_QUOTES, 'UTF-8');
 
         $parentExtId = '';
         /* @var $parentCategory Mage_Catalog_Model_Category */
@@ -578,7 +583,7 @@ class Bazaarvoice_Connector_Model_ExportProductFeed extends Mage_Core_Model_Abst
         /* @var $curCategory Mage_Catalog_Model_Category */
         foreach ($categoriesByLocale as $curLocale => $curCategory) {
             $ioObject->streamWrite('        <CategoryPageUrl locale="' . $curLocale . '">' . "<![CDATA[" .
-            htmlspecialchars($curCategory->getCategoryIdUrl(), ENT_QUOTES, 'UTF-8') . "]]>" . "</CategoryPageUrl>\n");
+            htmlspecialchars($curCategory->getData('localized_url'), ENT_QUOTES, 'UTF-8') . "]]>" . "</CategoryPageUrl>\n");
         }
         $ioObject->streamWrite("    </CategoryPageUrls>\n");
 
@@ -621,6 +626,8 @@ class Bazaarvoice_Connector_Model_ExportProductFeed extends Mage_Core_Model_Abst
                 $product->setStoreId($store->getId());
                 // Load product object
                 $product->load($productId->getId());
+                // Set localized product and image url
+                $product->setData('localized_image_url', $this->getProductImageUrl($product));
                 // Set bazaarvoice specific attributes
                 $brand =
                     htmlspecialchars($product->getAttributeText(Mage::getStoreConfig('bazaarvoice/bv_config/product_feed_brand_attribute_code',
@@ -686,6 +693,8 @@ class Bazaarvoice_Connector_Model_ExportProductFeed extends Mage_Core_Model_Abst
                 $product->setStoreId($store->getId());
                 // Load product object
                 $product->load($productId->getId());
+                // Set localized product and image url
+                $product->setData('localized_image_url', $this->getProductImageUrl($product));
                 // Set bazaarvoice specific attributes
                 $brand =
                     htmlspecialchars($product->getAttributeText(Mage::getStoreConfig('bazaarvoice/bv_config/product_feed_brand_attribute_code',
@@ -745,6 +754,8 @@ class Bazaarvoice_Connector_Model_ExportProductFeed extends Mage_Core_Model_Abst
             $productDefault->setStoreId($store->getId());
             // Load product object
             $productDefault->load($productId->getId());
+            // Set localized product and image url
+            $productDefault->setData('localized_image_url', $this->getProductImageUrl($productDefault));
             // Set bazaarvoice specific attributes
             $brand =
                 htmlspecialchars($productDefault->getAttributeText(Mage::getStoreConfig('bazaarvoice/bv_config/product_feed_brand_attribute_code',
@@ -773,7 +784,7 @@ class Bazaarvoice_Connector_Model_ExportProductFeed extends Mage_Core_Model_Abst
      * @param array $productsByLocale
      */
     private function writeProduct(Varien_Io_File $ioObject, Mage_Catalog_Model_Product $productDefault,
-                                  array $productsByLocale)
+        array $productsByLocale)
     {
         // Get ref to BV helper
         /* @var $bvHelper Bazaarvoice_Connector_Helper_Data */
@@ -809,9 +820,9 @@ class Bazaarvoice_Connector_Model_ExportProductFeed extends Mage_Core_Model_Abst
             }
         }
 
-        $ioObject->streamWrite('    <ProductPageUrl>' . "<![CDATA[" . $productDefault->getProductUrl() . "]]>" . "</ProductPageUrl>\n");
+        $ioObject->streamWrite('    <ProductPageUrl>' . "<![CDATA[" . $this->getProductUrl($productDefault) . "]]>" . "</ProductPageUrl>\n");
         try {
-            $imageUrl = $productDefault->getImageUrl();
+            $imageUrl = $productDefault->getData('localized_image_url');
             if (strlen($imageUrl)) {
                 $ioObject->streamWrite('    <ImageUrl>' . "<![CDATA[" . $imageUrl . "]]>" . "</ImageUrl>\n");
             }
@@ -839,14 +850,14 @@ class Bazaarvoice_Connector_Model_ExportProductFeed extends Mage_Core_Model_Abst
         $ioObject->streamWrite("    <ProductPageUrls>\n");
         foreach ($productsByLocale as $curLocale => $curProduct) {
             $ioObject->streamWrite('        <ProductPageUrl locale="' . $curLocale . '">' . "<![CDATA[" .
-            $productDefault->getProductUrl() . "]]>" . "</ProductPageUrl>\n");
+            $this->getProductUrl($curProduct) . "]]>" . "</ProductPageUrl>\n");
         }
         $ioObject->streamWrite("    </ProductPageUrls>\n");
         // Write out localized <ImageUrls>
         $ioObject->streamWrite("    <ImageUrls>\n");
         foreach ($productsByLocale as $curLocale => $curProduct) {
             try {
-                $imageUrl = $productDefault->getImageUrl();
+                $imageUrl = $curProduct->getData('localized_image_url');
                 if (strlen($imageUrl)) {
                     $ioObject->streamWrite('        <ImageUrl locale="' . $curLocale . '">' . "<![CDATA[" . $imageUrl .
                     "]]>" . "</ImageUrl>\n");
@@ -861,6 +872,83 @@ class Bazaarvoice_Connector_Model_ExportProductFeed extends Mage_Core_Model_Abst
 
         // Close this product
         $ioObject->streamWrite("</Product>\n");
+    }
+
+    /**
+     * Method to retrieve Magento category URL, modeled after Mage_Catalog_Model_Category::getUrl in EE 1.12
+     *
+     * @param Mage_Catalog_Model_Category $category
+     * @return string
+     */
+    protected function getCategoryUrl(Mage_Catalog_Model_Category $category)
+    {
+        /** @var Mage_Core_Model_Url $urlInstance */
+        $urlInstance = Mage::getModel('core/url');
+        $urlInstance->setStore($category->getStoreId());
+        $url = $category->_getData('url');
+        if (is_null($url)) {
+            Varien_Profiler::start('REWRITE: '.__METHOD__);
+
+            if ($category->hasData('request_path') && $category->getRequestPath() != '') {
+                Mage::log('3');
+                $category->setData('url', $urlInstance->getDirectUrl($category->getRequestPath()));
+                Varien_Profiler::stop('REWRITE: '.__METHOD__);
+                return $category->getData('url');
+            }
+
+            Varien_Profiler::stop('REWRITE: '.__METHOD__);
+
+            $rewrite = $category->getUrlRewrite();
+            if ($category->getStoreId()) {
+                $rewrite->setStoreId($category->getStoreId());
+            }
+            $idPath = 'category/' . $category->getId();
+            $rewrite->loadByIdPath($idPath);
+
+            if ($rewrite->getId()) {
+                Mage::log('request path: ' . $rewrite->getRequestPath());
+                $category->setData('url', $urlInstance->getDirectUrl($rewrite->getRequestPath()));
+                Varien_Profiler::stop('REWRITE: '.__METHOD__);
+                return $category->getData('url');
+            }
+
+            Varien_Profiler::stop('REWRITE: '.__METHOD__);
+
+            $category->setData('url', $category->getCategoryIdUrl());
+            return $category->getData('url');
+        }
+        return $url;
+    }
+
+    protected function getProductImageUrl(Mage_Catalog_Model_Product $product)
+    {
+        // Init return var
+        $imageUrl = null;
+        // Get store id from product
+        $storeId = $product->getStoreId();
+        // Get image url from helper (this is for the default store
+        $defaultStoreImageUrl = Mage::helper('catalog/image')->init($product, 'image');
+        // Get media base url for correct store
+        $mediaBaseUrl = Mage::app()->getStore($storeId)->getBaseUrl('media');
+        // Get default media base url
+        $defaultMediaBaseUrl = Mage::getBaseUrl('media');
+        // Replace media base url component
+        $imageUrl = str_replace($defaultMediaBaseUrl, $mediaBaseUrl, $defaultStoreImageUrl);
+
+        // Return resulting url
+        return $imageUrl;
+    }
+
+    protected function getProductUrl(Mage_Catalog_Model_Product $product)
+    {
+        $productUrl = $product->getProductUrl(false);
+        // Trim any url params
+        $questionMarkPos = strpos($productUrl, '?');
+        if($questionMarkPos !== FALSE) {
+            $productUrl = substr($productUrl, 0, $questionMarkPos);
+        }
+
+        return $productUrl;
     }
 
 }
