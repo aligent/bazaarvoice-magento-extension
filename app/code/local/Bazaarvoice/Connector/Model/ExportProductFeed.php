@@ -821,15 +821,9 @@ class Bazaarvoice_Connector_Model_ExportProductFeed extends Mage_Core_Model_Abst
         }
 
         $ioObject->streamWrite('    <ProductPageUrl>' . "<![CDATA[" . $this->getProductUrl($productDefault) . "]]>" . "</ProductPageUrl>\n");
-        try {
-            $imageUrl = $productDefault->getData('localized_image_url');
-            if (strlen($imageUrl)) {
-                $ioObject->streamWrite('    <ImageUrl>' . "<![CDATA[" . $imageUrl . "]]>" . "</ImageUrl>\n");
-            }
-        }
-        catch (Exception $e) {
-            Mage::log('Failed to get image URL for product sku: ' . $productDefault->getSku());
-            Mage::log('Continuing generating feed.');
+        $imageUrl = $productDefault->getData('localized_image_url');
+        if (strlen($imageUrl)) {
+            $ioObject->streamWrite('    <ImageUrl>' . "<![CDATA[" . $imageUrl . "]]>" . "</ImageUrl>\n");
         }
 
         // Write out localized <Names>
@@ -856,16 +850,10 @@ class Bazaarvoice_Connector_Model_ExportProductFeed extends Mage_Core_Model_Abst
         // Write out localized <ImageUrls>
         $ioObject->streamWrite("    <ImageUrls>\n");
         foreach ($productsByLocale as $curLocale => $curProduct) {
-            try {
-                $imageUrl = $curProduct->getData('localized_image_url');
-                if (strlen($imageUrl)) {
-                    $ioObject->streamWrite('        <ImageUrl locale="' . $curLocale . '">' . "<![CDATA[" . $imageUrl .
-                    "]]>" . "</ImageUrl>\n");
-                }
-            }
-            catch (Exception $e) {
-                Mage::log('Failed to get image URL for product sku: ' . $productDefault->getSku());
-                Mage::log('Continuing generating feed.');
+            $imageUrl = $curProduct->getData('localized_image_url');
+            if (strlen($imageUrl)) {
+                $ioObject->streamWrite('        <ImageUrl locale="' . $curLocale . '">' . "<![CDATA[" . $imageUrl .
+                "]]>" . "</ImageUrl>\n");
             }
         }
         $ioObject->streamWrite("    </ImageUrls>\n");
@@ -890,7 +878,6 @@ class Bazaarvoice_Connector_Model_ExportProductFeed extends Mage_Core_Model_Abst
             Varien_Profiler::start('REWRITE: '.__METHOD__);
 
             if ($category->hasData('request_path') && $category->getRequestPath() != '') {
-                Mage::log('3');
                 $category->setData('url', $urlInstance->getDirectUrl($category->getRequestPath()));
                 Varien_Profiler::stop('REWRITE: '.__METHOD__);
                 return $category->getData('url');
@@ -941,14 +928,22 @@ class Bazaarvoice_Connector_Model_ExportProductFeed extends Mage_Core_Model_Abst
 
     protected function getProductUrl(Mage_Catalog_Model_Product $product)
     {
-        $productUrl = $product->getProductUrl(false);
-        // Trim any url params
-        $questionMarkPos = strpos($productUrl, '?');
-        if($questionMarkPos !== FALSE) {
-            $productUrl = substr($productUrl, 0, $questionMarkPos);
-        }
+        try {
+            $productUrl = $product->getProductUrl(false);
+            // Trim any url params
+            $questionMarkPos = strpos($productUrl, '?');
+            if($questionMarkPos !== FALSE) {
+                $productUrl = substr($productUrl, 0, $questionMarkPos);
+            }
 
-        return $productUrl;
+            return $productUrl;
+        }
+        catch (Exception $e) {
+            Mage::log('Failed to get image URL for product sku: ' . $product->getSku());
+            Mage::log('Continuing generating feed.');
+
+            return '';
+        }
     }
 
 }
