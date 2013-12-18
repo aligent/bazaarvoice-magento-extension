@@ -909,34 +909,22 @@ class Bazaarvoice_Connector_Model_ExportProductFeed extends Mage_Core_Model_Abst
 
     protected function getProductImageUrl(Mage_Catalog_Model_Product $product)
     {
-        // Init return var
-        $imageUrl = null;
-        // Get store id from product
-        $storeId = $product->getStoreId();
-        // Get image url from helper (this is for the default store
-        $defaultStoreImageUrl = Mage::helper('catalog/image')->init($product, 'image');
-        // Get media base url for correct store
-        $mediaBaseUrl = Mage::app()->getStore($storeId)->getBaseUrl('media');
-        // Get default media base url
-        $defaultMediaBaseUrl = Mage::getBaseUrl('media');
-        // Replace media base url component
-        $imageUrl = str_replace($defaultMediaBaseUrl, $mediaBaseUrl, $defaultStoreImageUrl);
-
-        // Return resulting url
-        return $imageUrl;
-    }
-
-    protected function getProductUrl(Mage_Catalog_Model_Product $product)
-    {
         try {
-            $productUrl = $product->getProductUrl(false);
-            // Trim any url params
-            $questionMarkPos = strpos($productUrl, '?');
-            if($questionMarkPos !== FALSE) {
-                $productUrl = substr($productUrl, 0, $questionMarkPos);
-            }
+            // Init return var
+            $imageUrl = null;
+            // Get store id from product
+            $storeId = $product->getStoreId();
+            // Get image url from helper (this is for the default store
+            $defaultStoreImageUrl = Mage::helper('catalog/image')->init($product, 'image');
+            // Get media base url for correct store
+            $mediaBaseUrl = Mage::app()->getStore($storeId)->getBaseUrl('media');
+            // Get default media base url
+            $defaultMediaBaseUrl = Mage::getBaseUrl('media');
+            // Replace media base url component
+            $imageUrl = str_replace($defaultMediaBaseUrl, $mediaBaseUrl, $defaultStoreImageUrl);
 
-            return $productUrl;
+            // Return resulting url
+            return $imageUrl;
         }
         catch (Exception $e) {
             Mage::log('Failed to get image URL for product sku: ' . $product->getSku());
@@ -944,6 +932,18 @@ class Bazaarvoice_Connector_Model_ExportProductFeed extends Mage_Core_Model_Abst
 
             return '';
         }
+    }
+
+    protected function getProductUrl(Mage_Catalog_Model_Product $product)
+    {
+        $productUrl = $product->getProductUrl(false);
+        // Trim any url params
+        $questionMarkPos = strpos($productUrl, '?');
+        if($questionMarkPos !== FALSE) {
+            $productUrl = substr($productUrl, 0, $questionMarkPos);
+        }
+
+        return $productUrl;
     }
 
 }
