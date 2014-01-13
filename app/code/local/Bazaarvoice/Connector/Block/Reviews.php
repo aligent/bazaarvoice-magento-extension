@@ -57,7 +57,7 @@ class Bazaarvoice_Connector_Block_Reviews extends Mage_Core_Block_Template
      */
     public function getCacheTags()
     {
-        return array_merge(parent::getCacheTags(), Mage::registry('current_product')->getSku());
+        return array_merge(parent::getCacheTags(), Mage::registry('current_product')->getCacheIdTagscd());
     }
     
 }
