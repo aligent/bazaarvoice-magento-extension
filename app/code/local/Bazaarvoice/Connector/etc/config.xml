@@ -91,14 +91,6 @@
                     <model>bazaarvoice/exportProductFeed::exportDailyProductFeed</model>
                 </run>
             </bazaarvoice_product_feed>
-            <bazaarvoice_download_inlineratings>
-                <schedule>
-                    <cron_expr>30 1 * * *</cron_expr><!-- Every day at 1:30 AM -->
-                </schedule>
-                <run>
-                    <model>bazaarvoice/retrieveInlineRatingsFeed::retrieveInlineRatingsFeed</model>
-                </run>
-            </bazaarvoice_download_inlineratings>
             <bazaarvoice_purchase_feed>
                 <schedule>
                     <cron_expr>30 2 * * 6</cron_expr><!-- Every Saturday at 2:30 AM -->
