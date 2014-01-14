@@ -8,7 +8,7 @@
 <config>
     <modules>
         <Bazaarvoice_Connector>
-            <version>6.0.0</version>
+            <version>6.0.1</version>
             <depends>
                 <!-- no dependencies -->
             </depends>
@@ -91,14 +91,6 @@
                     <model>bazaarvoice/exportProductFeed::exportDailyProductFeed</model>
                 </run>
             </bazaarvoice_product_feed>
-            <bazaarvoice_download_inlineratings>
-                <schedule>
-                    <cron_expr>30 1 * * *</cron_expr><!-- Every day at 1:30 AM -->
-                </schedule>
-                <run>
-                    <model>bazaarvoice/retrieveInlineRatingsFeed::retrieveInlineRatingsFeed</model>
-                </run>
-            </bazaarvoice_download_inlineratings>
             <bazaarvoice_purchase_feed>
                 <schedule>
                     <cron_expr>30 2 * * 6</cron_expr><!-- Every Saturday at 2:30 AM -->
@@ -153,6 +145,12 @@
                 <!-- If true, use Magento category URL path as category id, otherwise use Mage category entity primary key -->
                 <category_id_use_url_path>true</category_id_use_url_path>
 
+                <!-- FTP Connection Host Name.  If this is not specified, the standard ftp-stg.bazaarvoice.com and
+                    ftp.bazaarvoice.com will be used -->
+                <ftp_host_name></ftp_host_name>
+
+                <!-- Display code - We still need this for some clients -->
+                <display_code></display_code>
             </bv_config>
         </bazaarvoice>
     </default>
