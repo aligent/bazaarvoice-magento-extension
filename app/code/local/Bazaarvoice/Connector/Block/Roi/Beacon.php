@@ -50,7 +50,7 @@ class Bazaarvoice_Connector_Block_Roi_Beacon extends Mage_Core_Block_Template
                     $product = Mage::helper('bazaarvoice')->getReviewableProductFromOrderItem($item);
                      
                     $itemDetails = array();
-                    $itemDetails['sku'] = $product->getSku();
+                    $itemDetails['sku'] = Mage::helper('bazaarvoice')->getProductId($product);
                     $itemDetails['name'] = $item->getName();
                     // 'category' is not included.  Mage products can be in 0 - many categories.  Should we try to include it?
                     $itemDetails['price'] = number_format($item->getPrice(), 2, '.', '');
