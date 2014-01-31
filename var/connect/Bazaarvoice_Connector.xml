@@ -10,9 +10,9 @@
    <description>See www.bazaarvoice.com for further details on our offerings</description>
    <license>Bazaarvoice, Inc.</license>
    <license_uri/>
-   <version>6.0.1</version>
+   <version>6.0.2</version>
    <stability>stable</stability>
-   <notes>Plugin corresponds to version 6.0.1 of the Bazaarvoice platform</notes>
+   <notes>Plugin corresponds to version 6.0.2 of the Bazaarvoice platform</notes>
    <authors>
       <name>
          <name>BV DTS</name>
