@@ -152,8 +152,13 @@ class Bazaarvoice_Connector_Model_ProductFeed_Brand extends Mage_Core_Model_Abst
         $attribute = Mage::getModel('catalog/resource_eav_attribute')->load($attributeCode, 'attribute_code');
         $attribute->setStoreId($store->getId());
         $attributeOptions = $attribute->getSource()->getAllOptions(false);
+        // Reformat array
+        $processedOptions = array();
+        foreach ($attributeOptions as $attributeOption) {
+            $processedOptions[$attributeOption['value']] = $attributeOption['label'];
+        }
 
-        return $attributeOptions;
+        return $processedOptions;
     }
 
     protected function writeBrand(Varien_Io_File $ioObject, $brandExternalId, $brandName)
