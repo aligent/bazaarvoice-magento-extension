@@ -140,7 +140,7 @@
                 <!-- Magento Brand Attribute Code
                      The following attribute code will be used to locate the brand of products
                      which is sent in the product feed: -->
-                <product_feed_brand_attribute_code>manufacturer</product_feed_brand_attribute_code>
+                <product_feed_brand_attribute_code></product_feed_brand_attribute_code>
                 
                 <!-- If true, use Magento category URL path as category id, otherwise use Mage category entity primary key -->
                 <category_id_use_url_path>true</category_id_use_url_path>
