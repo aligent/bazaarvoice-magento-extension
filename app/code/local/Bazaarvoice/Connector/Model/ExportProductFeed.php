@@ -222,7 +222,9 @@ class Bazaarvoice_Connector_Model_ExportProductFeed extends Mage_Core_Model_Abst
         $categoryModel->processCategoriesForWebsite($ioObject, $website);
         Mage::log('    BV - completed categories, beginning products');
         $productModel->processProductsForWebsite($ioObject, $website);
-        Mage::log('    BV - completed processing all products');
+        Mage::log('    BV - completed products, beginning brands');
+        $brandModel->processBrandsForWebsite($ioObject, $website);
+        Mage::log('    BV - completed processing all brands');
         $this->closeAndFinishWritingFile($ioObject);
 
         // Upload feed
@@ -261,7 +263,9 @@ class Bazaarvoice_Connector_Model_ExportProductFeed extends Mage_Core_Model_Abst
         $categoryModel->processCategoriesForGroup($ioObject, $group);
         Mage::log('    BV - completed categories, beginning products');
         $productModel->processProductsForGroup($ioObject, $group);
-        Mage::log('    BV - completed processing all products');
+        Mage::log('    BV - completed products, beginning brands');
+        $brandModel->processBrandsForGroup($ioObject, $group);
+        Mage::log('    BV - completed processing all brands');
         $this->closeAndFinishWritingFile($ioObject);
 
         // Upload feed
@@ -299,7 +303,9 @@ class Bazaarvoice_Connector_Model_ExportProductFeed extends Mage_Core_Model_Abst
         $categoryModel->processCategoriesForStore($ioObject, $store);
         Mage::log('    BV - completed categories, beginning products');
         $productModel->processProductsForStore($ioObject, $store);
-        Mage::log('    BV - completed processing all products');
+        Mage::log('    BV - completed products, beginning brands');
+        $brandModel->processBrandsForStore($ioObject, $store);
+        Mage::log('    BV - completed processing all brands');
         $this->closeAndFinishWritingFile($ioObject);
 
         // Upload feed
