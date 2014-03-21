@@ -207,7 +207,7 @@ class Bazaarvoice_Connector_Model_ProductFeed_Product extends Mage_Core_Model_Ab
             '    <Description><![CDATA[' . htmlspecialchars($productDefault->getData('short_description'), ENT_QUOTES, 'UTF-8') .
             "]]></Description>\n");
 
-        $brandId = $bvHelper->getBrandId($productDefault);
+        $brandId = $productDefault->getData('brand');
         if (!is_null($brandId) && !empty($brandId)) {
             $ioObject->streamWrite('    <Brand><ExternalId>' . $brandId . "</ExternalId></Brand>\n");
         }
