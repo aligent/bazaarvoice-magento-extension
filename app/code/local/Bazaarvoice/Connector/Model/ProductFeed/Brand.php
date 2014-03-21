@@ -20,6 +20,13 @@ class Bazaarvoice_Connector_Model_ProductFeed_Brand extends Mage_Core_Model_Abst
             Mage::throwException('Invalid locale code configured for store: ' . $defaultStore->getCode());
         }
 
+        // Lookup the configured attribute code for "Brand"
+        $attributeCode = Mage::getStoreConfig('bazaarvoice/bv_config/product_feed_brand_attribute_code', $defaultStore->getId());
+        // If there is no attribute code for default store, then bail
+        if(!strlen(trim($attributeCode))) {
+            return;
+        }
+
         // Look up options for each store
         $optionsByLocale = array();
         /** @var Mage_Core_Model_Store $store */
@@ -53,6 +60,13 @@ class Bazaarvoice_Connector_Model_ProductFeed_Brand extends Mage_Core_Model_Abst
             Mage::throwException('Invalid locale code configured for store: ' . $defaultStore->getCode());
         }
 
+        // Lookup the configured attribute code for "Brand"
+        $attributeCode = Mage::getStoreConfig('bazaarvoice/bv_config/product_feed_brand_attribute_code', $defaultStore->getId());
+        // If there is no attribute code for default store, then bail
+        if(!strlen(trim($attributeCode))) {
+            return;
+        }
+
         // Look up options for each store
         $optionsByLocale = array();
         /** @var Mage_Core_Model_Store $store */
@@ -77,6 +91,13 @@ class Bazaarvoice_Connector_Model_ProductFeed_Brand extends Mage_Core_Model_Abst
      */
     public function processBrandsForStore(Varien_Io_File $ioObject, Mage_Core_Model_Store $store)
     {
+        // Lookup the configured attribute code for "Brand"
+        $attributeCode = Mage::getStoreConfig('bazaarvoice/bv_config/product_feed_brand_attribute_code', $store->getId());
+        // If there is no attribute code for store, then bail
+        if(!strlen(trim($attributeCode))) {
+            return;
+        }
+
         // Lookup up brand names
         $attributeOptions = $this->getOptionsForStore($store);
         // Output tag only if more than 1 brand

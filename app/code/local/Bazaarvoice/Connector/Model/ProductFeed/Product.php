@@ -43,9 +43,7 @@ class Bazaarvoice_Connector_Model_ProductFeed_Product extends Mage_Core_Model_Ab
                 // Set localized product and image url
                 $product->setData('localized_image_url', $this->getProductImageUrl($product));
                 // Set bazaarvoice specific attributes
-                $brand =
-                    htmlspecialchars($product->getAttributeText(Mage::getStoreConfig('bazaarvoice/bv_config/product_feed_brand_attribute_code',
-                        $store->getId())));
+                $brand = $product->getData(Mage::getStoreConfig('bazaarvoice/bv_config/product_feed_brand_attribute_code', $store->getId()));
                 $product->setData('brand', $brand);
                 // Set default product
                 if ($website->getDefaultGroup()->getDefaultStoreId() == $store->getId()) {
@@ -110,9 +108,7 @@ class Bazaarvoice_Connector_Model_ProductFeed_Product extends Mage_Core_Model_Ab
                 // Set localized product and image url
                 $product->setData('localized_image_url', $this->getProductImageUrl($product));
                 // Set bazaarvoice specific attributes
-                $brand =
-                    htmlspecialchars($product->getAttributeText(Mage::getStoreConfig('bazaarvoice/bv_config/product_feed_brand_attribute_code',
-                        $store->getId())));
+                $brand = $product->getData(Mage::getStoreConfig('bazaarvoice/bv_config/product_feed_brand_attribute_code', $store->getId()));
                 $product->setData('brand', $brand);
                 // Set default product
                 if ($group->getDefaultStoreId() == $store->getId()) {
@@ -171,9 +167,7 @@ class Bazaarvoice_Connector_Model_ProductFeed_Product extends Mage_Core_Model_Ab
             // Set localized product and image url
             $productDefault->setData('localized_image_url', $this->getProductImageUrl($productDefault));
             // Set bazaarvoice specific attributes
-            $brand =
-                htmlspecialchars($productDefault->getAttributeText(Mage::getStoreConfig('bazaarvoice/bv_config/product_feed_brand_attribute_code',
-                    $store->getId())));
+            $brand = $productDefault->getData(Mage::getStoreConfig('bazaarvoice/bv_config/product_feed_brand_attribute_code', $store->getId()));
             $productDefault->setData('brand', $brand);
             // Get store locale
             $localeCode = Mage::getStoreConfig('bazaarvoice/general/locale', $store->getId());
