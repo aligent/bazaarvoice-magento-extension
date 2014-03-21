@@ -47,8 +47,6 @@
 class Bazaarvoice_Connector_Model_ExportProductFeed extends Mage_Core_Model_Abstract
 {
 
-    private $_categoryIdList = array();
-
     protected function _construct()
     {
     }
@@ -221,6 +219,7 @@ class Bazaarvoice_Connector_Model_ExportProductFeed extends Mage_Core_Model_Abst
         Mage::log('    BV - processing all categories');
         $categoryModel->processCategoriesForWebsite($ioObject, $website);
         Mage::log('    BV - completed categories, beginning products');
+        $productModel->setCategoryIdList($categoryModel->getCategoryIdList());
         $productModel->processProductsForWebsite($ioObject, $website);
         Mage::log('    BV - completed products, beginning brands');
         $brandModel->processBrandsForWebsite($ioObject, $website);
@@ -262,6 +261,7 @@ class Bazaarvoice_Connector_Model_ExportProductFeed extends Mage_Core_Model_Abst
         Mage::log('    BV - processing all categories');
         $categoryModel->processCategoriesForGroup($ioObject, $group);
         Mage::log('    BV - completed categories, beginning products');
+        $productModel->setCategoryIdList($categoryModel->getCategoryIdList());
         $productModel->processProductsForGroup($ioObject, $group);
         Mage::log('    BV - completed products, beginning brands');
         $brandModel->processBrandsForGroup($ioObject, $group);
@@ -302,6 +302,7 @@ class Bazaarvoice_Connector_Model_ExportProductFeed extends Mage_Core_Model_Abst
         Mage::log('    BV - processing all categories');
         $categoryModel->processCategoriesForStore($ioObject, $store);
         Mage::log('    BV - completed categories, beginning products');
+        $productModel->setCategoryIdList($categoryModel->getCategoryIdList());
         $productModel->processProductsForStore($ioObject, $store);
         Mage::log('    BV - completed products, beginning brands');
         $brandModel->processBrandsForStore($ioObject, $store);

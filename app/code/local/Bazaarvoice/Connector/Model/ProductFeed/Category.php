@@ -4,6 +4,19 @@
  */
 class Bazaarvoice_Connector_Model_ProductFeed_Category extends Mage_Core_Model_Abstract
 {
+    private $_categoryIdList = array();
+
+    public function setCategoryIdList(array $list)
+    {
+        $this->_categoryIdList = $list;
+    }
+
+    public function getCategoryIdList()
+    {
+        return $this->_categoryIdList;
+    }
+
+
     /**
      * @param Varien_Io_File $ioObject File object for feed file
      * @param Mage_Core_Model_Website $website
