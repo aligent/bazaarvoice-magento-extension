@@ -42,7 +42,7 @@ class Bazaarvoice_Connector_Block_Reviews extends Mage_Core_Block_Template
                 'deployment_zone_id' => $deploymentZoneId, // replace with your display code (BV provided)
                 'product_id' => Mage::helper('bazaarvoice')->getProductId(Mage::registry('current_product')), // replace with product id 
                 'cloud_key' => Mage::getStoreConfig('bazaarvoice/general/cloud_seo_key'), // BV provided value
-                'staging' => (Mage::getStoreConfig('bazaarvoice/general/environment') == "staging" ? "TRUE" : "FALSE")
+                'staging' => (Mage::getStoreConfig('bazaarvoice/general/environment') == "staging" ? TRUE : FALSE)
             ));    
             $seoContent = $bv->reviews->renderSeo();
         }
