@@ -1,15 +1,16 @@
 <?php if(Mage::getStoreConfig("bazaarvoice/general/enable_bv") === "1"): ?>
 <?php
 $doShowContentJs = Mage::getStoreConfig('bazaarvoice/qa/do_show_content_js');
+$seoContent = $this->getSEOContent();
 ?>
-<?php if(Mage::getStoreConfig("bazaarvoice/qa/enable_qa") === "1"): ?>
-<div id="BVQAContainer"></div>
+<div id="BVQAContainer">
+    <?php echo $seoContent ?>
+</div>
 <script type="text/javascript">
   $BV.ui( 'qa', 'show_questions', {
     doShowContent : function () {
       <?php echo $doShowContentJs ?>
     }
-  });
+  });    
 </script>
-<?php endif; ?>
 <?php endif; ?>

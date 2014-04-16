@@ -38,7 +38,7 @@
                 <block type="bazaarvoice/reviews" name="reviews" as="bv_reviews" template="bazaarvoice/display/rr/reviews.phtml" />
 
                 <block type="bazaarvoice/bazaarvoice" name="questionsummary" as="bv_questionsummary" template="bazaarvoice/display/qa/questionsummary.phtml" />
-                <block type="bazaarvoice/bazaarvoice" name="questions" as="bv_questions" template="bazaarvoice/display/qa/questions.phtml" />
+                <block type="bazaarvoice/questions" name="questions" as="bv_questions" template="bazaarvoice/display/qa/questions.phtml" />
             </reference>
         </reference>
     </catalog_product_view>

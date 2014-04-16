@@ -2,7 +2,7 @@
 
 require_once('Bazaarvoice/bvseosdk.php');
 
-class Bazaarvoice_Connector_Block_Reviews extends Mage_Core_Block_Template
+class Bazaarvoice_Connector_Block_Questions extends Mage_Core_Block_Template
 {
 
     private $_isEnabled;
@@ -10,7 +10,7 @@ class Bazaarvoice_Connector_Block_Reviews extends Mage_Core_Block_Template
     public function _construct()
     {
         // enabled/disabled in admin
-        $this->_isEnabled = Mage::getStoreConfig('bazaarvoice/rr/enable_rr') === '1' 
+        $this->_isEnabled = Mage::getStoreConfig('bazaarvoice/qa/enable_qa') === '1' 
                                 && Mage::getStoreConfig('bazaarvoice/general/enable_bv') === '1';
     }
 
@@ -44,7 +44,7 @@ class Bazaarvoice_Connector_Block_Reviews extends Mage_Core_Block_Template
                 'cloud_key' => Mage::getStoreConfig('bazaarvoice/general/cloud_seo_key'), // BV provided value
                 'staging' => (Mage::getStoreConfig('bazaarvoice/general/environment') == "staging" ? TRUE : FALSE)
             ));    
-            $seoContent = $bv->reviews->renderSeo();
+            $seoContent = $bv->questions->renderSeo();
         }
         
         return $seoContent;
