@@ -1,6 +1,6 @@
 <?php
 
-include 'Bazaarvoice/bvseosdk.php';
+require_once('Bazaarvoice/bvseosdk.php');
 
 class Bazaarvoice_Connector_Block_Reviews extends Mage_Core_Block_Template
 {
