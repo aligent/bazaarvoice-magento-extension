@@ -216,14 +216,14 @@ class Bazaarvoice_Connector_Model_ExportProductFeed extends Mage_Core_Model_Abst
         // Create varien io object and write local feed file
         /* @var $ioObject Varien_Io_File */
         $ioObject = $this->createAndStartWritingFile($productFeedFileName, $clientName);
-        Mage::log('    BV - processing all categories');
+        Mage::log('    BV - processing all brands');
+        $brandModel->processBrandsForWebsite($ioObject, $website);
+        Mage::log('    BV - completed brands, beginning categories');
         $categoryModel->processCategoriesForWebsite($ioObject, $website);
         Mage::log('    BV - completed categories, beginning products');
         $productModel->setCategoryIdList($categoryModel->getCategoryIdList());
         $productModel->processProductsForWebsite($ioObject, $website);
-        Mage::log('    BV - completed products, beginning brands');
-        $brandModel->processBrandsForWebsite($ioObject, $website);
-        Mage::log('    BV - completed processing all brands');
+        Mage::log('    BV - completed processing all products');
         $this->closeAndFinishWritingFile($ioObject);
 
         // Upload feed
@@ -258,14 +258,14 @@ class Bazaarvoice_Connector_Model_ExportProductFeed extends Mage_Core_Model_Abst
         // Create varien io object and write local feed file
         /* @var $ioObject Varien_Io_File */
         $ioObject = $this->createAndStartWritingFile($productFeedFileName, $clientName);
-        Mage::log('    BV - processing all categories');
+        Mage::log('    BV - processing all brands');
+        $brandModel->processBrandsForGroup($ioObject, $group);
+        Mage::log('    BV - completed brands, beginning categories');
         $categoryModel->processCategoriesForGroup($ioObject, $group);
         Mage::log('    BV - completed categories, beginning products');
         $productModel->setCategoryIdList($categoryModel->getCategoryIdList());
         $productModel->processProductsForGroup($ioObject, $group);
-        Mage::log('    BV - completed products, beginning brands');
-        $brandModel->processBrandsForGroup($ioObject, $group);
-        Mage::log('    BV - completed processing all brands');
+        Mage::log('    BV - completed processing all products');
         $this->closeAndFinishWritingFile($ioObject);
 
         // Upload feed
@@ -299,14 +299,14 @@ class Bazaarvoice_Connector_Model_ExportProductFeed extends Mage_Core_Model_Abst
         // Create varien io object and write local feed file
         /* @var $ioObject Varien_Io_File */
         $ioObject = $this->createAndStartWritingFile($productFeedFileName, $clientName);
-        Mage::log('    BV - processing all categories');
+        Mage::log('    BV - processing all brands');
+        $brandModel->processBrandsForStore($ioObject, $store);
+        Mage::log('    BV - completed brands, beginning categories');
         $categoryModel->processCategoriesForStore($ioObject, $store);
         Mage::log('    BV - completed categories, beginning products');
         $productModel->setCategoryIdList($categoryModel->getCategoryIdList());
         $productModel->processProductsForStore($ioObject, $store);
-        Mage::log('    BV - completed products, beginning brands');
-        $brandModel->processBrandsForStore($ioObject, $store);
-        Mage::log('    BV - completed processing all brands');
+        Mage::log('    BV - completed processing all products');
         $this->closeAndFinishWritingFile($ioObject);
 
         // Upload feed
