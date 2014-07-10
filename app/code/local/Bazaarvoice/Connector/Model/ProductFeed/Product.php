@@ -230,7 +230,7 @@ class Bazaarvoice_Connector_Model_ProductFeed_Product extends Mage_Core_Model_Ab
 
         $brandId = $productDefault->getData('brand');
         if ($productDefault->hasData('brand') && !is_null($brandId) && !empty($brandId)) {
-            $ioObject->streamWrite('    <Brand><ExternalId>' . $brandId . "</ExternalId></Brand>\n");
+            $ioObject->streamWrite('    <BrandExternalId>' . $brandId . "</BrandExternalId>\n");
         }
 
         /* Make sure that CategoryExternalId is one written to Category section */
