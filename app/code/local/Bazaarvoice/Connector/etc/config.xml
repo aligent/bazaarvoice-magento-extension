@@ -109,6 +109,7 @@
                 <environment>staging</environment>
                 <authentication_method>bv</authentication_method>
                 <enable_roibeacon>1</enable_roibeacon>
+                <families>0</families>
             </general>
             <rr>
                 <enable_rr>1</enable_rr>
