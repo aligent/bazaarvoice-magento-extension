@@ -53,6 +53,10 @@ class Bazaarvoice_Connector_Model_ProductFeed_Product extends Mage_Core_Model_Ab
                 $product->load($productId->getId());
                 // Set localized product and image url
                 $product->setData('localized_image_url', $this->getProductImageUrl($product));
+                // Product families
+                if (Mage::getStoreConfig('bazaarvoice/general/families', $store->getId())) {
+                    $product->setData("product_families", $this->getProductFamilies($product));
+                }
                 // Set bazaarvoice specific attributes
                 // Brand
                 $brandAttributeCode = Mage::getStoreConfig('bazaarvoice/bv_config/product_feed_brand_attribute_code', $store->getId());
@@ -122,6 +126,10 @@ class Bazaarvoice_Connector_Model_ProductFeed_Product extends Mage_Core_Model_Ab
                 $product->load($productId->getId());
                 // Set localized product and image url
                 $product->setData('localized_image_url', $this->getProductImageUrl($product));
+                // Product families
+                if (Mage::getStoreConfig('bazaarvoice/general/families', $store->getId())) {
+                    $product->setData("product_families", $this->getProductFamilies($product));
+                }
                 // Set bazaarvoice specific attributes
                 $brandAttributeCode = Mage::getStoreConfig('bazaarvoice/bv_config/product_feed_brand_attribute_code', $store->getId());
                 if (strlen(trim($brandAttributeCode))) {
@@ -184,6 +192,10 @@ class Bazaarvoice_Connector_Model_ProductFeed_Product extends Mage_Core_Model_Ab
             $productDefault->load($productId->getId());
             // Set localized product and image url
             $productDefault->setData('localized_image_url', $this->getProductImageUrl($productDefault));
+            // Product families
+            if (Mage::getStoreConfig('bazaarvoice/general/families', $store->getId())) {
+                $productDefault->setData("product_families", $this->getProductFamilies($productDefault));
+            }
             // Set bazaarvoice specific attributes
             $brandAttributeCode = Mage::getStoreConfig('bazaarvoice/bv_config/product_feed_brand_attribute_code', $store->getId());
             if (strlen(trim($brandAttributeCode))) {
@@ -286,9 +298,44 @@ class Bazaarvoice_Connector_Model_ProductFeed_Product extends Mage_Core_Model_Ab
             }
         }
         $ioObject->streamWrite("    </ImageUrls>\n");
+        // Product Families
+        if($productDefault->getData("product_families")){
+            $ioObject->streamWrite("    <Attributes>\n");
+            foreach($productDefault->getData("product_families") as $family){
+                 $ioObject->streamWrite('        <Attribute id="BV_FE_FAMILY"><Value>'.$family.'</Value></Attribute>'."\n");
+            }
+            $ioObject->streamWrite('        <Attribute id="BV_FE_EXPAND">'."\n");
+            foreach($productDefault->getData("product_families") as $family){
+                 $ioObject->streamWrite('            <Value>BV_FE_FAMILY:'.$family.'</Value>'."\n");
+            }
+            $ioObject->streamWrite("        </Attribute>\n");
+            $ioObject->streamWrite("    </Attributes>\n");
+        }
 
         // Close this product
         $ioObject->streamWrite("</Product>\n");
+    }
+    
+    protected function getProductFamilies(Mage_Catalog_Model_Product $product)
+    {
+        /* @var $bvHelper Bazaarvoice_Connector_Helper_Data */
+        $bvHelper = Mage::helper('bazaarvoice');
+        $families = array();
+        try {
+            $parentIds = Mage::getResourceSingleton('catalog/product_type_configurable')->getParentIdsByChild($product->getId());
+            foreach($parentIds as $parentId){
+                $parent = Mage::getModel("catalog/product")->load($parentIds);
+                if($parent->getId()){
+                    $families[] = $bvHelper->getProductId($parent);
+                }
+            }
+        }
+        catch (Exception $e) {
+            Mage::log('Failed to get families for product sku: ' . $product->getSku());
+            Mage::log($e->getMessage());
+            Mage::log('Continuing generating feed.');
+        }
+        return $families;
     }
 
     protected function getProductImageUrl(Mage_Catalog_Model_Product $product)
