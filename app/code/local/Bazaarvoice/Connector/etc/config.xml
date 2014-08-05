@@ -109,7 +109,6 @@
                 <environment>staging</environment>
                 <authentication_method>bv</authentication_method>
                 <enable_roibeacon>1</enable_roibeacon>
-                <families>0</families>
             </general>
             <rr>
                 <enable_rr>1</enable_rr>
@@ -126,6 +125,7 @@
             </qa>
             <feeds>
                 <enable_product_feed>1</enable_product_feed>
+                <families>0</families>
                 <enable_purchase_feed>1</enable_purchase_feed>
                 <triggering_event>shipping</triggering_event>
                 <generation_scope>website</generation_scope>

@@ -29,8 +29,12 @@ class Bazaarvoice_Connector_Model_ProductFeed_Product extends Mage_Core_Model_Ab
         $productIds->addWebsiteFilter($website->getId());
         // Filter collection for product status
         $productIds->addAttributeToFilter('status', Mage_Catalog_Model_Product_Status::STATUS_ENABLED);
-        // Filter collection for product visibility
-        $productIds->addAttributeToFilter('visibility', array('neq' => Mage_Catalog_Model_Product_Visibility::VISIBILITY_NOT_VISIBLE));
+        if ($website->getConfig('bazaarvoice/feeds/families') == false) {
+            // Filter collection for product visibility
+            // if families are disabled
+            $productIds->addAttributeToFilter('visibility',
+                array('neq' => Mage_Catalog_Model_Product_Visibility::VISIBILITY_NOT_VISIBLE));
+        }
 
         // Output tag only if more than 1 product
         if (count($productIds) > 0) {
@@ -54,7 +58,7 @@ class Bazaarvoice_Connector_Model_ProductFeed_Product extends Mage_Core_Model_Ab
                 // Set localized product and image url
                 $product->setData('localized_image_url', $this->getProductImageUrl($product));
                 // Product families
-                if (Mage::getStoreConfig('bazaarvoice/general/families', $store->getId())) {
+                if (Mage::getStoreConfig('bazaarvoice/feeds/families', $store->getId())) {
                     $product->setData("product_families", $this->getProductFamilies($product));
                 }
                 // Set bazaarvoice specific attributes
@@ -101,9 +105,12 @@ class Bazaarvoice_Connector_Model_ProductFeed_Product extends Mage_Core_Model_Ab
         $productIds->addWebsiteFilter($group->getWebsiteId());
         // Filter collection for product status
         $productIds->addAttributeToFilter('status', Mage_Catalog_Model_Product_Status::STATUS_ENABLED);
-        // Filter collection for product visibility
-        $productIds->addAttributeToFilter('visibility',
-            array('neq' => Mage_Catalog_Model_Product_Visibility::VISIBILITY_NOT_VISIBLE));
+        if ($group->getConfig('bazaarvoice/feeds/families') == false) {
+            // Filter collection for product visibility
+            // if families are disabled
+            $productIds->addAttributeToFilter('visibility',
+                array('neq' => Mage_Catalog_Model_Product_Visibility::VISIBILITY_NOT_VISIBLE));
+        }
 
         // Output tag only if more than 1 product
         if (count($productIds) > 0) {
@@ -127,7 +134,7 @@ class Bazaarvoice_Connector_Model_ProductFeed_Product extends Mage_Core_Model_Ab
                 // Set localized product and image url
                 $product->setData('localized_image_url', $this->getProductImageUrl($product));
                 // Product families
-                if (Mage::getStoreConfig('bazaarvoice/general/families', $store->getId())) {
+                if (Mage::getStoreConfig('bazaarvoice/feeds/families', $store->getId())) {
                     $product->setData("product_families", $this->getProductFamilies($product));
                 }
                 // Set bazaarvoice specific attributes
@@ -172,9 +179,12 @@ class Bazaarvoice_Connector_Model_ProductFeed_Product extends Mage_Core_Model_Ab
         $productIds->addWebsiteFilter($store->getWebsiteId());
         // Filter collection for product status
         $productIds->addAttributeToFilter('status', Mage_Catalog_Model_Product_Status::STATUS_ENABLED);
-        // Filter collection for product visibility
-        $productIds->addAttributeToFilter('visibility',
-            array('neq' => Mage_Catalog_Model_Product_Visibility::VISIBILITY_NOT_VISIBLE));
+        if (Mage::getStoreConfig('bazaarvoice/feeds/families', $store->getId()) == false) {
+            // Filter collection for product visibility
+            // if families are disabled
+            $productIds->addAttributeToFilter('visibility',
+                array('neq' => Mage_Catalog_Model_Product_Visibility::VISIBILITY_NOT_VISIBLE));
+        }
 
         // Output tag only if more than 1 product
         if (count($productIds) > 0) {
@@ -193,7 +203,7 @@ class Bazaarvoice_Connector_Model_ProductFeed_Product extends Mage_Core_Model_Ab
             // Set localized product and image url
             $productDefault->setData('localized_image_url', $this->getProductImageUrl($productDefault));
             // Product families
-            if (Mage::getStoreConfig('bazaarvoice/general/families', $store->getId())) {
+            if (Mage::getStoreConfig('bazaarvoice/feeds/families', $store->getId())) {
                 $productDefault->setData("product_families", $this->getProductFamilies($productDefault));
             }
             // Set bazaarvoice specific attributes
@@ -259,6 +269,11 @@ class Bazaarvoice_Connector_Model_ProductFeed_Product extends Mage_Core_Model_Ab
                     }
                 }
             }
+        }
+        
+        $upcAttribute = Mage::getStoreConfig("bazaarvoice/feeds/upc_attribute");
+        if($upcAttribute && $productDefault->getData($upcAttribute)) {
+            $ioObject->streamWrite('    <UPCs><UPC>' . $productDefault->getData($upcAttribute) . "</UPC></UPCs>\n");            
         }
 
         $ioObject->streamWrite('    <ProductPageUrl>' . "<![CDATA[" . $this->getProductUrl($productDefault) . "]]>" . "</ProductPageUrl>\n");

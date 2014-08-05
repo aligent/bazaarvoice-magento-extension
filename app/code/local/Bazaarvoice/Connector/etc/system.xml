@@ -141,17 +141,6 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </enable_roibeacon>
-                        <families>
-                            <label>Enable BV Product Family functionality</label>
-                            <frontend_type>select</frontend_type>
-                            <source_model>adminhtml/system_config_source_yesno</source_model>
-                            <comment>
-                                <![CDATA[BV Product Families will be defined for visible Configurable and Simple product combinations]]></comment>
-                            <sort_order>110</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
-                        </families>
                     </fields>
                 </general>
                 <rr translate="label">
@@ -260,6 +249,28 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </enable_product_feed>
+                        <families>
+                            <label>Enable BV Product Family functionality</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <comment>
+                                <![CDATA[BV Product Families will be defined for visible Configurable and Simple product combinations]]></comment>
+                            <sort_order>13</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </families>
+                        <upc_attribute>
+                            <label>UPC Attribute</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>bazaarvoice/source_attribute</source_model>
+                            <comment>
+                                <![CDATA[Magento product attribute that will be used for UPC value in BV]]></comment>
+                            <sort_order>16</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </upc_attribute>
                         <enable_purchase_feed>
                             <label>Enable Purchase Feed</label>
                             <frontend_type>select</frontend_type>
