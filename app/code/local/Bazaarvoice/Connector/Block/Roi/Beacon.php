@@ -44,9 +44,16 @@ class Bazaarvoice_Connector_Block_Roi_Beacon extends Mage_Core_Block_Template
                 $orderDetails['currency'] = $order->getOrderCurrencyCode();
 
                 $orderDetails['items'] = array();
-                $items = $order->getAllVisibleItems();
+                // if families are enabled, get all items
+                if(Mage::getStoreConfig('bazaarvoice/feeds/families')){
+                    $items = $order->getAllItems();
+                } else {
+                    $items = $order->getAllVisibleItems();
+                }
                 foreach ($items as $itemId => $item)
                 {
+                    // skip configurable items if families are enabled
+                    if(Mage::getStoreConfig('bazaarvoice/feeds/families') && $item->getProduct()->getTypeId() == Mage_Catalog_Model_Product_Type::TYPE_CONFIGURABLE) continue;
                     $product = Mage::helper('bazaarvoice')->getReviewableProductFromOrderItem($item);
                      
                     $itemDetails = array();
@@ -70,7 +77,7 @@ class Bazaarvoice_Connector_Block_Roi_Beacon extends Mage_Core_Block_Template
                 $orderDetails['partnerSource'] = 'Magento Extension r' . Mage::helper('bazaarvoice')->getExtensionVersion();
             }
         }
-
+        
         $orderDetailsJson = Mage::helper('core')->jsonEncode($orderDetails);
         return urldecode(stripslashes($orderDetailsJson));
     }
