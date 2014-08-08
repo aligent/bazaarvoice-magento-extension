@@ -55,12 +55,12 @@ class Bazaarvoice_Connector_Model_ProductFeed_Product extends Mage_Core_Model_Ab
                 $product->setStoreId($store->getId());
                 // Load product object
                 $product->load($productId->getId());
-                // Set localized product and image url
-                $product->setData('localized_image_url', $this->getProductImageUrl($product));
                 // Product families
                 if (Mage::getStoreConfig('bazaarvoice/feeds/families', $store->getId())) {
                     $product->setData("product_families", $this->getProductFamilies($product));
                 }
+                // Set localized product and image url
+                $product->setData('localized_image_url', $this->getProductImageUrl($product));
                 // Set bazaarvoice specific attributes
                 // Brand
                 $brandAttributeCode = Mage::getStoreConfig('bazaarvoice/bv_config/product_feed_brand_attribute_code', $store->getId());
@@ -138,12 +138,12 @@ class Bazaarvoice_Connector_Model_ProductFeed_Product extends Mage_Core_Model_Ab
                 $product->setStoreId($store->getId());
                 // Load product object
                 $product->load($productId->getId());
-                // Set localized product and image url
-                $product->setData('localized_image_url', $this->getProductImageUrl($product));
                 // Product families
                 if (Mage::getStoreConfig('bazaarvoice/feeds/families', $store->getId())) {
                     $product->setData("product_families", $this->getProductFamilies($product));
                 }
+                // Set localized product and image url
+                $product->setData('localized_image_url', $this->getProductImageUrl($product));
                 // Set bazaarvoice specific attributes
                 $brandAttributeCode = Mage::getStoreConfig('bazaarvoice/bv_config/product_feed_brand_attribute_code', $store->getId());
                 if (strlen(trim($brandAttributeCode))) {
@@ -207,12 +207,12 @@ class Bazaarvoice_Connector_Model_ProductFeed_Product extends Mage_Core_Model_Ab
             $productDefault->setStoreId($store->getId());
             // Load product object
             $productDefault->load($productId->getId());
-            // Set localized product and image url
-            $productDefault->setData('localized_image_url', $this->getProductImageUrl($productDefault));
             // Product families
             if (Mage::getStoreConfig('bazaarvoice/feeds/families', $store->getId())) {
                 $productDefault->setData("product_families", $this->getProductFamilies($productDefault));
             }
+            // Set localized product and image url
+            $productDefault->setData('localized_image_url', $this->getProductImageUrl($productDefault));
             // Set bazaarvoice specific attributes
             $brandAttributeCode = Mage::getStoreConfig('bazaarvoice/bv_config/product_feed_brand_attribute_code', $store->getId());
             if (strlen(trim($brandAttributeCode))) {
@@ -375,6 +375,13 @@ class Bazaarvoice_Connector_Model_ProductFeed_Product extends Mage_Core_Model_Ab
             $storeId = $product->getStoreId();
             // Get image url from helper (this is for the default store
             $defaultStoreImageUrl = Mage::helper('catalog/image')->init($product, 'image');
+            if($product->getData("product_families") && strpos($defaultStoreImageUrl, "placeholder/image.jpg")){
+                // if product families are enabled and product has no image, use configurable image
+                $parents = $product->getData("product_families");
+                $parentId = array_pop($parents);
+                $parent = Mage::helper("bazaarvoice")->getProductFromProductExternalId($parentId);
+                $defaultStoreImageUrl = Mage::helper('catalog/image')->init($parent, 'image');
+            }
             // Get media base url for correct store
             $mediaBaseUrl = Mage::app()->getStore($storeId)->getBaseUrl('media');
             // Get default media base url
@@ -395,7 +402,19 @@ class Bazaarvoice_Connector_Model_ProductFeed_Product extends Mage_Core_Model_Ab
 
     protected function getProductUrl(Mage_Catalog_Model_Product $product)
     {
-        $productUrl = $product->getProductUrl(false);
+        if($product->getData("product_families") && $product->getVisibility() == Mage_Catalog_Model_Product_Visibility::VISIBILITY_NOT_VISIBLE){
+            // if product families are enabled and product is not visible, 
+            // look for its configurable and use that url        
+            $parents = $product->getData("product_families");
+            $parentId = array_pop($parents);
+            $parent = Mage::helper("bazaarvoice")->getProductFromProductExternalId($parentId);
+            $parent->setStoreId($product->getStoreId());
+            $productUrl = $parent->getProductUrl(false);
+            Mage::log($productUrl);
+        } else {
+            // otherwise use default
+            $productUrl = $product->getProductUrl(false);
+        }
         // Trim any url params
         $questionMarkPos = strpos($productUrl, '?');
         if($questionMarkPos !== FALSE) {
