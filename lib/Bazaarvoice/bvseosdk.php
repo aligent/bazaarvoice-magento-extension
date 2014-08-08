@@ -79,7 +79,7 @@ class BV {
             'staging' => FALSE,
             'subject_type' => 'product',
             'latency_timeout' => 1000,
-            'current_page_url' => $params['current_page_url'], //get the current page url passed in as a "parameter"
+            'current_page_url' => isset($params['current_page_url']) ? $params['current_page_url'] : '', //get the current page url passed in as a "parameter"
             'base_page_url' => $this->_getCurrentUrl(),
             'bot_detection' => FALSE,  // bot detection should only be enabled if average execution time regularly exceeds 350ms.
             'include_display_integration_code' => FALSE,  
@@ -304,14 +304,14 @@ class Base{
             }
         }
         
-        
-        preg_match('/\/(\d+?)\/[^\/]+$/', $bvparam, $page_number);
-        $page_number = max(1, (int) $page_number[1]);
-
-        // remove the bvrrp parameter from the base URL so we don't keep appending it
-        $seo_param = str_replace('/', '\/', $bvparam); // need to escape slashses for regex
-        $this->config['base_page_url'] = preg_replace('/[?&]bvrrp='.$seo_param.'/', '', $this->config['base_page_url']);
-
+        if(isset($bvparam)){
+            preg_match('/\/(\d+?)\/[^\/]+$/', $bvparam, $page_number);
+            $page_number = max(1, (int) $page_number[1]);
+    
+            // remove the bvrrp parameter from the base URL so we don't keep appending it
+            $seo_param = str_replace('/', '\/', $bvparam); // need to escape slashses for regex
+            $this->config['base_page_url'] = preg_replace('/[?&]bvrrp='.$seo_param.'/', '', $this->config['base_page_url']);
+        }
         return $page_number;
     }// end of _getPageNumber()
 
@@ -477,7 +477,8 @@ class Base{
     	} else {
     		$footer .= "\n".'	<li id="mt">bvseo-CLOUD</li>';
     	}
-    	$footer .= "\n".'	<li id="et">bvseo-'.$this->response_time.'ms</li>';
+    	if(isset($this->response_time))
+        	$footer .= "\n".'	<li id="et">bvseo-'.$this->response_time.'ms</li>';
     	$footer .= "\n".'	<li id="ct">bvseo-'.strtoupper($this->config['bv_product']).'</li>';
     	$footer .= "\n".'	<li id="st">bvseo-'.strtoupper($this->config['subject_type']).'</li>';
     	$footer .= "\n".'	<li id="am">bvseo-getContent</li>';
