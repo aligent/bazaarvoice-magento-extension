@@ -29,12 +29,7 @@ class Bazaarvoice_Connector_Model_ProductFeed_Product extends Mage_Core_Model_Ab
         $productIds->addWebsiteFilter($website->getId());
         // Filter collection for product status
         $productIds->addAttributeToFilter('status', Mage_Catalog_Model_Product_Status::STATUS_ENABLED);
-        if ($website->getConfig('bazaarvoice/feeds/families') == false) {
-            // Filter collection for product visibility
-            // if families are disabled
-            $productIds->addAttributeToFilter('visibility',
-                array('neq' => Mage_Catalog_Model_Product_Visibility::VISIBILITY_NOT_VISIBLE));
-        }
+
 
         // Output tag only if more than 1 product
         if (count($productIds) > 0) {
@@ -58,6 +53,17 @@ class Bazaarvoice_Connector_Model_ProductFeed_Product extends Mage_Core_Model_Ab
                 // Product families
                 if (Mage::getStoreConfig('bazaarvoice/feeds/families', $store->getId())) {
                     $product->setData("product_families", $this->getProductFamilies($product));
+                } else {
+                    // if families are disabled, skip not visible products
+                    if($product->getVisibility() == Mage_Catalog_Model_Product_Visibility::VISIBILITY_NOT_VISIBLE) {
+                        if ($website->getDefaultGroup()->getDefaultStoreId() == $store->getId()) {
+                            // if default store/group skip entire product
+                            continue 2;
+                        } else {
+                            // else just skip store
+                            continue;
+                        }
+                    }
                 }
                 // Set localized product and image url
                 $product->setData('localized_image_url', $this->getProductImageUrl($product));
@@ -105,19 +111,6 @@ class Bazaarvoice_Connector_Model_ProductFeed_Product extends Mage_Core_Model_Ab
         $productIds->addWebsiteFilter($group->getWebsiteId());
         // Filter collection for product status
         $productIds->addAttributeToFilter('status', Mage_Catalog_Model_Product_Status::STATUS_ENABLED);
-        $families = false;
-        foreach($group->getStoreCollection() as $store){
-            if(Mage::getStoreConfig('bazaarvoice/feeds/families', $store)){
-                $families = true;
-                break;
-            }
-        }
-        if ($families == false) {
-            // Filter collection for product visibility
-            // if families are disabled
-            $productIds->addAttributeToFilter('visibility',
-                array('neq' => Mage_Catalog_Model_Product_Visibility::VISIBILITY_NOT_VISIBLE));
-        }
 
         // Output tag only if more than 1 product
         if (count($productIds) > 0) {
@@ -141,6 +134,18 @@ class Bazaarvoice_Connector_Model_ProductFeed_Product extends Mage_Core_Model_Ab
                 // Product families
                 if (Mage::getStoreConfig('bazaarvoice/feeds/families', $store->getId())) {
                     $product->setData("product_families", $this->getProductFamilies($product));
+                } else {
+                    // if families are disabled, skip not visible products
+                    if($product->getVisibility() == Mage_Catalog_Model_Product_Visibility::VISIBILITY_NOT_VISIBLE) {
+                        if ($group->getDefaultStoreId() == $store->getId()) {
+                            // if default store, skip entire product
+                            continue 2;
+                        } else {
+                            // just skip store
+                            continue;
+                        }
+                        
+                    }
                 }
                 // Set localized product and image url
                 $product->setData('localized_image_url', $this->getProductImageUrl($product));
@@ -410,7 +415,6 @@ class Bazaarvoice_Connector_Model_ProductFeed_Product extends Mage_Core_Model_Ab
             $parent = Mage::helper("bazaarvoice")->getProductFromProductExternalId($parentId);
             $parent->setStoreId($product->getStoreId());
             $productUrl = $parent->getProductUrl(false);
-            Mage::log($productUrl);
         } else {
             // otherwise use default
             $productUrl = $product->getProductUrl(false);
