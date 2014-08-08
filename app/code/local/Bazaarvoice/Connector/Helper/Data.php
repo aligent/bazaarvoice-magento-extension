@@ -28,9 +28,9 @@ class Bazaarvoice_Connector_Helper_Data extends Mage_Core_Helper_Abstract
         $rawProductId = $product->getSku();
 
         // >> Customizations go here
-        //
+        $rawProductId = preg_replace_callback('/\./s', create_function('$match','return "_bv".ord($match[0])."_";'), $rawProductId);        
         // << No further customizations after this
-
+        
         return $this->replaceIllegalCharacters($rawProductId);
 
     }
