@@ -105,7 +105,14 @@ class Bazaarvoice_Connector_Model_ProductFeed_Product extends Mage_Core_Model_Ab
         $productIds->addWebsiteFilter($group->getWebsiteId());
         // Filter collection for product status
         $productIds->addAttributeToFilter('status', Mage_Catalog_Model_Product_Status::STATUS_ENABLED);
-        if ($group->getConfig('bazaarvoice/feeds/families') == false) {
+        $families = false;
+        foreach($group->getStoreCollection() as $store){
+            if(Mage::getStoreConfig('bazaarvoice/feeds/families', $store)){
+                $families = true;
+                break;
+            }
+        }
+        if ($families == false) {
             // Filter collection for product visibility
             // if families are disabled
             $productIds->addAttributeToFilter('visibility',
@@ -319,11 +326,13 @@ class Bazaarvoice_Connector_Model_ProductFeed_Product extends Mage_Core_Model_Ab
             foreach($productDefault->getData("product_families") as $family){
                  $ioObject->streamWrite('        <Attribute id="BV_FE_FAMILY"><Value>'.$family.'</Value></Attribute>'."\n");
             }
-            $ioObject->streamWrite('        <Attribute id="BV_FE_EXPAND">'."\n");
-            foreach($productDefault->getData("product_families") as $family){
-                 $ioObject->streamWrite('            <Value>BV_FE_FAMILY:'.$family.'</Value>'."\n");
+            if($productDefault->getTypeId() == Mage_Catalog_Model_Product_Type::TYPE_CONFIGURABLE){
+                $ioObject->streamWrite('        <Attribute id="BV_FE_EXPAND">'."\n");
+                foreach($productDefault->getData("product_families") as $family){
+                     $ioObject->streamWrite('            <Value>BV_FE_FAMILY:'.$family.'</Value>'."\n");
+                }
+                $ioObject->streamWrite("        </Attribute>\n");
             }
-            $ioObject->streamWrite("        </Attribute>\n");
             $ioObject->streamWrite("    </Attributes>\n");
         }
 
@@ -337,17 +346,21 @@ class Bazaarvoice_Connector_Model_ProductFeed_Product extends Mage_Core_Model_Ab
         $bvHelper = Mage::helper('bazaarvoice');
         $families = array();
         try {
-            $parentIds = Mage::getResourceSingleton('catalog/product_type_configurable')->getParentIdsByChild($product->getId());
-            foreach($parentIds as $parentId){
-                $parent = Mage::getModel("catalog/product")->load($parentIds);
-                if($parent->getId()){
-                    $families[] = $bvHelper->getProductId($parent);
+            if($product->getTypeId() == Mage_Catalog_Model_Product_Type::TYPE_CONFIGURABLE){
+                $families[] = $bvHelper->getProductId($product);
+            } else {
+                $parentIds = Mage::getResourceSingleton('catalog/product_type_configurable')->getParentIdsByChild($product->getId());
+                foreach($parentIds as $parentId){
+                    $parent = Mage::getModel("catalog/product")->load($parentId);
+                    if($parent->getId()){
+                        $families[] = $bvHelper->getProductId($parent);
+                    }
                 }
             }
         }
         catch (Exception $e) {
             Mage::log('Failed to get families for product sku: ' . $product->getSku());
-            Mage::log($e->getMessage());
+            Mage::log($e->getMessage()."\n".$e->getTraceAsString());
             Mage::log('Continuing generating feed.');
         }
         return $families;

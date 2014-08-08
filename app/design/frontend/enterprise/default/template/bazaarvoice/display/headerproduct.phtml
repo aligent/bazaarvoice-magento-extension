@@ -27,4 +27,44 @@ $BV.configure("global", configData);
 
 <?php endif; ?>
 
+<?php if(Mage::getStoreConfig('bazaarvoice/feeds/families') && $product->getTypeId() == Mage_Catalog_Model_Product_Type::TYPE_CONFIGURABLE): ?>
+<script type="text/javascript">
+//<![CDATA[
+<?php 
+$doShowContentJs = Mage::getStoreConfig('bazaarvoice/rr/do_show_content_js');
+$children = $product->getTypeInstance()->getUsedProducts();
+$bvIds = array();
+foreach($children as $child) {
+    $bvIds[$child->getId()] = Mage::helper('bazaarvoice')->getProductId($child);
+}
+echo sprintf('var children = %s;', json_encode($bvIds));
+?>
+
+(function ($) {
+    
+    jQuery('.super-attribute-select').live("change", function(){
+        options = spConfig.config.attributes[jQuery(this).attr('id').replace(/attribute/, '')].options;
+        for(var i in options){
+            if(options[i].id == jQuery(this).val() && children[options[i].products[0]] != undefined){
+                $BV.configure("global", {productId: children[options[i].products[0]]});
+                $BV.ui( 'rr', 'show_reviews', {
+                    doShowContent : function () {
+                        <?php echo $doShowContentJs ?>
+                    }
+                });  
+                return;
+            }
+        }
+        $BV.configure("global", {productId: "<?php echo $productId ?>"});
+        $BV.ui( 'rr', 'show_reviews', {
+            doShowContent : function () {
+                <?php echo $doShowContentJs ?>
+            }
+        });
+    });
+
+}(jQuery));	
+//]]>
+</script>
+<?php endif; ?>
 <?php endif; ?>
