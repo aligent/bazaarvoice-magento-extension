@@ -283,7 +283,7 @@ class Bazaarvoice_Connector_Model_ProductFeed_Product extends Mage_Core_Model_Ab
             }
         }
         
-        $upcAttribute = Mage::getStoreConfig("bazaarvoice/feeds/upc_attribute");
+        $upcAttribute = Mage::getStoreConfig("bazaarvoice/feeds/product_feed_upc_attribute_code");
         if($upcAttribute && $productDefault->getData($upcAttribute)) {
             $ioObject->streamWrite('    <UPCs><UPC>' . $productDefault->getData($upcAttribute) . "</UPC></UPCs>\n");            
         }

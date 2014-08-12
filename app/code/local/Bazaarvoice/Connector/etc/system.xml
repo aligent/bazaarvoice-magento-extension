@@ -260,17 +260,6 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </families>
-                        <upc_attribute>
-                            <label>UPC Attribute</label>
-                            <frontend_type>select</frontend_type>
-                            <source_model>bazaarvoice/source_attribute</source_model>
-                            <comment>
-                                <![CDATA[Magento product attribute that will be used for UPC value in BV]]></comment>
-                            <sort_order>16</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
-                        </upc_attribute>
                         <enable_purchase_feed>
                             <label>Enable Purchase Feed</label>
                             <frontend_type>select</frontend_type>
