@@ -268,7 +268,17 @@ class Bazaarvoice_Connector_Model_ProductFeed_Product extends Mage_Core_Model_Ab
         }
 
         /* Make sure that CategoryExternalId is one written to Category section */
-        $parentCategories = $productDefault->getCategoryIds();
+        if($productDefault->getData("product_families") && $productDefault->getVisibility() == Mage_Catalog_Model_Product_Visibility::VISIBILITY_NOT_VISIBLE){
+            // if families are enabled and product is not visible, use parent categories
+            $parentId = array_pop($productDefault->getData("product_families"));
+            $parentProduct = $bvHelper->getProductFromProductExternalId($parentId);
+            $parentCategories = $parentProduct->getCategoryIds();
+            Mage::log("Product ".$productDefault->getSku()." using parent categories from ".$parentProduct->getSku());
+        } else {
+            // normal behavior
+            $parentCategories = $productDefault->getCategoryIds();
+            Mage::log("Product ".$productDefault->getSku()." using its own categories");
+        }
         if (!is_null($parentCategories) && count($parentCategories) > 0) {
             foreach ($parentCategories as $parentCategoryId) {
                 $parentCategory = Mage::getModel('catalog/category')->load($parentCategoryId);
