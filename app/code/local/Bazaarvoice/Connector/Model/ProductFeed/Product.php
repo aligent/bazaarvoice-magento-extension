@@ -341,7 +341,7 @@ class Bazaarvoice_Connector_Model_ProductFeed_Product extends Mage_Core_Model_Ab
             foreach($productDefault->getData("product_families") as $family){
                  $ioObject->streamWrite('        <Attribute id="BV_FE_FAMILY"><Value>'.$family.'</Value></Attribute>'."\n");
             }
-            if($productDefault->getTypeId() == Mage_Catalog_Model_Product_Type::TYPE_CONFIGURABLE){
+            if($productDefault->getTypeId() == Mage_Catalog_Model_Product_Type::TYPE_CONFIGURABLE || Mage::getStoreConfig("bazaarvoice/feeds/product_feed_families_expand")){
                 $ioObject->streamWrite('        <Attribute id="BV_FE_EXPAND">'."\n");
                 foreach($productDefault->getData("product_families") as $family){
                      $ioObject->streamWrite('            <Value>BV_FE_FAMILY:'.$family.'</Value>'."\n");
