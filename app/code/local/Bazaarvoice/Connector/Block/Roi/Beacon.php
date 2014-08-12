@@ -64,11 +64,15 @@ class Bazaarvoice_Connector_Block_Roi_Beacon extends Mage_Core_Block_Template
                     $itemDetails['quantity'] = number_format($item->getQtyOrdered(), 0);
                     $itemDetails['imageUrl'] = $product->getImageUrl();
                     
-                    if(Mage::getStoreConfig('bazaarvoice/feeds/families') && strpos($itemDetails['imageUrl'], "placeholder/image.jpg")){
-                        // if product families are enabled and product has no image, use configurable image
-                        $parentId = $item->getParentItem()->getProductId();
-                        $parent = Mage::getModel('catalog/product')->load($parentId);
-                        $itemDetails['imageUrl'] = $parent->getImageUrl();
+                    if(Mage::getStoreConfig('bazaarvoice/feeds/families')) {
+                        if(strpos($itemDetails['imageUrl'], "placeholder/image.jpg")) {
+                            // if product families are enabled and product has no image, use configurable image
+                            $parentId = $item->getParentItem()->getProductId();
+                            $parent = Mage::getModel('catalog/product')->load($parentId);
+                            $itemDetails['imageUrl'] = $parent->getImageUrl();
+                        }
+                        // also get price from parent item
+                        $itemDetails['price'] = number_format($item->getParentItem()->getPrice(), 2, '.', '');
                     }                    
                     
                     array_push($orderDetails['items'], $itemDetails);
@@ -84,7 +88,7 @@ class Bazaarvoice_Connector_Block_Roi_Beacon extends Mage_Core_Block_Template
                 $orderDetails['partnerSource'] = 'Magento Extension r' . Mage::helper('bazaarvoice')->getExtensionVersion();
             }
         }
-        
+        Mage::log($orderDetails);
         $orderDetailsJson = Mage::helper('core')->jsonEncode($orderDetails);
         return urldecode(stripslashes($orderDetailsJson));
     }
