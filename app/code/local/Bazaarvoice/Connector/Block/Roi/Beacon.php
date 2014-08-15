@@ -34,7 +34,7 @@ class Bazaarvoice_Connector_Block_Roi_Beacon extends Mage_Core_Block_Template
             {
                 $address = $order->getBillingAddress();
 
-                $orderDetails['orderId'] = $order->getId();
+                $orderDetails['orderId'] = $order->getOrderId();
                 $orderDetails['tax'] = number_format($order->getTaxAmount(), 2, '.', '');
                 $orderDetails['shipping'] = number_format($order->getShippingAmount(), 2, '.', '');
                 $orderDetails['total'] = number_format($order->getGrandTotal(), 2, '.', '');
