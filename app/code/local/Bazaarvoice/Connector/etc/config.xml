@@ -148,7 +148,7 @@
                 <product_feed_upc_attribute_code></product_feed_upc_attribute_code>
                 <!-- Setting to determine whether simple products show reviews and ratings 
                      for their entire product family -->
-                <product_feed_families_expand>true</product_feed_families_expand>
+                <product_feed_export_bvfamilies_expand>true</product_feed_export_bvfamilies_expand>
                 
                 <!-- If true, use Magento category URL path as category id, otherwise use Mage category entity primary key -->
                 <category_id_use_url_path>true</category_id_use_url_path>
