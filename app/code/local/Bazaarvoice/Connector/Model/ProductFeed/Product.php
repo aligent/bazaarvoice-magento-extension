@@ -293,7 +293,7 @@ class Bazaarvoice_Connector_Model_ProductFeed_Product extends Mage_Core_Model_Ab
             }
         }
         
-        $upcAttribute = Mage::getStoreConfig("bazaarvoice/feeds/product_feed_upc_attribute_code");
+        $upcAttribute = Mage::getStoreConfig("bazaarvoice/bv_config/product_feed_upc_attribute_code");
         if($upcAttribute && $productDefault->getData($upcAttribute)) {
             $ioObject->streamWrite('    <UPCs><UPC>' . $productDefault->getData($upcAttribute) . "</UPC></UPCs>\n");            
         }
@@ -341,7 +341,7 @@ class Bazaarvoice_Connector_Model_ProductFeed_Product extends Mage_Core_Model_Ab
             foreach($productDefault->getData("product_families") as $family){
                  $ioObject->streamWrite('        <Attribute id="BV_FE_FAMILY"><Value>'.$family.'</Value></Attribute>'."\n");
             }
-            if($productDefault->getTypeId() == Mage_Catalog_Model_Product_Type::TYPE_CONFIGURABLE || Mage::getStoreConfig("bazaarvoice/bv_config/product_feed_export_bvfamilies_expand")){
+            if($productDefault->getTypeId() == Mage_Catalog_Model_Product_Type::TYPE_CONFIGURABLE || Mage::getStoreConfig("bazaarvoice/bv_config/product_feed_export_bvfamilies_expand") == 'true'){
                 $ioObject->streamWrite('        <Attribute id="BV_FE_EXPAND">'."\n");
                 foreach($productDefault->getData("product_families") as $family){
                      $ioObject->streamWrite('            <Value>BV_FE_FAMILY:'.$family.'</Value>'."\n");

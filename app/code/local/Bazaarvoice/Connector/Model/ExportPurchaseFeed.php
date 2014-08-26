@@ -488,19 +488,21 @@ class Bazaarvoice_Connector_Model_ExportPurchaseFeed extends Mage_Core_Model_Abs
                     "</Name>\n");
                     
                     $imageUrl = $product->getImageUrl();
+                    $originalPrice = $item->getOriginalPrice();
                     if(Mage::getStoreConfig('bazaarvoice/feeds/families')) {
+                        $parentItem = $item->getParentItem();
+                        $parent = Mage::getModel('catalog/product')->load($parentItem->getProductId());
+
                         if(strpos($imageUrl, "placeholder/image.jpg")){
                             // if product families are enabled and product has no image, use configurable image
-                            $parentId = $item->getParentItem()->getProductId();
-                            $parent = Mage::getModel('catalog/product')->load($parentId);
                             $imageUrl = $parent->getImageUrl();
                         }
                         // also get price from parent item
-                        $itemDetails['price'] = number_format($item->getParentItem()->getPrice(), 2, '.', '');
+                        $originalPrice = $parentItem->getOriginalPrice();
                     }   
                     
                     $ioObject->streamWrite('            <ImageUrl>' . $imageUrl . "</ImageUrl>\n");
-                    $ioObject->streamWrite('            <Price>' . number_format((float)$item->getOriginalPrice(), 2) . "</Price>\n");
+                    $ioObject->streamWrite('            <Price>' . number_format((float)$originalPrice, 2) . "</Price>\n");
                     $ioObject->streamWrite("        </Product>\n");
                 }
             }
@@ -518,7 +520,7 @@ class Bazaarvoice_Connector_Model_ExportPurchaseFeed extends Mage_Core_Model_Abs
 
     private function orderToString(Mage_Sales_Model_Order $order)
     {
-        return "\nOrder {Id: " . $order->getId()
+        return "\nOrder {Id: " . $order->getIncrementId()
         . "\n\tCustomerId: " . $order->getCustomerId()
         . "\n\tStatus: " . $order->getStatus()
         . "\n\tState: " . $order->getState()
