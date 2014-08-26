@@ -468,8 +468,17 @@ class Bazaarvoice_Connector_Model_ExportPurchaseFeed extends Mage_Core_Model_Abs
             $ioObject->streamWrite('    <TransactionDate>' . $this->getTriggeringEventDate($order, $triggeringEvent) .
             "</TransactionDate>\n");
             $ioObject->streamWrite("    <Products>\n");
+            // if families are enabled, get all items
+            if(Mage::getStoreConfig('bazaarvoice/feeds/families')){
+                $items = $order->getAllItems();
+            } else {
+                $items = $order->getAllVisibleItems();
+            }            
             /* @var $item Mage_Sales_Model_Order_Item */
-            foreach ($order->getAllVisibleItems() as $item) {
+            foreach ($items as $item) {
+                // skip configurable items if families are enabled
+                if(Mage::getStoreConfig('bazaarvoice/feeds/families') && $item->getProduct()->getTypeId() == Mage_Catalog_Model_Product_Type::TYPE_CONFIGURABLE) continue;
+                
                 $product = $bvHelper->getReviewableProductFromOrderItem($item);
                 if (!is_null($product)) {
                     $ioObject->streamWrite("        <Product>\n");
@@ -477,8 +486,23 @@ class Bazaarvoice_Connector_Model_ExportPurchaseFeed extends Mage_Core_Model_Abs
                     "</ExternalId>\n");
                     $ioObject->streamWrite('            <Name>' . htmlspecialchars($product->getName(), ENT_QUOTES, 'UTF-8') .
                     "</Name>\n");
-                    $ioObject->streamWrite('            <ImageUrl>' . $product->getImageUrl() . "</ImageUrl>\n");
-                    $ioObject->streamWrite('            <Price>' . number_format((float)$item->getOriginalPrice(), 2) . "</Price>\n");
+                    
+                    $imageUrl = $product->getImageUrl();
+                    $originalPrice = $item->getOriginalPrice();
+                    if(Mage::getStoreConfig('bazaarvoice/feeds/families')) {
+                        $parentItem = $item->getParentItem();
+                        $parent = Mage::getModel('catalog/product')->load($parentItem->getProductId());
+
+                        if(strpos($imageUrl, "placeholder/image.jpg")){
+                            // if product families are enabled and product has no image, use configurable image
+                            $imageUrl = $parent->getImageUrl();
+                        }
+                        // also get price from parent item
+                        $originalPrice = $parentItem->getOriginalPrice();
+                    }   
+                    
+                    $ioObject->streamWrite('            <ImageUrl>' . $imageUrl . "</ImageUrl>\n");
+                    $ioObject->streamWrite('            <Price>' . number_format((float)$originalPrice, 2) . "</Price>\n");
                     $ioObject->streamWrite("        </Product>\n");
                 }
             }
@@ -496,7 +520,7 @@ class Bazaarvoice_Connector_Model_ExportPurchaseFeed extends Mage_Core_Model_Abs
 
     private function orderToString(Mage_Sales_Model_Order $order)
     {
-        return "\nOrder {Id: " . $order->getId()
+        return "\nOrder {Id: " . $order->getIncrementId()
         . "\n\tCustomerId: " . $order->getCustomerId()
         . "\n\tStatus: " . $order->getStatus()
         . "\n\tState: " . $order->getState()

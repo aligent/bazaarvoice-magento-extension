@@ -28,9 +28,9 @@ class Bazaarvoice_Connector_Helper_Data extends Mage_Core_Helper_Abstract
         $rawProductId = $product->getSku();
 
         // >> Customizations go here
-        //
+        $rawProductId = preg_replace_callback('/\./s', create_function('$match','return "_bv".ord($match[0])."_";'), $rawProductId);        
         // << No further customizations after this
-
+        
         return $this->replaceIllegalCharacters($rawProductId);
 
     }
@@ -464,12 +464,14 @@ class Bazaarvoice_Connector_Helper_Data extends Mage_Core_Helper_Abstract
         if ($product->getVisibility() == Mage_Catalog_Model_Product_Visibility::VISIBILITY_NOT_VISIBLE)
         {
             $options = $item->getProductOptions();
-            try
-            {
-                $parentId = $options['super_product_config']['product_id'];
-                $product = Mage::getModel('catalog/product')->load($parentId);
+            if(isset($options['super_product_config']['product_id'])){
+                try
+                {
+                    $parentId = $options['super_product_config']['product_id'];
+                    $product = Mage::getModel('catalog/product')->load($parentId);
+                }
+                catch (Exception $ex) {}
             }
-            catch (Exception $ex) {}
         }
         
         return $product;

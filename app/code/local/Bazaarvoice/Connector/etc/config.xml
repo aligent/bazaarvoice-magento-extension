@@ -8,7 +8,7 @@
 <config>
     <modules>
         <Bazaarvoice_Connector>
-            <version>6.0.6</version>
+            <version>6.1.0</version>
             <depends>
                 <!-- no dependencies -->
             </depends>
@@ -125,6 +125,7 @@
             </qa>
             <feeds>
                 <enable_product_feed>1</enable_product_feed>
+                <families>0</families>
                 <enable_purchase_feed>1</enable_purchase_feed>
                 <triggering_event>shipping</triggering_event>
                 <generation_scope>website</generation_scope>
@@ -141,6 +142,13 @@
                      The following attribute code will be used to locate the brand of products
                      which is sent in the product feed: -->
                 <product_feed_brand_attribute_code></product_feed_brand_attribute_code>
+                <!-- Magento UPC Attribute Code
+                     The following attribute code will be used to locate the UPC of products
+                     which is sent in the product feed: -->
+                <product_feed_upc_attribute_code></product_feed_upc_attribute_code>
+                <!-- Setting to determine whether simple products show reviews and ratings 
+                     for their entire product family -->
+                <product_feed_export_bvfamilies_expand>true</product_feed_export_bvfamilies_expand>
                 
                 <!-- If true, use Magento category URL path as category id, otherwise use Mage category entity primary key -->
                 <category_id_use_url_path>true</category_id_use_url_path>

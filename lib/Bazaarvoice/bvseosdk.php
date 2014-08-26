@@ -23,10 +23,10 @@
  * require(bvsdk.php);
  *
  * $bv = new BV(array(
- *    'deployment_zone_id' => '12325',
- *    'product_id' => 'product1',
- *    'cloud_key' => 'agileville-78B2EF7DE83644CAB5F8C72F2D8C8491',
- *    'staging' => TRUE
+ *    'deployment_zone_id' => '1234-en_US',
+ *    'product_id' => 'XXYYY',
+ *    'cloud_key' => 'company-cdfa682b84bef44672efed074093ccd3',
+ *    'staging' => FALSE
  * ));
  * 
  */
@@ -46,10 +46,10 @@
  *
  *   Optional fields
  *      current_page_url (string) (defaults to detecting the current_page automtically)
- *      staging (boolean) (defaults to true, need to put false when go to production)
+ *      staging (boolean) (defaults to false, need to put true for testing with staging data)
  *      subject_type (string) (defaults to product, for questions you can pass in categories here if needed)
  *      latency_timeout (int) (in millseconds) (defaults to 1000ms)
- *      bv_product (string) (defaults to reviews which is the only supported product right now)
+ *      bv_product (string) (defaults to reviews)
  *      bot_list (string) (defualts to msnbot|googlebot|teoma|bingbot|yandexbot|yahoo)
  */
 
@@ -76,15 +76,17 @@ class BV {
 
         // config array, defaults are defined here
         $this->config = array(
-            'staging' => TRUE,
+            'staging' => FALSE,
             'subject_type' => 'product',
             'latency_timeout' => 1000,
-            'current_page_url' => $this->_getCurrentUrl(),
-            'bot_detection' => TRUE,  // for some clients who are behind a CDN or something they may want to include SEO content with every request
+            'current_page_url' => isset($params['current_page_url']) ? $params['current_page_url'] : '', //get the current page url passed in as a "parameter"
+            'base_page_url' => $this->_getCurrentUrl(),
+            'bot_detection' => FALSE,  // bot detection should only be enabled if average execution time regularly exceeds 350ms.
             'include_display_integration_code' => FALSE,  
             'client_name' => $params['deployment_zone_id'],
             'internal_file_path' => FALSE,
             'bot_list' => 'msnbot|google|teoma|bingbot|yandexbot|yahoo', // used in regex to determine if request is a bot or not
+
         );
 
         // merge passed in params with defualts for config. 
@@ -95,6 +97,8 @@ class BV {
 
         // setup the questions object
         $this->questions = new Questions($this->config);
+        
+        // setup the timer object
 
     }
 
@@ -162,6 +166,7 @@ class Base{
         if ($this->_isBot())
         {
 
+
             // get the page number of SEO content to load
             $page_number = $this->_getPageNumber();
 
@@ -176,21 +181,21 @@ class Base{
             $seo_content = $this->_replaceTokens($seo_content);
 
             // if debug mode is on we want to include more debug data
-            if (isset($_GET['bvreveal']))
-            {
-                if($_GET['bvreveal'] == 'debug')
-                {
-                    $printable_config = $this->config;
-                    unset($printable_config['cloud_key']);
-                    $seo_content .= $this->_buildComment('Config options: '.print_r($printable_config, TRUE));
-                }
-            }
+            //if (isset($_GET['bvreveal']))
+            //{
+            //  if($_GET['bvreveal'] == 'debug')
+            //    {
+            //        $printable_config = $this->config;
+            //        $seo_content .= $this->_buildComment('Config options: '.print_r($printable_config, TRUE));
+            //    }
+            //}
 
-            $pay_load = $seo_content;
+            $pay_load = $page_number;
+            $pay_load .= $seo_content;
         }
         else
         {
-            $pay_load = $this->_buildComment('Bot not detected, JavaScript-only');
+            $pay_load = $this->_buildComment('JavaScript-only Display','');
         }
 
         return $pay_load;
@@ -210,6 +215,7 @@ class Base{
      * @access private
      * @return bool
      */
+
     private function _isBot()
     {
         // we need to check the user agent string to see if this is a bot,
@@ -236,13 +242,20 @@ class Base{
         // default to page 1 if a page is not specified in the URL
         $page_number = 1;
 
-        // some implementations wil use bvpage query parameter like ?bvpage=2
-        if (isset($_GET['bvpage'])){
+         //parse the current url that's passed in via the parameters
+        $currentUrlArray = parse_url($this->config['current_page_url']);
+
+        $query = $currentUrlArray['path']; //get the path out of the parsed url array
+                                
+        parse_str($query, $bvcurrentpagedata);  //parse the sub url such that you get the important part...page number
+                                
+        // bvpage is not currently implemented
+        if (isset($_GET['bvpage']) ){
             $page_number = (int) $_GET['bvpage'];
 
-            // remove the bvpage parameter from the current URL so we don't keep appending it
+            // remove the bvpage parameter from the base URL so we don't keep appending it
             $seo_param = str_replace('/', '\/', $_GET['bvrrp']); // need to escape slashses for regex
-            $this->config['current_page_url'] = preg_replace('/[?&]bvrrp='.$seo_param.'/', '', $this->config['current_page_url']);
+            $this->config['base_page_url'] = preg_replace('/[?&]bvrrp='.$seo_param.'/', '', $this->config['base_page_url']);
         }
         // other implementations use the bvrrp, bvqap, or bvsyp parameter ?bvrrp=1234-en_us/reviews/product/2/ASF234.htm
         else if(isset($_GET['bvrrp']) OR isset($_GET['bvqap']) OR isset($_GET['bvsyp']) ){
@@ -258,15 +271,47 @@ class Base{
             {
                 $bvparam = $_GET['bvsyp'];
             }
-
-            preg_match('/\/(\d+?)\/[^\/]+$/', $_SERVER['QUERY_STRING'], $page_number);
-            $page_number = max(1, (int) $page_number[1]);
-
-            // remove the bvrrp parameter from the current URL so we don't keep appending it
-            $seo_param = str_replace('/', '\/', $bvparam); // need to escape slashses for regex
-            $this->config['current_page_url'] = preg_replace('/[?&]bvrrp='.$seo_param.'/', '', $this->config['current_page_url']);
         }
-
+        else if(isset($bvcurrentpagedata))  //if the base url doesn't include the page number information and the current url
+                                //is defined then use the data from the current URL.
+        {
+                            
+            if (isset($bvcurrentpagedata['bvpage']) )
+            {
+               $page_number = (int) $bvcurrentpagedata['bvpage'];
+               $bvparam=$bvcurrentpagedata['bvpage'];
+            // remove the bvpage parameter from the base URL so we don't keep appending it
+               $seo_param = str_replace('/', '\/', $_GET['bvrrp']); // need to escape slashses for regex
+               $this->config['base_page_url'] = preg_replace('/[?&]bvrrp='.$seo_param.'/', '', $this->config['base_page_url']);
+            }
+            // other implementations use the bvrrp, bvqap, or bvsyp parameter ?bvrrp=1234-en_us/reviews/product/2/ASF234.htm
+            else if(isset($bvcurrentpagedata['bvrrp'])
+                    || isset($bvcurrentpagedata['bvqap'])
+                    || isset($bvcurrentpagedata['bvsyp']) )
+            {
+                if(isset($bvcurrentpagedata['bvrrp']))
+                {
+                  $bvparam = $bvcurrentpagedata['bvrrp'];
+                }
+                else if(isset($bvcurrentpagedata['bvqap']))
+                {
+                    $bvparam = $bvcurrentpagedata['bvqap'];
+                }
+                else
+                {
+                    $bvparam = $bvcurrentpagedata['bvsyp'];
+                }
+            }
+        }
+        
+        if(isset($bvparam)){
+            preg_match('/\/(\d+?)\/[^\/]+$/', $bvparam, $page_number);
+            $page_number = max(1, (int) $page_number[1]);
+    
+            // remove the bvrrp parameter from the base URL so we don't keep appending it
+            $seo_param = str_replace('/', '\/', $bvparam); // need to escape slashses for regex
+            $this->config['base_page_url'] = preg_replace('/[?&]bvrrp='.$seo_param.'/', '', $this->config['base_page_url']);
+        }
         return $page_number;
     }// end of _getPageNumber()
 
@@ -378,21 +423,23 @@ class Base{
         // Close the cURL resource, and free system resources
         curl_close($ch);
 
+        $msg="";
+
         // see if we got any errors with the connection
         if($request['error_number'] != 0){
             $msg = 'Error - '.$request['error_message'];
-            $this->_buildComment($msg);
+            $this->_buildComment($msg,$url);
         }
 
         // see if we got a status code of something other than 200
         if($request['info']['http_code'] != 200){
             $msg = 'HTTP status code of '.$request['info']['http_code'].' was returned';
-            return $this->_buildComment($msg);
+            return $this->_buildComment($msg,$url);
         }
 
         // if we are here we got a response so let's return it
-        $msg = 'timer '.($request['info']['total_time'] * 1000).'ms';
-        return $request['response'].$this->_buildComment($msg);
+        $this->response_time = round($request['info']['total_time'] * 1000);
+        return $request['response'].$this->_buildComment($msg,$url);
     }
 
     /**
@@ -408,7 +455,7 @@ class Base{
 
     private function _replaceTokens($content){
         // determine if query string exists in current page url
-        if (parse_url($this->config['current_page_url'], PHP_URL_QUERY) != ''){
+        if (parse_url($this->config['base_page_url'], PHP_URL_QUERY) != ''){
             // append an amperstand, because the URL already has a ? mark
             $page_url_query_prefix = '&';
         } else {
@@ -416,14 +463,67 @@ class Base{
             $page_url_query_prefix = '?';
         }
 
-        $content = str_replace('{INSERT_PAGE_URI}', $this->config['current_page_url'] . $page_url_query_prefix, $content); 
+        $content = str_replace('{INSERT_PAGE_URI}', $this->config['base_page_url'] . $page_url_query_prefix, $content); 
 
         return $content;
     }
 
-    private function _buildComment($msg){
-        return "\n".'<!--BVSEO|dp: '.$this->config['deployment_zone_id'].'|sdk: v1.0-p|msg: '.$msg.' -->';
+    private function _buildComment($msg,$url){
+    	$footer = '<ul id="BVSEOSDK" style="display:none;">';
+    	$footer .= "\n".'	<li id="vn">bvseo-1.0.1.3-beta</li>';
+    	$footer .= "\n".'	<li id="sl">bvseo-p</li>';
+    	if ($this->config['internal_file_path']) {
+    		$footer .= "\n".'	<li id="mt">bvseo-FILE</li>';
+    	} else {
+    		$footer .= "\n".'	<li id="mt">bvseo-CLOUD</li>';
+    	}
+    	if(isset($this->response_time))
+        	$footer .= "\n".'	<li id="et">bvseo-'.$this->response_time.'ms</li>';
+    	$footer .= "\n".'	<li id="ct">bvseo-'.strtoupper($this->config['bv_product']).'</li>';
+    	$footer .= "\n".'	<li id="st">bvseo-'.strtoupper($this->config['subject_type']).'</li>';
+    	$footer .= "\n".'	<li id="am">bvseo-getContent</li>';
+    	if (strlen($msg) > 0) {
+    		$footer .= "\n".'	<li id="ms">bvseo-msg: '.$msg.'</li>';
+    	}
+     	$footer .= "\n".'</ul>';   
+     	
+    	//when in debug mode, also display the following information
+    	if (isset($_GET['bvreveal'])){
+            if($_GET['bvreveal'] == 'debug') {
+                $footer .= "\n".'<ul id="BVSEOSDK_DEBUG" style="display:none;">';
+                $footer .= "\n".'   <li id="cloudKey">'.$this->config['cloud_key'].'</li>';
+                $footer .= "\n".'   <li id="bv.root.folder">'.$this->config['deployment_zone_id'].'</li>';
+                $footer .= "\n".'   <li id="stagingS3Hostname">'.$this->bv_config['seo-domain']['staging'].'</li>';
+                $footer .= "\n".'   <li id="productionS3Hostname">'.$this->bv_config['seo-domain']['production'].'</li>';
+                $staging = ($this->config['staging']) ? 'TRUE' : 'FALSE';
+                $footer .= "\n".'   <li id="staging">'.$staging.'</li>';    
+                $footer .= "\n".'   <li id="seo.sdk.execution.timeout">'.$this->config['latency_timeout'].'</li>';
+                $bot_detection = ($this->config['bot_detection']) ? 'TRUE' : 'FALSE';
+                $footer .= "\n".'   <li id="botDetection">'.$bot_detection.'</li>';
+                $footer .= "\n".'   <li id="crawlerAgentPattern">'.$this->config['bot_list'].'</li>';
+                $footer .= "\n".'   <li id="userAgent">'.$_SERVER['HTTP_USER_AGENT'].'</li>';
+                $footer .= "\n".'   <li id="pageURI">'.$this->config['current_page_url'].'</li>';
+                $footer .= "\n".'   <li id="baseURI">'.$this->config['base_page_url'].'</li>';
+                $footer .= "\n".'   <li id="subjectID">'.urlencode($this->config['product_id']).'</li>';
+                $footer .= "\n".'   <li id="contentType">'.strtoupper($this->config['bv_product']).'</li>';
+                $footer .= "\n".'   <li id="subjectType">'.strtoupper($this->config['subject_type']).'</li>';
+                $footer .= "\n".'   <li id="contentURL">'.$url.'</li>';
+                $footer .= "\n".'</ul>';        
+            }
+        }
+
+        return $footer;
+       // return "\n".'<!--BVSEO|dp: '.$this->config['deployment_zone_id'].'|sdk: v1.0-p|msg: '.$msg.' -->';
     }
+
+	private function _booleanToString($boolean){
+		if ($boolean){
+			return 'TRUE';
+		}else{
+			return 'FALSE';
+		}
+	}
+
 
 } // end of Base class
 

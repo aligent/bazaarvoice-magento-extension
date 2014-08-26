@@ -249,6 +249,17 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </enable_product_feed>
+                        <families>
+                            <label>Enable BV Product Families</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <comment>
+                                <![CDATA[BV Product Families will be defined for visible Configurable and Simple product combinations]]></comment>
+                            <sort_order>13</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </families>
                         <enable_purchase_feed>
                             <label>Enable Purchase Feed</label>
                             <frontend_type>select</frontend_type>
