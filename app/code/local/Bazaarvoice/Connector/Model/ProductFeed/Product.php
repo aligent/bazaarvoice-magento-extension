@@ -281,13 +281,15 @@ class Bazaarvoice_Connector_Model_ProductFeed_Product extends Mage_Core_Model_Ab
         }
         if (!is_null($parentCategories) && count($parentCategories) > 0) {
             foreach ($parentCategories as $parentCategoryId) {
-                $parentCategory = Mage::getModel('catalog/category')->load($parentCategoryId);
+                $parentCategory = Mage::getModel('catalog/category')->setStoreId($productDefault->getStoreId())->load($parentCategoryId);
                 if ($parentCategory != null) {
                     $categoryExternalId = $bvHelper->getCategoryId($parentCategory, $productDefault->getStoreId());
                     if (in_array($categoryExternalId, $this->_categoryIdList)) {
                         $ioObject->streamWrite('    <CategoryExternalId>' . $categoryExternalId .
                             "</CategoryExternalId>\n");
                         break;
+                    } else {
+                        Mage::log("NOT FOUND $categoryExternalId");
                     }
                 }
             }
