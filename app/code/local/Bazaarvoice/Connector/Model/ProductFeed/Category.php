@@ -217,7 +217,7 @@ class Bazaarvoice_Connector_Model_ProductFeed_Category extends Mage_Core_Model_A
 
         $parentExtId = '';
         /* @var $parentCategory Mage_Catalog_Model_Category */
-        $parentCategory = Mage::getModel('catalog/category')->load($categoryDefault->getParentId());
+        $parentCategory = Mage::getModel('catalog/category')->setStoreId($categoryDefault->getStoreId())->load($categoryDefault->getParentId());
         // If parent category is the root category, then ignore it
         if (!is_null($parentCategory) && $parentCategory->getLevel() != 1) {
             $parentExtId = '    <ParentExternalId>' .
