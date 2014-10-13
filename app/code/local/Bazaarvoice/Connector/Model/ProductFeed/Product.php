@@ -299,6 +299,11 @@ class Bazaarvoice_Connector_Model_ProductFeed_Product extends Mage_Core_Model_Ab
         if($upcAttribute && $productDefault->getData($upcAttribute)) {
             $ioObject->streamWrite('    <UPCs><UPC>' . $productDefault->getData($upcAttribute) . "</UPC></UPCs>\n");            
         }
+        
+        $eanAttribute = Mage::getStoreConfig("bazaarvoice/bv_config/product_feed_ean_attribute_code");
+        if($eanAttribute && $productDefault->getData($eanAttribute)) {
+            $ioObject->streamWrite('    <EANs><EAN>' . $productDefault->getData($eanAttribute) . "</EAN></EANs>\n");            
+        }
 
         $ioObject->streamWrite('    <ProductPageUrl>' . "<![CDATA[" . $this->getProductUrl($productDefault) . "]]>" . "</ProductPageUrl>\n");
         $imageUrl = $productDefault->getData('localized_image_url');
