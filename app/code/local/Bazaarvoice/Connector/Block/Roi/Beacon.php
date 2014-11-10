@@ -52,10 +52,10 @@ class Bazaarvoice_Connector_Block_Roi_Beacon extends Mage_Core_Block_Template
                 }
                 foreach ($items as $itemId => $item)
                 {
-                    // skip configurable items if families are enabled
-                    if(Mage::getStoreConfig('bazaarvoice/feeds/families') && $item->getProduct()->getTypeId() == Mage_Catalog_Model_Product_Type::TYPE_CONFIGURABLE) continue;
                     $product = Mage::helper('bazaarvoice')->getReviewableProductFromOrderItem($item);
                     $product = Mage::getModel('catalog/product')->load($product->getId());
+                    // skip configurable items if families are enabled
+                    if(Mage::getStoreConfig('bazaarvoice/feeds/families') && $product->getTypeId() == Mage_Catalog_Model_Product_Type::TYPE_CONFIGURABLE) continue;
                      
                     $itemDetails = array();
                     $itemDetails['sku'] = Mage::helper('bazaarvoice')->getProductId($product);
