@@ -65,7 +65,7 @@ class Bazaarvoice_Connector_Block_Roi_Beacon extends Mage_Core_Block_Template
                     $itemDetails['quantity'] = number_format($item->getQtyOrdered(), 0);
                     $itemDetails['imageUrl'] = $product->getImageUrl();
                     
-                    if(Mage::getStoreConfig('bazaarvoice/feeds/families')) {
+                    if(Mage::getStoreConfig('bazaarvoice/feeds/families') && $item->getParentItem()) {
                         if(strpos($itemDetails['imageUrl'], "placeholder/image.jpg")) {
                             // if product families are enabled and product has no image, use configurable image
                             $parentId = $item->getParentItem()->getProductId();
