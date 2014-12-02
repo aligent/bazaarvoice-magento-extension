@@ -52,10 +52,10 @@ class Bazaarvoice_Connector_Block_Roi_Beacon extends Mage_Core_Block_Template
                 }
                 foreach ($items as $itemId => $item)
                 {
-                    // skip configurable items if families are enabled
-                    if(Mage::getStoreConfig('bazaarvoice/feeds/families') && $item->getProduct()->getTypeId() == Mage_Catalog_Model_Product_Type::TYPE_CONFIGURABLE) continue;
                     $product = Mage::helper('bazaarvoice')->getReviewableProductFromOrderItem($item);
                     $product = Mage::getModel('catalog/product')->load($product->getId());
+                    // skip configurable items if families are enabled
+                    if(Mage::getStoreConfig('bazaarvoice/feeds/families') && $product->getTypeId() == Mage_Catalog_Model_Product_Type::TYPE_CONFIGURABLE) continue;
                      
                     $itemDetails = array();
                     $itemDetails['sku'] = Mage::helper('bazaarvoice')->getProductId($product);
@@ -65,7 +65,7 @@ class Bazaarvoice_Connector_Block_Roi_Beacon extends Mage_Core_Block_Template
                     $itemDetails['quantity'] = number_format($item->getQtyOrdered(), 0);
                     $itemDetails['imageUrl'] = $product->getImageUrl();
                     
-                    if(Mage::getStoreConfig('bazaarvoice/feeds/families')) {
+                    if(Mage::getStoreConfig('bazaarvoice/feeds/families') && $item->getParentItem()) {
                         if(strpos($itemDetails['imageUrl'], "placeholder/image.jpg")) {
                             // if product families are enabled and product has no image, use configurable image
                             $parentId = $item->getParentItem()->getProductId();
