@@ -182,9 +182,9 @@ class Bazaarvoice_Connector_Model_ExportPurchaseFeed extends Mage_Core_Model_Abs
                  * Hard code path and file name
                  * Former config setting defaults:
                  *   <ExportPath>/ppe/inbox</ExportPath>
-                 *   <ExportFileName>bazaarvoice-order-data.xml</ExportFileName>
+                 *   <ExportFileName>bv_ppe_tag_feed-magento.xml</ExportFileName>
                  */
-                $destinationFile = '/ppe/inbox/bazaarvoice-order-data-' . date('U') . '.xml';
+                $destinationFile = '/ppe/inbox/bv_ppe_tag_feed-magento-' . date('U') . '.xml';
                 $sourceFile = $purchaseFeedFilePath . DS . $purchaseFeedFileName;
 
                 $upload = $bvHelper->uploadFile($sourceFile, $destinationFile, $website->getDefaultStore());
@@ -243,9 +243,9 @@ class Bazaarvoice_Connector_Model_ExportPurchaseFeed extends Mage_Core_Model_Abs
                  * Hard code path and file name
                  * Former config setting defaults:
                  *   <ExportPath>/ppe/inbox</ExportPath>
-                 *   <ExportFileName>bazaarvoice-order-data.xml</ExportFileName>
+                 *   <ExportFileName>bv_ppe_tag_feed-magento.xml</ExportFileName>
                  */
-                $destinationFile = '/ppe/inbox/bazaarvoice-order-data-' . date('U') . '.xml';
+                $destinationFile = '/ppe/inbox/bv_ppe_tag_feed-magento-' . date('U') . '.xml';
                 $sourceFile = $purchaseFeedFilePath . DS . $purchaseFeedFileName;
 
                 $upload = $bvHelper->uploadFile($sourceFile, $destinationFile, $group->getDefaultStore());
@@ -303,9 +303,9 @@ class Bazaarvoice_Connector_Model_ExportPurchaseFeed extends Mage_Core_Model_Abs
                  * Hard code path and file name
                  * Former config setting defaults:
                  *   <ExportPath>/ppe/inbox</ExportPath>
-                 *   <ExportFileName>bazaarvoice-order-data.xml</ExportFileName>
+                 *   <ExportFileName>bv_ppe_tag_feed-magento.xml</ExportFileName>
                  */
-                $destinationFile = '/ppe/inbox/bazaarvoice-order-data-' . date('U') . '.xml';
+                $destinationFile = '/ppe/inbox/bv_ppe_tag_feed-magento-' . date('U') . '.xml';
                 $sourceFile = $purchaseFeedFilePath . DS . $purchaseFeedFileName;
 
                 $upload = $bvHelper->uploadFile($sourceFile, $destinationFile, $store);
