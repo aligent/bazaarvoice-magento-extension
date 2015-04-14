@@ -397,7 +397,7 @@ class Bazaarvoice_Connector_Model_ProductFeed_Product extends Mage_Core_Model_Ab
             $storeId = $product->getStoreId();
             // Get image url from helper (this is for the default store
             $defaultStoreImageUrl = Mage::helper('catalog/image')->init($product, 'image');
-            if($product->getData("product_families") && strpos($defaultStoreImageUrl, "placeholder/image.jpg")){
+            if($product->getData("product_families") && ($product->getImage() == '' || $product->getImage() == 'no_selection')){
                 // if product families are enabled and product has no image, use configurable image
                 $parents = $product->getData("product_families");
                 $parentId = array_pop($parents);
