@@ -77,7 +77,7 @@ class Bazaarvoice_Connector_Helper_Data extends Mage_Core_Helper_Abstract
     {
         // Check config setting to see if we should use Magento category id
         $useUrlPath = Mage::getStoreConfig('bazaarvoice/bv_config/category_id_use_url_path', $storeId);
-        $useUrlPath = (strtoupper($useUrlPath) == 'TRUE' || $useUrlPath == true || $useUrlPath == '1');
+        $useUrlPath = (strtoupper($useUrlPath) == 'TRUE' || $useUrlPath == '1');
         if(!$useUrlPath) {
             return $category->getId();
         }
