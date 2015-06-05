@@ -396,14 +396,18 @@ class Bazaarvoice_Connector_Model_ProductFeed_Product extends Mage_Core_Model_Ab
             // Get store id from product
             $storeId = $product->getStoreId();
             // Get image url from helper (this is for the default store
-            $defaultStoreImageUrl = Mage::helper('catalog/image')->init($product, 'image');
+            $defaultStoreImageUrl = Mage::getModel('catalog/product_media_config')->getMediaUrl($product->getImage());
+                
             if($product->getData("product_families") && ($product->getImage() == '' || $product->getImage() == 'no_selection')){
                 // if product families are enabled and product has no image, use configurable image
                 $parents = $product->getData("product_families");
                 $parentId = array_pop($parents);
                 $parent = Mage::helper("bazaarvoice")->getProductFromProductExternalId($parentId);
-                $defaultStoreImageUrl = Mage::helper('catalog/image')->init($parent, 'image');
+                $parent->setStore($storeId);
+                $defaultStoreImageUrl = Mage::getModel('catalog/product_media_config')->getMediaUrl($parent->getImage());
             }
+            if(strpos($defaultStoreImageUrl, 'no_selection'))
+                $defaultStoreImageUrl = Mage::helper('catalog/image')->init($product, 'image');
             // Get media base url for correct store
             $mediaBaseUrl = Mage::app()->getStore($storeId)->getBaseUrl('media');
             // Get default media base url
