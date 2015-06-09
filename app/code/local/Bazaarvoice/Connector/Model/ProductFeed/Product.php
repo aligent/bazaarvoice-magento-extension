@@ -272,8 +272,10 @@ class Bazaarvoice_Connector_Model_ProductFeed_Product extends Mage_Core_Model_Ab
             // if families are enabled and product is not visible, use parent categories
             $parentId = array_pop($productDefault->getData("product_families"));
             $parentProduct = $bvHelper->getProductFromProductExternalId($parentId);
-            $parentCategories = $parentProduct->getCategoryIds();
-            Mage::log("Product ".$productDefault->getSku()." using parent categories from ".$parentProduct->getSku());
+	    if (!is_null($parentCategories)){
+            	$parentCategories = $parentProduct->getCategoryIds();
+            	Mage::log("Product ".$productDefault->getSku()." using parent categories from ".$parentProduct->getSku());
+	    }
         } else {
             // normal behavior
             $parentCategories = $productDefault->getCategoryIds();
@@ -295,7 +297,8 @@ class Bazaarvoice_Connector_Model_ProductFeed_Product extends Mage_Core_Model_Ab
             }
         }
         
-        $upcAttribute = Mage::getStoreConfig("bazaarvoice/bv_config/product_feed_upc_attribute_code");
+        //$upcAttribute = Mage::getStoreConfig("bazaarvoice/bv_config/product_feed_upc_attribute_code");
+		$upcAttribute = 'upc_code';
         if($upcAttribute && $productDefault->getData($upcAttribute)) {
             $ioObject->streamWrite('    <UPCs><UPC>' . $productDefault->getData($upcAttribute) . "</UPC></UPCs>\n");            
         }
@@ -403,8 +406,11 @@ class Bazaarvoice_Connector_Model_ProductFeed_Product extends Mage_Core_Model_Ab
                 $parents = $product->getData("product_families");
                 $parentId = array_pop($parents);
                 $parent = Mage::helper("bazaarvoice")->getProductFromProductExternalId($parentId);
-                $parent->setStore($storeId);
-                $defaultStoreImageUrl = Mage::getModel('catalog/product_media_config')->getMediaUrl($parent->getImage());
+				if (is_object($parent)){
+    				$parent = Mage::getModel('catalog/product')->load($parent->getId());
+					$parent->setStore($storeId);
+					$defaultStoreImageUrl = Mage::getModel('catalog/product_media_config')->getMediaUrl($parent->getImage());
+				}
             }
             if(strpos($defaultStoreImageUrl, 'no_selection'))
                 $defaultStoreImageUrl = Mage::helper('catalog/image')->init($product, 'image');
@@ -434,8 +440,10 @@ class Bazaarvoice_Connector_Model_ProductFeed_Product extends Mage_Core_Model_Ab
             $parents = $product->getData("product_families");
             $parentId = array_pop($parents);
             $parent = Mage::helper("bazaarvoice")->getProductFromProductExternalId($parentId);
-            $parent->setStoreId($product->getStoreId());
-            $productUrl = $parent->getProductUrl(false);
+			if (is_object($parent)){
+				$parent->setStoreId($product->getStoreId());
+				$productUrl = $parent->getProductUrl(false);
+			}
         } else {
             // otherwise use default
             $productUrl = $product->getProductUrl(false);
