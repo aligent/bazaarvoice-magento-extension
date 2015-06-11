@@ -6,7 +6,7 @@ class Bazaarvoice_Connector_Model_ExportPurchaseFeed extends Mage_Core_Model_Abs
     const TRIGGER_EVENT_PURCHASE = 'purchase';
     const TRIGGER_EVENT_SHIP = 'ship';
 
-    const NUM_DAYS_LOOKBACK = 1000;
+    const NUM_DAYS_LOOKBACK = 30;
 
     const DEBUG_OUTPUT = false;
 
