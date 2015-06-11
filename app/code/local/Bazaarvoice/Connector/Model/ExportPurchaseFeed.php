@@ -446,6 +446,8 @@ class Bazaarvoice_Connector_Model_ExportPurchaseFeed extends Mage_Core_Model_Abs
         . ", DelayDaysSinceEvent: " . $delayDaysSinceEvent
         . ', DelayDaysThreshold: ' . date('c', $this->getDelayDaysThresholdTimestamp($delayDaysSinceEvent)) . '}');
 
+        Mage::log('    BV - ' . $orders->getSelect()->__toString());
+        Mage::log("    BV - Found " . count($orders) . " orders to export.");
         $numOrdersExported = 0; // Keep track of how many orders we include in the feed
 
         foreach ($orders->getAllIds() as $orderId) {
@@ -514,6 +516,7 @@ class Bazaarvoice_Connector_Model_ExportPurchaseFeed extends Mage_Core_Model_Abs
             $order->reset(); // Forces a reload of various collections that the object caches internally so that the next time we load from the orderModel, we'll get a completely new object.
 
         }
+        Mage::log("    BV - Exported " . $numOrdersExported . " orders.");
 
         return $numOrdersExported;
     }
