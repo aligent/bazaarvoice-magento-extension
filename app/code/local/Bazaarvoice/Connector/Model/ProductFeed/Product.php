@@ -274,12 +274,12 @@ class Bazaarvoice_Connector_Model_ProductFeed_Product extends Mage_Core_Model_Ab
             $parentProduct = $bvHelper->getProductFromProductExternalId($parentId);
 	    if (!is_null($parentCategories)){
             	$parentCategories = $parentProduct->getCategoryIds();
-            	Mage::log("Product ".$productDefault->getSku()." using parent categories from ".$parentProduct->getSku());
+            	Mage::log("Product ".$productDefault->getSku()." using parent categories from ".$parentProduct->getSku(), Zend_Log::DEBUG, Bazaarvoice_Connector_Helper_Data::LOG_FILE);
 	    }
         } else {
             // normal behavior
             $parentCategories = $productDefault->getCategoryIds();
-            Mage::log("Product ".$productDefault->getSku()." using its own categories");
+            Mage::log("Product ".$productDefault->getSku()." using its own categories", Zend_Log::DEBUG, Bazaarvoice_Connector_Helper_Data::LOG_FILE);
         }
         if (!is_null($parentCategories) && count($parentCategories) > 0) {
             foreach ($parentCategories as $parentCategoryId) {
@@ -291,7 +291,7 @@ class Bazaarvoice_Connector_Model_ProductFeed_Product extends Mage_Core_Model_Ab
                             "</CategoryExternalId>\n");
                         break;
                     } else {
-                        Mage::log("NOT FOUND $categoryExternalId");
+                        Mage::log("NOT FOUND $categoryExternalId", Zend_Log::DEBUG, Bazaarvoice_Connector_Helper_Data::LOG_FILE);
                     }
                 }
             }
@@ -384,9 +384,9 @@ class Bazaarvoice_Connector_Model_ProductFeed_Product extends Mage_Core_Model_Ab
             }
         }
         catch (Exception $e) {
-            Mage::log('Failed to get families for product sku: ' . $product->getSku());
-            Mage::log($e->getMessage()."\n".$e->getTraceAsString());
-            Mage::log('Continuing generating feed.');
+            Mage::log('Failed to get families for product sku: ' . $product->getSku(), Zend_Log::DEBUG, Bazaarvoice_Connector_Helper_Data::LOG_FILE);
+            Mage::log($e->getMessage()."\n".$e->getTraceAsString(), Zend_Log::DEBUG, Bazaarvoice_Connector_Helper_Data::LOG_FILE);
+            Mage::log('Continuing generating feed.', Zend_Log::DEBUG, Bazaarvoice_Connector_Helper_Data::LOG_FILE);
         }
         return $families;
     }
@@ -425,8 +425,8 @@ class Bazaarvoice_Connector_Model_ProductFeed_Product extends Mage_Core_Model_Ab
             return $imageUrl;
         }
         catch (Exception $e) {
-            Mage::log('Failed to get image URL for product sku: ' . $product->getSku());
-            Mage::log('Continuing generating feed.');
+            Mage::log('Failed to get image URL for product sku: ' . $product->getSku(), Zend_Log::DEBUG, Bazaarvoice_Connector_Helper_Data::LOG_FILE);
+            Mage::log('Continuing generating feed.', Zend_Log::DEBUG, Bazaarvoice_Connector_Helper_Data::LOG_FILE);
 
             return '';
         }

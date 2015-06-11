@@ -17,7 +17,7 @@ class Bazaarvoice_Connector_Model_RetrieveInlineRatingsFeed extends Mage_Core_Mo
     public function retrieveInlineRatingsFeed()
     {
         // Log
-        Mage::log('Start Bazaarvoice Inline Ratings feed import');
+        Mage::log('Start Bazaarvoice Inline Ratings feed import', Zend_Log::DEBUG, Bazaarvoice_Connector_Helper_Data::LOG_FILE);
         // Iterate through all stores / groups in this instance
         // (Not the 'admin' store view, which represents admin panel)
         $groups = Mage::app()->getGroups(false);
@@ -26,7 +26,7 @@ class Bazaarvoice_Connector_Model_RetrieveInlineRatingsFeed extends Mage_Core_Mo
             try {
                 if (self::INLINE_RATINGS_FEED_ENABLED && Mage::getStoreConfig('bazaarvoice/general/enable_bv', $group->getDefaultStoreId()) === '1') {
                     if(count($group->getStores()) > 0) {
-                        Mage::log('    BV - Importing Inline Ratings feed for store group: ' . $group->getName(), Zend_Log::INFO);
+                        Mage::log('    BV - Importing Inline Ratings feed for store group: ' . $group->getName(), Zend_Log::INFO, Bazaarvoice_Connector_Helper_Data::LOG_FILE);
                         $this->retrieveInlineRatingsFeedForStoreGroup($group);
                     }
                     else {
@@ -34,17 +34,17 @@ class Bazaarvoice_Connector_Model_RetrieveInlineRatingsFeed extends Mage_Core_Mo
                     }
                 }
                 else {
-                    Mage::log('    BV - Inline Ratings feed disabled for store group: ' . $group->getName(), Zend_Log::INFO);
+                    Mage::log('    BV - Inline Ratings feed disabled for store group: ' . $group->getName(), Zend_Log::INFO, Bazaarvoice_Connector_Helper_Data::LOG_FILE);
                 }
             } catch (Exception $e) {
-                Mage::log('    BV - Failed to import Inline Ratings feed for store group: ' . $group->getName(), Zend_Log::ERR);
-                Mage::log('    BV - Error message: ' . $e->getMessage(), Zend_Log::ERR);
+                Mage::log('    BV - Failed to import Inline Ratings feed for store group: ' . $group->getName(), Zend_Log::ERR, Bazaarvoice_Connector_Helper_Data::LOG_FILE);
+                Mage::log('    BV - Error message: ' . $e->getMessage(), Zend_Log::ERR, Bazaarvoice_Connector_Helper_Data::LOG_FILE);
                 Mage::logException($e);
                 // Continue processing other store groups
             }
         }
         // Log
-        Mage::log('End Bazaarvoice Inline Ratings feed import');
+        Mage::log('End Bazaarvoice Inline Ratings feed import', Zend_Log::DEBUG, Bazaarvoice_Connector_Helper_Data::LOG_FILE);
     }
 
     /**
@@ -151,9 +151,9 @@ class Bazaarvoice_Connector_Model_RetrieveInlineRatingsFeed extends Mage_Core_Mo
             $product->getResource()->saveAttribute($product, 'bv_review_count');
             $product->getResource()->saveAttribute($product, 'bv_rating_range');
 
-            Mage::log('    BV - InlineRating for product ' . $bvProductExternalId . ' = {' . $productAverageRating . ', ' . $productReviewCount . ', ' . $productRatingRange . '}');
+            Mage::log('    BV - InlineRating for product ' . $bvProductExternalId . ' = {' . $productAverageRating . ', ' . $productReviewCount . ', ' . $productRatingRange . '}', Zend_Log::DEBUG, Bazaarvoice_Connector_Helper_Data::LOG_FILE);
         } else {
-            Mage::log("    BV - Could not find product for ExternalID '" . $bvProductExternalId . "'");
+            Mage::log("    BV - Could not find product for ExternalID '" . $bvProductExternalId . "'", Zend_Log::DEBUG, Bazaarvoice_Connector_Helper_Data::LOG_FILE);
         }
     }
 

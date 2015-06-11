@@ -6,6 +6,8 @@ class Bazaarvoice_Connector_Helper_Data extends Mage_Core_Helper_Abstract
     const BV_SUBJECT_TYPE = 'bvSubjectType';
     const BV_EXTERNAL_SUBJECT_NAME = 'bvExternalSubjectName';
     const BV_EXTERNAL_SUBJECT_ID = 'bvExternalSubjectID';
+    
+    const LOG_FILE = 'bazaarvoice.log';
 
     const CONST_SMARTSEO_BVRRP = 'bvrrp';
     const CONST_SMARTSEO_BVQAP = 'bvqap';
@@ -139,7 +141,7 @@ class Bazaarvoice_Connector_Helper_Data extends Mage_Core_Helper_Abstract
      */
     public function downloadFile($localFilePath, $localFileName, $remoteFile, $store = null)
     {
-        Mage::log('    BV - starting download from Bazaarvoice server');
+        Mage::log('    BV - starting download from Bazaarvoice server', Zend_Log::DEBUG, self::LOG_FILE);
 
         // Create the directory if it doesn't already exist.
         $ioObject = new Varien_Io_File();
@@ -149,27 +151,27 @@ class Bazaarvoice_Connector_Helper_Data extends Mage_Core_Helper_Abstract
             }
         } catch (Exception $e) {
             // Most likely not enough permissions.
-            Mage::log("    BV - failed attempting to create local directory '".$localFilePath."' to download feed.  Error trace follows: " . $e->getTraceAsString());
+            Mage::log("    BV - failed attempting to create local directory '".$localFilePath."' to download feed.  Error trace follows: " . $e->getTraceAsString(), Zend_Log::DEBUG, self::LOG_FILE);
             return false;
         }
 
         // Make sure directory is writable
         if (!$ioObject->isWriteable($localFilePath)) {
-            Mage::log("    BV - local directory '".$localFilePath."' is not writable.");
+            Mage::log("    BV - local directory '".$localFilePath."' is not writable.", Zend_Log::DEBUG, self::LOG_FILE);
             return false;
         }
 
         // Establish a connection to the FTP host
-        Mage::log('    BV - beginning file download');
+        Mage::log('    BV - beginning file download', Zend_Log::DEBUG, self::LOG_FILE);
         $connection = ftp_connect($this->getSFTPHost());
         $ftpUser = strtolower(Mage::getStoreConfig('bazaarvoice/general/client_name', $store));
         $ftpPw = Mage::getStoreConfig('bazaarvoice/general/ftp_password', $store);
-        Mage::log('    BV - connecting with ftp user: ' . $ftpUser);
-        //Mage::log('    BV - connecting with ftp pw: ' . $ftpPw);
+        Mage::log('    BV - connecting with ftp user: ' . $ftpUser, Zend_Log::DEBUG, self::LOG_FILE);
+        //Mage::log('    BV - connecting with ftp pw: ' . $ftpPw, Zend_Log::DEBUG, self::LOG_FILE);
         $login = ftp_login($connection, $ftpUser, $ftpPw);
         ftp_pasv($connection, true);
         if (!$connection || !$login) {
-            Mage::log('    BV - FTP connection attempt failed!');
+            Mage::log('    BV - FTP connection attempt failed!', Zend_Log::DEBUG, self::LOG_FILE);
             return false;
         }
 
@@ -182,12 +184,12 @@ class Bazaarvoice_Connector_Helper_Data extends Mage_Core_Helper_Abstract
             // Download the file
             ftp_get($connection, $localFilePath . DS . $localFileName, $remoteFile, FTP_BINARY);
         } catch (Exception $ex) {
-            Mage::log('    BV - Exception downloading file: ' . $ex->getTraceAsString());
+            Mage::log('    BV - Exception downloading file: ' . $ex->getTraceAsString(), Zend_Log::DEBUG, self::LOG_FILE);
         }
 
         // Validate file was downloaded
         if (!$ioObject->fileExists($localFilePath . DS . $localFileName, true)) {
-            Mage::log("    BV - unable to download file '" . $localFilePath . DS . $localFileName . "'");
+            Mage::log("    BV - unable to download file '" . $localFilePath . DS . $localFileName . "'", Zend_Log::DEBUG, self::LOG_FILE);
             return false;
         }
 
@@ -197,24 +199,24 @@ class Bazaarvoice_Connector_Helper_Data extends Mage_Core_Helper_Abstract
 
     public function uploadFile($localFileName, $remoteFile, $store)
     {
-        Mage::log('    BV - starting upload to Bazaarvoice server');
+        Mage::log('    BV - starting upload to Bazaarvoice server', Zend_Log::DEBUG, self::LOG_FILE);
 
         //$ftpHost = $this->getSFTPHost($store);
         $ftpUser = strtolower(Mage::getStoreConfig('bazaarvoice/general/client_name', $store->getId()));
         $ftpPw = Mage::getStoreConfig('bazaarvoice/general/ftp_password', $store->getId());
-        //Mage::log('    BV - connecting to host: ' . $ftpHost);
-        Mage::log('    BV - connecting with ftp user: ' . $ftpUser);
-        //Mage::log('    BV - connecting with ftp pw: ' . $ftpPw);
+        //Mage::log('    BV - connecting to host: ' . $ftpHost, Zend_Log::DEBUG, self::LOG_FILE);
+        Mage::log('    BV - connecting with ftp user: ' . $ftpUser, Zend_Log::DEBUG, self::LOG_FILE);
+        //Mage::log('    BV - connecting with ftp pw: ' . $ftpPw, Zend_Log::DEBUG, self::LOG_FILE);
 
         $connection = ftp_connect($this->getSFTPHost($store));
         if (!$connection) {
-            Mage::log('    BV - FTP connection attempt failed!');
+            Mage::log('    BV - FTP connection attempt failed!', Zend_Log::DEBUG, self::LOG_FILE);
             return false;
         }
         $login = ftp_login($connection, $ftpUser, $ftpPw);
         ftp_pasv($connection, true);
         if (!$connection || !$login) {
-            Mage::log('    BV - FTP connection attempt failed!');
+            Mage::log('    BV - FTP connection attempt failed!', Zend_Log::DEBUG, self::LOG_FILE);
             return false;
         }
 

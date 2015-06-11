@@ -17,7 +17,7 @@ class Bazaarvoice_Connector_Model_ExportPurchaseFeed extends Mage_Core_Model_Abs
     public function exportPurchaseFeed()
     {
         // Log
-        Mage::log('Start Bazaarvoice purchase feed generation');
+        Mage::log('Start Bazaarvoice purchase feed generation', Zend_Log::DEBUG, Bazaarvoice_Connector_Helper_Data::LOG_FILE);
         // Check global setting to see what at which scope / level we should generate feeds
         $feedGenScope = Mage::getStoreConfig('bazaarvoice/feeds/generation_scope');
         switch ($feedGenScope) {
@@ -32,7 +32,7 @@ class Bazaarvoice_Connector_Model_ExportPurchaseFeed extends Mage_Core_Model_Abs
                 break;
         }
         // Log
-        Mage::log('End Bazaarvoice purchase feed generation');
+        Mage::log('End Bazaarvoice purchase feed generation', Zend_Log::DEBUG, Bazaarvoice_Connector_Helper_Data::LOG_FILE);
     }
 
     /**
@@ -41,7 +41,7 @@ class Bazaarvoice_Connector_Model_ExportPurchaseFeed extends Mage_Core_Model_Abs
     public function exportPurchaseFeedByWebsite()
     {
         // Log
-        Mage::log('Exporting purchase feed file for each website...');
+        Mage::log('Exporting purchase feed file for each website...', Zend_Log::DEBUG, Bazaarvoice_Connector_Helper_Data::LOG_FILE);
         // Iterate through all websites in this instance
         // (Not the 'admin' website / store / view, which represents admin panel)
         $websites = Mage::app()->getWebsites(false);
@@ -52,7 +52,7 @@ class Bazaarvoice_Connector_Model_ExportPurchaseFeed extends Mage_Core_Model_Abs
                     && Mage::getStoreConfig('bazaarvoice/general/enable_bv', $website->getDefaultGroup()->getDefaultStoreId()) === '1'
                 ) {
                     if (count($website->getStores()) > 0) {
-                        Mage::log('    BV - Exporting purchase feed for website: ' . $website->getName(), Zend_Log::INFO);
+                        Mage::log('    BV - Exporting purchase feed for website: ' . $website->getName(), Zend_Log::INFO, Bazaarvoice_Connector_Helper_Data::LOG_FILE);
                         $this->exportPurchaseFeedForWebsite($website);
                     }
                     else {
@@ -60,12 +60,12 @@ class Bazaarvoice_Connector_Model_ExportPurchaseFeed extends Mage_Core_Model_Abs
                     }
                 }
                 else {
-                    Mage::log('    BV - Purchase feed disabled for website: ' . $website->getName(), Zend_Log::INFO);
+                    Mage::log('    BV - Purchase feed disabled for website: ' . $website->getName(), Zend_Log::INFO, Bazaarvoice_Connector_Helper_Data::LOG_FILE);
                 }
             }
             catch (Exception $e) {
-                Mage::log('    BV - Failed to export daily purchase feed for website: ' . $website->getName(), Zend_Log::ERR);
-                Mage::log('    BV - Error message: ' . $e->getMessage(), Zend_Log::ERR);
+                Mage::log('    BV - Failed to export daily purchase feed for website: ' . $website->getName(), Zend_Log::ERR, Bazaarvoice_Connector_Helper_Data::LOG_FILE);
+                Mage::log('    BV - Error message: ' . $e->getMessage(), Zend_Log::ERR, Bazaarvoice_Connector_Helper_Data::LOG_FILE);
                 Mage::logException($e);
                 // Continue processing other websites
             }
@@ -78,7 +78,7 @@ class Bazaarvoice_Connector_Model_ExportPurchaseFeed extends Mage_Core_Model_Abs
     public function exportPurchaseFeedByGroup()
     {
         // Log
-        Mage::log('Exporting purchase feed file for each store group...');
+        Mage::log('Exporting purchase feed file for each store group...', Zend_Log::DEBUG, Bazaarvoice_Connector_Helper_Data::LOG_FILE);
         // Iterate through all stores / groups in this instance
         // (Not the 'admin' store view, which represents admin panel)
         $groups = Mage::app()->getGroups(false);
@@ -89,7 +89,7 @@ class Bazaarvoice_Connector_Model_ExportPurchaseFeed extends Mage_Core_Model_Abs
                     && Mage::getStoreConfig('bazaarvoice/general/enable_bv', $group->getDefaultStoreId()) === '1'
                 ) {
                     if (count($group->getStores()) > 0) {
-                        Mage::log('    BV - Exporting purchase feed for store group: ' . $group->getName(), Zend_Log::INFO);
+                        Mage::log('    BV - Exporting purchase feed for store group: ' . $group->getName(), Zend_Log::INFO, Bazaarvoice_Connector_Helper_Data::LOG_FILE);
                         $this->exportPurchaseFeedForStoreGroup($group);
                     }
                     else {
@@ -97,12 +97,12 @@ class Bazaarvoice_Connector_Model_ExportPurchaseFeed extends Mage_Core_Model_Abs
                     }
                 }
                 else {
-                    Mage::log('    BV - Purchase feed disabled for store group: ' . $group->getName(), Zend_Log::INFO);
+                    Mage::log('    BV - Purchase feed disabled for store group: ' . $group->getName(), Zend_Log::INFO, Bazaarvoice_Connector_Helper_Data::LOG_FILE);
                 }
             }
             catch (Exception $e) {
-                Mage::log('    BV - Failed to export daily purchase feed for store group: ' . $group->getName(), Zend_Log::ERR);
-                Mage::log('    BV - Error message: ' . $e->getMessage(), Zend_Log::ERR);
+                Mage::log('    BV - Failed to export daily purchase feed for store group: ' . $group->getName(), Zend_Log::ERR, Bazaarvoice_Connector_Helper_Data::LOG_FILE);
+                Mage::log('    BV - Error message: ' . $e->getMessage(), Zend_Log::ERR, Bazaarvoice_Connector_Helper_Data::LOG_FILE);
                 Mage::logException($e);
                 // Continue processing other store groups
             }
@@ -115,7 +115,7 @@ class Bazaarvoice_Connector_Model_ExportPurchaseFeed extends Mage_Core_Model_Abs
     public function exportPurchaseFeedByStore()
     {
         // Log
-        Mage::log('Exporting purchase feed file for each store...');
+        Mage::log('Exporting purchase feed file for each store...', Zend_Log::DEBUG, Bazaarvoice_Connector_Helper_Data::LOG_FILE);
         // Iterate through all stores in this instance
         // (Not the 'admin' store view, which represents admin panel)
         $stores = Mage::app()->getStores(false);
@@ -125,16 +125,16 @@ class Bazaarvoice_Connector_Model_ExportPurchaseFeed extends Mage_Core_Model_Abs
                 if (Mage::getStoreConfig('bazaarvoice/feeds/enable_purchase_feed', $store->getId()) === '1'
                     && Mage::getStoreConfig('bazaarvoice/general/enable_bv', $store->getId()) === '1'
                 ) {
-                        Mage::log('    BV - Exporting purchase feed for: ' . $store->getCode(), Zend_Log::INFO);
+                        Mage::log('    BV - Exporting purchase feed for: ' . $store->getCode(), Zend_Log::INFO, Bazaarvoice_Connector_Helper_Data::LOG_FILE);
                         $this->exportPurchaseFeedForStore($store);
                 }
                 else {
-                    Mage::log('    BV - Purchase feed disabled for store: ' . $store->getCode(), Zend_Log::INFO);
+                    Mage::log('    BV - Purchase feed disabled for store: ' . $store->getCode(), Zend_Log::INFO, Bazaarvoice_Connector_Helper_Data::LOG_FILE);
                 }
             }
             catch (Exception $e) {
-                Mage::log('    BV - Failed to export daily purchase feed for store: ' . $store->getCode(), Zend_Log::ERR);
-                Mage::log('    BV - Error message: ' . $e->getMessage(), Zend_Log::ERR);
+                Mage::log('    BV - Failed to export daily purchase feed for store: ' . $store->getCode(), Zend_Log::ERR, Bazaarvoice_Connector_Helper_Data::LOG_FILE);
+                Mage::log('    BV - Error message: ' . $e->getMessage(), Zend_Log::ERR, Bazaarvoice_Connector_Helper_Data::LOG_FILE);
                 Mage::logException($e);
                 // Continue processing other stores
             }
@@ -168,9 +168,9 @@ class Bazaarvoice_Connector_Model_ExportPurchaseFeed extends Mage_Core_Model_Abs
 
             $ioObject->streamWrite("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Feed xmlns=\"http://www.bazaarvoice.com/xs/PRR/PostPurchaseFeed/4.9\">\n");
 
-            Mage::log('    BV - processing all orders');
+            Mage::log('    BV - processing all orders', Zend_Log::DEBUG, Bazaarvoice_Connector_Helper_Data::LOG_FILE);
             $numOrdersExported = $this->processOrdersForWebsite($ioObject, $website);
-            Mage::log('    BV - completed processing all orders');
+            Mage::log('    BV - completed processing all orders', Zend_Log::DEBUG, Bazaarvoice_Connector_Helper_Data::LOG_FILE);
 
             $ioObject->streamWrite("</Feed>\n");
             $ioObject->streamClose();
@@ -191,10 +191,10 @@ class Bazaarvoice_Connector_Model_ExportPurchaseFeed extends Mage_Core_Model_Abs
             }
 
             if (!$upload) {
-                Mage::log('    Bazaarvoice FTP upload failed! [filename = ' . $purchaseFeedFileName . ']');
+                Mage::log('    Bazaarvoice FTP upload failed! [filename = ' . $purchaseFeedFileName . ']', Zend_Log::DEBUG, Bazaarvoice_Connector_Helper_Data::LOG_FILE);
             }
             else {
-                Mage::log('    Bazaarvoice FTP upload success! [filename = ' . $purchaseFeedFileName . ']');
+                Mage::log('    Bazaarvoice FTP upload success! [filename = ' . $purchaseFeedFileName . ']', Zend_Log::DEBUG, Bazaarvoice_Connector_Helper_Data::LOG_FILE);
                 $ioObject->rm($purchaseFeedFileName);
             }
 
@@ -229,9 +229,9 @@ class Bazaarvoice_Connector_Model_ExportPurchaseFeed extends Mage_Core_Model_Abs
 
             $ioObject->streamWrite("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Feed xmlns=\"http://www.bazaarvoice.com/xs/PRR/PostPurchaseFeed/4.9\">\n");
 
-            Mage::log('    BV - processing all orders');
+            Mage::log('    BV - processing all orders', Zend_Log::DEBUG, Bazaarvoice_Connector_Helper_Data::LOG_FILE);
             $numOrdersExported = $this->processOrdersForGroup($ioObject, $group);
-            Mage::log('    BV - completed processing all orders');
+            Mage::log('    BV - completed processing all orders', Zend_Log::DEBUG, Bazaarvoice_Connector_Helper_Data::LOG_FILE);
 
             $ioObject->streamWrite("</Feed>\n");
             $ioObject->streamClose();
@@ -252,10 +252,10 @@ class Bazaarvoice_Connector_Model_ExportPurchaseFeed extends Mage_Core_Model_Abs
             }
 
             if (!$upload) {
-                Mage::log('    Bazaarvoice FTP upload failed! [filename = ' . $purchaseFeedFileName . ']');
+                Mage::log('    Bazaarvoice FTP upload failed! [filename = ' . $purchaseFeedFileName . ']', Zend_Log::DEBUG, Bazaarvoice_Connector_Helper_Data::LOG_FILE);
             }
             else {
-                Mage::log('    Bazaarvoice FTP upload success! [filename = ' . $purchaseFeedFileName . ']');
+                Mage::log('    Bazaarvoice FTP upload success! [filename = ' . $purchaseFeedFileName . ']', Zend_Log::DEBUG, Bazaarvoice_Connector_Helper_Data::LOG_FILE);
                 $ioObject->rm($purchaseFeedFileName);
             }
 
@@ -289,9 +289,9 @@ class Bazaarvoice_Connector_Model_ExportPurchaseFeed extends Mage_Core_Model_Abs
 
             $ioObject->streamWrite("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Feed xmlns=\"http://www.bazaarvoice.com/xs/PRR/PostPurchaseFeed/4.9\">\n");
 
-            Mage::log("    BV - processing all orders");
+            Mage::log("    BV - processing all orders", Zend_Log::DEBUG, Bazaarvoice_Connector_Helper_Data::LOG_FILE);
             $numOrdersExported = $this->processOrdersForStore($ioObject, $store);
-            Mage::log("    BV - completed processing all orders");
+            Mage::log("    BV - completed processing all orders", Zend_Log::DEBUG, Bazaarvoice_Connector_Helper_Data::LOG_FILE);
 
             $ioObject->streamWrite("</Feed>\n");
             $ioObject->streamClose();
@@ -312,10 +312,10 @@ class Bazaarvoice_Connector_Model_ExportPurchaseFeed extends Mage_Core_Model_Abs
             }
 
             if (!$upload) {
-                Mage::log('    Bazaarvoice FTP upload failed! [filename = ' . $purchaseFeedFileName . ']');
+                Mage::log('    Bazaarvoice FTP upload failed! [filename = ' . $purchaseFeedFileName . ']', Zend_Log::DEBUG, Bazaarvoice_Connector_Helper_Data::LOG_FILE);
             }
             else {
-                Mage::log('    Bazaarvoice FTP upload success! [filename = ' . $purchaseFeedFileName . ']');
+                Mage::log('    Bazaarvoice FTP upload success! [filename = ' . $purchaseFeedFileName . ']', Zend_Log::DEBUG, Bazaarvoice_Connector_Helper_Data::LOG_FILE);
                 $ioObject->rm($purchaseFeedFileName);
             }
 
@@ -444,7 +444,7 @@ class Bazaarvoice_Connector_Model_ExportPurchaseFeed extends Mage_Core_Model_Abs
         . ", NumDaysLookback: " . self::NUM_DAYS_LOOKBACK
         . ", NumDaysLookbackStartDate: " . $this->getNumDaysLookbackStartDate()
         . ", DelayDaysSinceEvent: " . $delayDaysSinceEvent
-        . ', DelayDaysThreshold: ' . date('c', $this->getDelayDaysThresholdTimestamp($delayDaysSinceEvent)) . '}');
+        . ', DelayDaysThreshold: ' . date('c', $this->getDelayDaysThresholdTimestamp($delayDaysSinceEvent)) . '}', Zend_Log::DEBUG, Bazaarvoice_Connector_Helper_Data::LOG_FILE);
         
         $ordersToExport = array();
         foreach ($orders->getAllIds() as $orderId) {
@@ -454,7 +454,7 @@ class Bazaarvoice_Connector_Model_ExportPurchaseFeed extends Mage_Core_Model_Abs
             }
             $ordersToExport[] = $orderId;
         }
-        Mage::log("    BV - Found " . count($ordersToExport) . " orders to export.");
+        Mage::log("    BV - Found " . count($ordersToExport) . " orders to export.", Zend_Log::DEBUG, Bazaarvoice_Connector_Helper_Data::LOG_FILE);
         
         $numOrdersExported = 0; // Keep track of how many orders we include in the feed
 
@@ -520,7 +520,7 @@ class Bazaarvoice_Connector_Model_ExportPurchaseFeed extends Mage_Core_Model_Abs
             $order->reset(); // Forces a reload of various collections that the object caches internally so that the next time we load from the orderModel, we'll get a completely new object.
 
         }
-        Mage::log("    BV - Exported " . $numOrdersExported . " orders.");
+        Mage::log("    BV - Exported " . $numOrdersExported . " orders.", Zend_Log::DEBUG, Bazaarvoice_Connector_Helper_Data::LOG_FILE);
 
         return $numOrdersExported;
     }
@@ -565,20 +565,20 @@ class Bazaarvoice_Connector_Model_ExportPurchaseFeed extends Mage_Core_Model_Abs
     {
         // Have we already included this order in a previous feed?
         if ($order->getData(self::ALREADY_SENT_IN_FEED_FLAG) === '1') {
-            Mage::log('    BV - Skipping Order.  Already included in previous feed. ' . $this->orderToString($order));
+            Mage::log('    BV - Skipping Order.  Already included in previous feed. ' . $this->orderToString($order), Zend_Log::DEBUG, Bazaarvoice_Connector_Helper_Data::LOG_FILE);
             return false;
         }
 
         // Is the order canceled?
         if ($order->isCanceled()) {
-            Mage::log('    BV - Skipping Order.  Canceled state. ' . $this->orderToString($order));
+            Mage::log('    BV - Skipping Order.  Canceled state. ' . $this->orderToString($order), Zend_Log::DEBUG, Bazaarvoice_Connector_Helper_Data::LOG_FILE);
             return false;
         }
 
         // Ensure that we can get the store for the order
         $store = $order->getStore();
         if (is_null($store)) {
-            Mage::log('    BV - Skipping Order.  Could not find store for order. ' . $this->orderToString($order));
+            Mage::log('    BV - Skipping Order.  Could not find store for order. ' . $this->orderToString($order), Zend_Log::DEBUG, Bazaarvoice_Connector_Helper_Data::LOG_FILE);
             return false;
         }
 
@@ -589,7 +589,7 @@ class Bazaarvoice_Connector_Model_ExportPurchaseFeed extends Mage_Core_Model_Abs
 
             // Is the order completely shipped?
             if (!$this->hasOrderCompletelyShipped($order)) {
-                Mage::log('    BV - Skipping Order.  Not completely shipped. ' . $this->orderToString($order));
+                Mage::log('    BV - Skipping Order.  Not completely shipped. ' . $this->orderToString($order), Zend_Log::DEBUG, Bazaarvoice_Connector_Helper_Data::LOG_FILE);
                 return false;
             }
 
@@ -598,7 +598,7 @@ class Bazaarvoice_Connector_Model_ExportPurchaseFeed extends Mage_Core_Model_Abs
             if ($latestItemShipDateTimestamp > $thresholdTimestamp) {
                 // Latest ship date for the fully shipped order is still within the delay period
                 Mage::log('    BV - Skipping Order.  Ship date not outside the threshold of ' . date('c', $thresholdTimestamp) . '. ' .
-                $this->orderToString($order));
+                $this->orderToString($order), Zend_Log::DEBUG, Bazaarvoice_Connector_Helper_Data::LOG_FILE);
                 return false;
             }
         }
@@ -610,7 +610,7 @@ class Bazaarvoice_Connector_Model_ExportPurchaseFeed extends Mage_Core_Model_Abs
                     // Order placement date is still within the delay period
                     Mage::log('    BV - Skipping Order.  Order date not outside the threshold of ' . date('c', $thresholdTimestamp) .
                     '. ' .
-                    $this->orderToString($order));
+                    $this->orderToString($order), Zend_Log::DEBUG, Bazaarvoice_Connector_Helper_Data::LOG_FILE);
                     return false;
                 }
             }
@@ -621,19 +621,19 @@ class Bazaarvoice_Connector_Model_ExportPurchaseFeed extends Mage_Core_Model_Abs
 
         // Do we have what basically looks like a legit email address?
         if (!preg_match('/@/', $order->getCustomerEmail())) {
-            Mage::log('    BV - Skipping Order.  No valid email address. ' . $this->orderToString($order));
+            Mage::log('    BV - Skipping Order.  No valid email address. ' . $this->orderToString($order), Zend_Log::DEBUG, Bazaarvoice_Connector_Helper_Data::LOG_FILE);
             return false;
         }
 
         // Does the order have any items?
         if (count($order->getAllItems()) < 1) {
-            Mage::log('    BV - Skipping Order.  No items in this order. ' . $this->orderToString($order));
+            Mage::log('    BV - Skipping Order.  No items in this order. ' . $this->orderToString($order), Zend_Log::DEBUG, Bazaarvoice_Connector_Helper_Data::LOG_FILE);
             return false;
         }
 
 
         if (self::DEBUG_OUTPUT) {
-            Mage::log('    BV - Including Order. ' . $this->orderToString($order));
+            Mage::log('    BV - Including Order. ' . $this->orderToString($order), Zend_Log::DEBUG, Bazaarvoice_Connector_Helper_Data::LOG_FILE);
         }
         return true;
     }

@@ -12,10 +12,10 @@ class Bazaarvoice_Connector_Model_RetrieveSmartSEOPackage extends Mage_Core_Mode
     public function retrieveSmartSEOPackage()
     {
         // Disable smart SEO feed for now
-        Mage::log('Smart SEO feed import is not enabled!');
+        Mage::log('Smart SEO feed import is not enabled!', Zend_Log::DEBUG, Bazaarvoice_Connector_Helper_Data::LOG_FILE);
         return;
         // Log
-        Mage::log('Start Bazaarvoice Smart SEO feed import');
+        Mage::log('Start Bazaarvoice Smart SEO feed import', Zend_Log::DEBUG, Bazaarvoice_Connector_Helper_Data::LOG_FILE);
         // Iterate through all stores / groups in this instance
         // (Not the 'admin' store view, which represents admin panel)
         $groups = Mage::app()->getGroups(false);
@@ -25,7 +25,7 @@ class Bazaarvoice_Connector_Model_RetrieveSmartSEOPackage extends Mage_Core_Mode
                 if (Mage::getStoreConfig('bazaarvoice/SmartSEOFeed/EnableSmartSEO', $group->getDefaultStoreId()) === '1'
                     && Mage::getStoreConfig('bazaarvoice/general/enable_bv', $group->getDefaultStoreId()) === '1') {                    
                     if(count($group->getStores()) > 0) {
-                        Mage::log('    BV - Importing Smart SEO feed for store group: ' . $group->getName(), Zend_Log::INFO);
+                        Mage::log('    BV - Importing Smart SEO feed for store group: ' . $group->getName(), Zend_Log::INFO, Bazaarvoice_Connector_Helper_Data::LOG_FILE);
                         $this->retrieveSmartSEOPackageForStoreGroup($group);
                     }
                     else {
@@ -33,17 +33,17 @@ class Bazaarvoice_Connector_Model_RetrieveSmartSEOPackage extends Mage_Core_Mode
                     }
                 }
                 else {
-                    Mage::log('    BV - Smart SEO feed disabled for store group: ' . $group->getName(), Zend_Log::INFO);
+                    Mage::log('    BV - Smart SEO feed disabled for store group: ' . $group->getName(), Zend_Log::INFO, Bazaarvoice_Connector_Helper_Data::LOG_FILE);
                 }
             } catch (Exception $e) {
-                Mage::log('    BV - Failed to import Smart SEO feed for store group: ' . $group->getName(), Zend_Log::ERR);
-                Mage::log('    BV - Error message: ' . $e->getMessage(), Zend_Log::ERR);
+                Mage::log('    BV - Failed to import Smart SEO feed for store group: ' . $group->getName(), Zend_Log::ERR, Bazaarvoice_Connector_Helper_Data::LOG_FILE);
+                Mage::log('    BV - Error message: ' . $e->getMessage(), Zend_Log::ERR, Bazaarvoice_Connector_Helper_Data::LOG_FILE);
                 Mage::logException($e);
                 // Continue processing other store groups
             }
         }
         // Log
-        Mage::log('End Bazaarvoice Smart SEO feed import');
+        Mage::log('End Bazaarvoice Smart SEO feed import', Zend_Log::DEBUG, Bazaarvoice_Connector_Helper_Data::LOG_FILE);
     }
 
     /**
@@ -66,7 +66,7 @@ class Bazaarvoice_Connector_Model_RetrieveSmartSEOPackage extends Mage_Core_Mode
             $desiredExt = '.tar.gz';
             if (substr_compare($remoteFile, $desiredExt, -strlen($desiredExt), strlen($desiredExt)) !== 0) {
                 $msg = 'BV - Unable to retrieve and process a .zip SmartSEO feed.  Only .tar.gz SmartSEO feeds can be processed by this extension';
-                Mage::log($msg);
+                Mage::log($msg, Zend_Log::DEBUG, Bazaarvoice_Connector_Helper_Data::LOG_FILE);
                 Mage::throwException($msg);
             }
 
@@ -87,7 +87,7 @@ class Bazaarvoice_Connector_Model_RetrieveSmartSEOPackage extends Mage_Core_Mode
                     $subject = 'Bazaarvoice SmartSEO Content Unavailable';
                     $msg = 'The Bazaarvoice extension in your Magento store was unable to download new SmartSEO files from the Bazaarvoice server and there were no pre-existing SmartSEO files already in your Magento store.';
                     Mage::helper('bazaarvoice')->sendNotificationEmail($subject, $msg);
-                    Mage::log($msg);
+                    Mage::log($msg, Zend_Log::DEBUG, Bazaarvoice_Connector_Helper_Data::LOG_FILE);
                     Mage::throwException($msg);
                 }
 
@@ -103,14 +103,14 @@ class Bazaarvoice_Connector_Model_RetrieveSmartSEOPackage extends Mage_Core_Mode
                     $subject = 'Bazaarvoice SmartSEO Content Unavailable';
                     $msg = 'The Bazaarvoice extension in your Magento store was unable to download new SmartSEO files from the Bazaarvoice server and the existing SmartSEO files that are already in the Magento store have expired.';
                     Mage::helper('bazaarvoice')->sendNotificationEmail($subject, $msg);
-                    Mage::log($msg);
+                    Mage::log($msg, Zend_Log::DEBUG, Bazaarvoice_Connector_Helper_Data::LOG_FILE);
                     Mage::throwException($msg);
                 } else {
                     // Couldn't download the file, but the old files that we already have are still usable
                     $subject = "Bazaarvoice SmartSEO Content Couldn't be Updated";
                     $msg = 'The Bazaarvoice extension in your Magento store was unable to download new SmartSEO files from the Bazaarvoice server.  The existing files will continue to be used.';
                     Mage::helper('bazaarvoice')->sendNotificationEmail($subject, $msg);
-                    Mage::log($msg);
+                    Mage::log($msg, Zend_Log::DEBUG, Bazaarvoice_Connector_Helper_Data::LOG_FILE);
                     Mage::throwException($msg);
                 }
 

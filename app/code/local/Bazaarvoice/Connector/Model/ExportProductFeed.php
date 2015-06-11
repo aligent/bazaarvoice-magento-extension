@@ -61,7 +61,7 @@ class Bazaarvoice_Connector_Model_ExportProductFeed extends Mage_Core_Model_Abst
     public function exportDailyProductFeed()
     {
         // Log
-        Mage::log('Start Bazaarvoice product feed generation');
+        Mage::log('Start Bazaarvoice product feed generation', Zend_Log::DEBUG, Bazaarvoice_Connector_Helper_Data::LOG_FILE);
         // Check global setting to see what at which scope / level we should generate feeds
         $feedGenScope = Mage::getStoreConfig('bazaarvoice/feeds/generation_scope');
         switch ($feedGenScope) {
@@ -76,7 +76,7 @@ class Bazaarvoice_Connector_Model_ExportProductFeed extends Mage_Core_Model_Abst
                 break;
         }
         // Log
-        Mage::log('End Bazaarvoice product feed generation');
+        Mage::log('End Bazaarvoice product feed generation', Zend_Log::DEBUG, Bazaarvoice_Connector_Helper_Data::LOG_FILE);
     }
 
     /**
@@ -85,7 +85,7 @@ class Bazaarvoice_Connector_Model_ExportProductFeed extends Mage_Core_Model_Abst
     private function exportDailyProductFeedByWebsite()
     {
         // Log
-        Mage::log('Exporting product feed file for each website...');
+        Mage::log('Exporting product feed file for each website...', Zend_Log::DEBUG, Bazaarvoice_Connector_Helper_Data::LOG_FILE);
         // Iterate through all websites in this instance
         // (Not the 'admin' store view, which represents admin panel)
         $websites = Mage::app()->getWebsites(false);
@@ -97,8 +97,7 @@ class Bazaarvoice_Connector_Model_ExportProductFeed extends Mage_Core_Model_Abst
                     && Mage::getStoreConfig('bazaarvoice/general/enable_bv', $website->getDefaultGroup()->getDefaultStoreId()) === '1'
                 ) {
                     if (count($website->getStores()) > 0) {
-                        Mage::log('    BV - Exporting product feed for website: ' . $website->getName(),
-                            Zend_Log::INFO);
+                        Mage::log('    BV - Exporting product feed for website: ' . $website->getName(),                            Zend_Log::INFO, Bazaarvoice_Connector_Helper_Data::LOG_FILE);
                         $this->exportDailyProductFeedForWebsite($website);
                     }
                     else {
@@ -106,13 +105,12 @@ class Bazaarvoice_Connector_Model_ExportProductFeed extends Mage_Core_Model_Abst
                     }
                 }
                 else {
-                    Mage::log('    BV - Product feed disabled for website: ' . $website->getName(), Zend_Log::INFO);
+                    Mage::log('    BV - Product feed disabled for website: ' . $website->getName(), Zend_Log::INFO, Bazaarvoice_Connector_Helper_Data::LOG_FILE);
                 }
             }
             catch (Exception $e) {
-                Mage::log('    BV - Failed to export daily product feed for website: ' . $website->getName(),
-                    Zend_Log::ERR);
-                Mage::log('    BV - Error message: ' . $e->getMessage(), Zend_Log::ERR);
+                Mage::log('    BV - Failed to export daily product feed for website: ' . $website->getName(),                    Zend_Log::ERR, Bazaarvoice_Connector_Helper_Data::LOG_FILE);
+                Mage::log('    BV - Error message: ' . $e->getMessage(), Zend_Log::ERR, Bazaarvoice_Connector_Helper_Data::LOG_FILE);
                 Mage::logException($e);
                 // Continue processing other websites
             }
@@ -125,7 +123,7 @@ class Bazaarvoice_Connector_Model_ExportProductFeed extends Mage_Core_Model_Abst
     public function exportDailyProductFeedByGroup()
     {
         // Log
-        Mage::log('Exporting product feed file for each store group...');
+        Mage::log('Exporting product feed file for each store group...', Zend_Log::DEBUG, Bazaarvoice_Connector_Helper_Data::LOG_FILE);
         // Iterate through all stores / groups in this instance
         // (Not the 'admin' store view, which represents admin panel)
         $groups = Mage::app()->getGroups(false);
@@ -136,7 +134,7 @@ class Bazaarvoice_Connector_Model_ExportProductFeed extends Mage_Core_Model_Abst
                     && Mage::getStoreConfig('bazaarvoice/general/enable_bv', $group->getDefaultStoreId()) === '1'
                 ) {
                     if (count($group->getStores()) > 0) {
-                        Mage::log('    BV - Exporting product feed for store group: ' . $group->getName(), Zend_Log::INFO);
+                        Mage::log('    BV - Exporting product feed for store group: ' . $group->getName(), Zend_Log::INFO, Bazaarvoice_Connector_Helper_Data::LOG_FILE);
                         $this->exportDailyProductFeedForStoreGroup($group);
                     }
                     else {
@@ -144,13 +142,12 @@ class Bazaarvoice_Connector_Model_ExportProductFeed extends Mage_Core_Model_Abst
                     }
                 }
                 else {
-                    Mage::log('    BV - Product feed disabled for store group: ' . $group->getName(), Zend_Log::INFO);
+                    Mage::log('    BV - Product feed disabled for store group: ' . $group->getName(), Zend_Log::INFO, Bazaarvoice_Connector_Helper_Data::LOG_FILE);
                 }
             }
             catch (Exception $e) {
-                Mage::log('    BV - Failed to export daily product feed for store group: ' . $group->getName(),
-                    Zend_Log::ERR);
-                Mage::log('    BV - Error message: ' . $e->getMessage(), Zend_Log::ERR);
+                Mage::log('    BV - Failed to export daily product feed for store group: ' . $group->getName(),                    Zend_Log::ERR, Bazaarvoice_Connector_Helper_Data::LOG_FILE);
+                Mage::log('    BV - Error message: ' . $e->getMessage(), Zend_Log::ERR, Bazaarvoice_Connector_Helper_Data::LOG_FILE);
                 Mage::logException($e);
                 // Continue processing other store groups
             }
@@ -163,7 +160,7 @@ class Bazaarvoice_Connector_Model_ExportProductFeed extends Mage_Core_Model_Abst
     private function exportDailyProductFeedByStore()
     {
         // Log
-        Mage::log('Exporting product feed file for each store / store view...');
+        Mage::log('Exporting product feed file for each store / store view...', Zend_Log::DEBUG, Bazaarvoice_Connector_Helper_Data::LOG_FILE);
         // Iterate through all stores / groups in this instance
         // (Not the 'admin' store view, which represents admin panel)
         $stores = Mage::app()->getStores(false);
@@ -173,16 +170,16 @@ class Bazaarvoice_Connector_Model_ExportProductFeed extends Mage_Core_Model_Abst
                 if (Mage::getStoreConfig('bazaarvoice/feeds/enable_product_feed', $store->getId()) === '1'
                     && Mage::getStoreConfig('bazaarvoice/general/enable_bv', $store->getId()) === '1'
                 ) {
-                    Mage::log('    BV - Exporting product feed for store: ' . $store->getCode(), Zend_Log::INFO);
+                    Mage::log('    BV - Exporting product feed for store: ' . $store->getCode(), Zend_Log::INFO, Bazaarvoice_Connector_Helper_Data::LOG_FILE);
                     $this->exportDailyProductFeedForStore($store);
                 }
                 else {
-                    Mage::log('    BV - Product feed disabled for store: ' . $store->getCode(), Zend_Log::INFO);
+                    Mage::log('    BV - Product feed disabled for store: ' . $store->getCode(), Zend_Log::INFO, Bazaarvoice_Connector_Helper_Data::LOG_FILE);
                 }
             }
             catch (Exception $e) {
-                Mage::log('    BV - Failed to export daily product feed for store: ' . $store->getCode(), Zend_Log::ERR);
-                Mage::log('    BV - Error message: ' . $e->getMessage(), Zend_Log::ERR);
+                Mage::log('    BV - Failed to export daily product feed for store: ' . $store->getCode(), Zend_Log::ERR, Bazaarvoice_Connector_Helper_Data::LOG_FILE);
+                Mage::log('    BV - Error message: ' . $e->getMessage(), Zend_Log::ERR, Bazaarvoice_Connector_Helper_Data::LOG_FILE);
                 Mage::logException($e);
                 // Continue processing other store groups
             }
@@ -216,14 +213,14 @@ class Bazaarvoice_Connector_Model_ExportProductFeed extends Mage_Core_Model_Abst
         // Create varien io object and write local feed file
         /* @var $ioObject Varien_Io_File */
         $ioObject = $this->createAndStartWritingFile($productFeedFileName, $clientName);
-        Mage::log('    BV - processing all brands');
+        Mage::log('    BV - processing all brands', Zend_Log::DEBUG, Bazaarvoice_Connector_Helper_Data::LOG_FILE);
         $brandModel->processBrandsForWebsite($ioObject, $website);
-        Mage::log('    BV - completed brands, beginning categories');
+        Mage::log('    BV - completed brands, beginning categories', Zend_Log::DEBUG, Bazaarvoice_Connector_Helper_Data::LOG_FILE);
         $categoryModel->processCategoriesForWebsite($ioObject, $website);
-        Mage::log('    BV - completed categories, beginning products');
+        Mage::log('    BV - completed categories, beginning products', Zend_Log::DEBUG, Bazaarvoice_Connector_Helper_Data::LOG_FILE);
         $productModel->setCategoryIdList($categoryModel->getCategoryIdList());
         $productModel->processProductsForWebsite($ioObject, $website);
-        Mage::log('    BV - completed processing all products');
+        Mage::log('    BV - completed processing all products', Zend_Log::DEBUG, Bazaarvoice_Connector_Helper_Data::LOG_FILE);
         $this->closeAndFinishWritingFile($ioObject);
 
         // Upload feed
@@ -258,14 +255,14 @@ class Bazaarvoice_Connector_Model_ExportProductFeed extends Mage_Core_Model_Abst
         // Create varien io object and write local feed file
         /* @var $ioObject Varien_Io_File */
         $ioObject = $this->createAndStartWritingFile($productFeedFileName, $clientName);
-        Mage::log('    BV - processing all brands');
+        Mage::log('    BV - processing all brands', Zend_Log::DEBUG, Bazaarvoice_Connector_Helper_Data::LOG_FILE);
         $brandModel->processBrandsForGroup($ioObject, $group);
-        Mage::log('    BV - completed brands, beginning categories');
+        Mage::log('    BV - completed brands, beginning categories', Zend_Log::DEBUG, Bazaarvoice_Connector_Helper_Data::LOG_FILE);
         $categoryModel->processCategoriesForGroup($ioObject, $group);
-        Mage::log('    BV - completed categories, beginning products');
+        Mage::log('    BV - completed categories, beginning products', Zend_Log::DEBUG, Bazaarvoice_Connector_Helper_Data::LOG_FILE);
         $productModel->setCategoryIdList($categoryModel->getCategoryIdList());
         $productModel->processProductsForGroup($ioObject, $group);
-        Mage::log('    BV - completed processing all products');
+        Mage::log('    BV - completed processing all products', Zend_Log::DEBUG, Bazaarvoice_Connector_Helper_Data::LOG_FILE);
         $this->closeAndFinishWritingFile($ioObject);
 
         // Upload feed
@@ -299,14 +296,14 @@ class Bazaarvoice_Connector_Model_ExportProductFeed extends Mage_Core_Model_Abst
         // Create varien io object and write local feed file
         /* @var $ioObject Varien_Io_File */
         $ioObject = $this->createAndStartWritingFile($productFeedFileName, $clientName);
-        Mage::log('    BV - processing all brands');
+        Mage::log('    BV - processing all brands', Zend_Log::DEBUG, Bazaarvoice_Connector_Helper_Data::LOG_FILE);
         $brandModel->processBrandsForStore($ioObject, $store);
-        Mage::log('    BV - completed brands, beginning categories');
+        Mage::log('    BV - completed brands, beginning categories', Zend_Log::DEBUG, Bazaarvoice_Connector_Helper_Data::LOG_FILE);
         $categoryModel->processCategoriesForStore($ioObject, $store);
-        Mage::log('    BV - completed categories, beginning products');
+        Mage::log('    BV - completed categories, beginning products', Zend_Log::DEBUG, Bazaarvoice_Connector_Helper_Data::LOG_FILE);
         $productModel->setCategoryIdList($categoryModel->getCategoryIdList());
         $productModel->processProductsForStore($ioObject, $store);
-        Mage::log('    BV - completed processing all products');
+        Mage::log('    BV - completed processing all products', Zend_Log::DEBUG, Bazaarvoice_Connector_Helper_Data::LOG_FILE);
         $this->closeAndFinishWritingFile($ioObject);
 
         // Upload feed
@@ -331,10 +328,10 @@ class Bazaarvoice_Connector_Model_ExportProductFeed extends Mage_Core_Model_Abst
         $upload = $bvHelper->uploadFile($sourceFile, $destinationFile, $store);
 
         if (!$upload) {
-            Mage::log('    Bazaarvoice FTP upload failed! [filename = ' . $productFeedFileName . ']');
+            Mage::log('    Bazaarvoice FTP upload failed! [filename = ' . $productFeedFileName . ']', Zend_Log::DEBUG, Bazaarvoice_Connector_Helper_Data::LOG_FILE);
         }
         else {
-            Mage::log('    Bazaarvoice FTP upload success! [filename = ' . $productFeedFileName . ']');
+            Mage::log('    Bazaarvoice FTP upload success! [filename = ' . $productFeedFileName . ']', Zend_Log::DEBUG, Bazaarvoice_Connector_Helper_Data::LOG_FILE);
             $ioObject = new Varien_Io_File();
             $ioObject->rm($productFeedFileName);
         }
@@ -361,7 +358,7 @@ class Bazaarvoice_Connector_Model_ExportProductFeed extends Mage_Core_Model_Abst
         }
 
         if (!$ioObject->streamOpen(basename($productFeedFileName))) {
-            Mage::throwException('Failed to open local feed file for writing: ' . $productFeedFileName);
+            Mage::throwException('Failed to open local feed file for writing: ' . $productFeedFileName, Zend_Log::DEBUG, Bazaarvoice_Connector_Helper_Data::LOG_FILE);
         }
 
         $ioObject->streamWrite("<?xml version=\"1.0\" encoding=\"UTF-8\"?>" .
