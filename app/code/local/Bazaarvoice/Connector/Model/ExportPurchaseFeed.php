@@ -6,7 +6,7 @@ class Bazaarvoice_Connector_Model_ExportPurchaseFeed extends Mage_Core_Model_Abs
     const TRIGGER_EVENT_PURCHASE = 'purchase';
     const TRIGGER_EVENT_SHIP = 'ship';
 
-    const NUM_DAYS_LOOKBACK = 30;
+    const NUM_DAYS_LOOKBACK = 1000;
 
     const DEBUG_OUTPUT = false;
 
@@ -445,20 +445,24 @@ class Bazaarvoice_Connector_Model_ExportPurchaseFeed extends Mage_Core_Model_Abs
         . ", NumDaysLookbackStartDate: " . $this->getNumDaysLookbackStartDate()
         . ", DelayDaysSinceEvent: " . $delayDaysSinceEvent
         . ', DelayDaysThreshold: ' . date('c', $this->getDelayDaysThresholdTimestamp($delayDaysSinceEvent)) . '}');
-
-        Mage::log('    BV - ' . $orders->getSelect()->__toString());
-        Mage::log("    BV - Found " . count($orders) . " orders to export.");
+        
+        $ordersToExport = array();
+        foreach ($orders->getAllIds() as $orderId) {
+            $order = $orderModel->load($orderId);
+            if (!$this->shouldIncludeOrder($order, $triggeringEvent, $delayDaysSinceEvent)) {
+                continue;
+            }
+            $ordersToExport[] = $orderId;
+        }
+        Mage::log("    BV - Found " . count($ordersToExport) . " orders to export.");
+        
         $numOrdersExported = 0; // Keep track of how many orders we include in the feed
 
-        foreach ($orders->getAllIds() as $orderId) {
+        foreach ($ordersToExport as $orderId) {
 
             /* @var $order Mage_Sales_Model_Order */
             $order = $orderModel->load($orderId);
             $store = $order->getStore();
-
-            if (!$this->shouldIncludeOrder($order, $triggeringEvent, $delayDaysSinceEvent)) {
-                continue;
-            }
 
             $numOrdersExported++;
 
@@ -491,7 +495,7 @@ class Bazaarvoice_Connector_Model_ExportPurchaseFeed extends Mage_Core_Model_Abs
                     
                     $imageUrl = $product->getImageUrl();
                     $originalPrice = $item->getOriginalPrice();
-                    if(Mage::getStoreConfig('bazaarvoice/feeds/families')) {
+                    if(Mage::getStoreConfig('bazaarvoice/feeds/families') && $item->getParentItem()) {
                         $parentItem = $item->getParentItem();
                         $parent = Mage::getModel('catalog/product')->load($parentItem->getProductId());
 
