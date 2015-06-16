@@ -476,13 +476,14 @@ class Bazaarvoice_Connector_Model_ExportPurchaseFeed extends Mage_Core_Model_Abs
         }
         Mage::log("    BV - Found " . count($ordersToExport) . " orders to export.", Zend_Log::DEBUG, Bazaarvoice_Connector_Helper_Data::LOG_FILE);
         
-        $numOrdersExported = 0; // Keep track of how many orders we include in the feed
-
+        $exportedOrders = array(); // Keep track of how many orders we include in the feed
+        
         foreach ($ordersToExport as $orderId) {
             try{
                 /* @var $order Mage_Sales_Model_Order */
                 $order = $orderModel->load($orderId);
                 $store = $order->getStore();
+                
                 
                 $orderXml = '';
                 
@@ -498,8 +499,7 @@ class Bazaarvoice_Connector_Model_ExportPurchaseFeed extends Mage_Core_Model_Abs
                     $items = $order->getAllItems();
                 } else {
                     $items = $order->getAllVisibleItems();
-                }
-                $exportedOrders = array();      
+                }     
                 /* @var $item Mage_Sales_Model_Order_Item */
                 foreach ($items as $item) {
                     // skip configurable items if families are enabled
@@ -551,9 +551,11 @@ class Bazaarvoice_Connector_Model_ExportPurchaseFeed extends Mage_Core_Model_Abs
     
     private function flagOrders($orders, $flag)
     {
-        $resource = Mage::getSingleton('core/resource');
-        $writeConnection = $resource->getConnection('core_write');
-        $writeConnection->query("UPDATE `" . $resource->getTableName('sales/order') . "` SET `" . self::ALREADY_SENT_IN_FEED_FLAG . "` = " . $flag . " WHERE `entity_id` IN(" . implode(',', $orders) . ");");
+        if(count($orders)){
+            $resource = Mage::getSingleton('core/resource');
+            $writeConnection = $resource->getConnection('core_write');
+            $writeConnection->query("UPDATE `" . $resource->getTableName('sales/order') . "` SET `" . self::ALREADY_SENT_IN_FEED_FLAG . "` = " . $flag . " WHERE `entity_id` IN(" . implode(',', $orders) . ");");
+        }
     }
 
     private function orderToString(Mage_Sales_Model_Order $order)
