@@ -169,7 +169,8 @@ class Bazaarvoice_Connector_Model_ExportPurchaseFeed extends Mage_Core_Model_Abs
             $ioObject->streamWrite("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Feed xmlns=\"http://www.bazaarvoice.com/xs/PRR/PostPurchaseFeed/4.9\">\n");
 
             Mage::log('    BV - processing all orders', Zend_Log::DEBUG, Bazaarvoice_Connector_Helper_Data::LOG_FILE);
-            $numOrdersExported = $this->processOrdersForWebsite($ioObject, $website);
+            $ordersExported = $this->processOrdersForWebsite($ioObject, $website);
+            $this->flagOrders($ordersExported, 1);
             Mage::log('    BV - completed processing all orders', Zend_Log::DEBUG, Bazaarvoice_Connector_Helper_Data::LOG_FILE);
 
             $ioObject->streamWrite("</Feed>\n");
@@ -177,7 +178,7 @@ class Bazaarvoice_Connector_Model_ExportPurchaseFeed extends Mage_Core_Model_Abs
 
             // Don't bother uploading if there are no orders in the feed
             $upload = false;
-            if ($numOrdersExported > 0) {
+            if (count($ordersExported) > 0) {
                 /*
                  * Hard code path and file name
                  * Former config setting defaults:
@@ -230,7 +231,8 @@ class Bazaarvoice_Connector_Model_ExportPurchaseFeed extends Mage_Core_Model_Abs
             $ioObject->streamWrite("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Feed xmlns=\"http://www.bazaarvoice.com/xs/PRR/PostPurchaseFeed/4.9\">\n");
 
             Mage::log('    BV - processing all orders', Zend_Log::DEBUG, Bazaarvoice_Connector_Helper_Data::LOG_FILE);
-            $numOrdersExported = $this->processOrdersForGroup($ioObject, $group);
+            $ordersExported = $this->processOrdersForGroup($ioObject, $group);
+            $this->flagOrders($ordersExported, 1);
             Mage::log('    BV - completed processing all orders', Zend_Log::DEBUG, Bazaarvoice_Connector_Helper_Data::LOG_FILE);
 
             $ioObject->streamWrite("</Feed>\n");
@@ -238,7 +240,7 @@ class Bazaarvoice_Connector_Model_ExportPurchaseFeed extends Mage_Core_Model_Abs
 
             // Don't bother uploading if there are no orders in the feed
             $upload = false;
-            if ($numOrdersExported > 0) {
+            if (count($ordersExported) > 0) {
                 /*
                  * Hard code path and file name
                  * Former config setting defaults:
@@ -290,7 +292,8 @@ class Bazaarvoice_Connector_Model_ExportPurchaseFeed extends Mage_Core_Model_Abs
             $ioObject->streamWrite("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Feed xmlns=\"http://www.bazaarvoice.com/xs/PRR/PostPurchaseFeed/4.9\">\n");
 
             Mage::log("    BV - processing all orders", Zend_Log::DEBUG, Bazaarvoice_Connector_Helper_Data::LOG_FILE);
-            $numOrdersExported = $this->processOrdersForStore($ioObject, $store);
+            $ordersExported = $this->processOrdersForStore($ioObject, $store);
+            $this->flagOrders($ordersExported, 1);
             Mage::log("    BV - completed processing all orders", Zend_Log::DEBUG, Bazaarvoice_Connector_Helper_Data::LOG_FILE);
 
             $ioObject->streamWrite("</Feed>\n");
@@ -298,7 +301,7 @@ class Bazaarvoice_Connector_Model_ExportPurchaseFeed extends Mage_Core_Model_Abs
 
             // Don't bother uploading if there are no orders in the feed
             $upload = false;
-            if ($numOrdersExported > 0) {
+            if (count($ordersExported) > 0) {
                 /*
                  * Hard code path and file name
                  * Former config setting defaults:
@@ -347,13 +350,19 @@ class Bazaarvoice_Connector_Model_ExportPurchaseFeed extends Mage_Core_Model_Abs
         ));
         // Only orders created within our look-back window
         $orders->addFieldToFilter('created_at', array('gteq' => $this->getNumDaysLookbackStartDate()));
-        // Exclude orders that have been previously sent in a feed
-        $orders->addFieldToFilter(self::ALREADY_SENT_IN_FEED_FLAG, array('null' => 'null')); // adds an 'IS NULL' filter to the BV flag column
+        // Include only orders that have not been sent or have errored out
+        $orders->addFieldToFilter(
+            array(self::ALREADY_SENT_IN_FEED_FLAG, self::ALREADY_SENT_IN_FEED_FLAG),
+            array(
+                array('neq' => 1),
+                array('null' => 'null')
+            )
+        ); 
 
         // Write orders to file
-        $numOrdersExported = $this->writeOrdersToFile($ioObject, $orders);
+        $ordersExported = $this->writeOrdersToFile($ioObject, $orders);
 
-        return $numOrdersExported;
+        return $ordersExported;
     }
 
     /**
@@ -381,13 +390,19 @@ class Bazaarvoice_Connector_Model_ExportPurchaseFeed extends Mage_Core_Model_Abs
         ));
         // Only orders created within our look-back window
         $orders->addFieldToFilter('created_at', array('gteq' => $this->getNumDaysLookbackStartDate()));
-        // Exclude orders that have been previously sent in a feed
-        $orders->addFieldToFilter(self::ALREADY_SENT_IN_FEED_FLAG, array('null' => 'null')); // adds an 'IS NULL' filter to the BV flag column
+        // Include only orders that have not been sent or have errored out
+        $orders->addFieldToFilter(
+            array(self::ALREADY_SENT_IN_FEED_FLAG, self::ALREADY_SENT_IN_FEED_FLAG),
+            array(
+                array('neq' => 1),
+                array('null' => 'null')
+            )
+        );
 
         // Write orders to file
-        $numOrdersExported = $this->writeOrdersToFile($ioObject, $orders);
+        $ordersExported = $this->writeOrdersToFile($ioObject, $orders);
 
-        return $numOrdersExported;
+        return $ordersExported;
     }
 
     /**
@@ -412,13 +427,18 @@ class Bazaarvoice_Connector_Model_ExportPurchaseFeed extends Mage_Core_Model_Abs
         ));
         // Only orders created within our look-back window
         $orders->addFieldToFilter('created_at', array('gteq' => $this->getNumDaysLookbackStartDate()));
-        // Exclude orders that have been previously sent in a feed
-        $orders->addFieldToFilter(self::ALREADY_SENT_IN_FEED_FLAG, array('null' => 'null')); // adds an 'IS NULL' filter to the BV flag column
-
+        // Include only orders that have not been sent or have errored out
+        $orders->addFieldToFilter(
+            array(self::ALREADY_SENT_IN_FEED_FLAG, self::ALREADY_SENT_IN_FEED_FLAG),
+            array(
+                array('neq' => 1),
+                array('null' => 'null')
+            )
+        );
         // Write orders to file
-        $numOrdersExported = $this->writeOrdersToFile($ioObject, $orders);
+        $ordersExported = $this->writeOrdersToFile($ioObject, $orders);
 
-        return $numOrdersExported;
+        return $ordersExported;
     }
 
     /**
@@ -459,70 +479,81 @@ class Bazaarvoice_Connector_Model_ExportPurchaseFeed extends Mage_Core_Model_Abs
         $numOrdersExported = 0; // Keep track of how many orders we include in the feed
 
         foreach ($ordersToExport as $orderId) {
-
-            /* @var $order Mage_Sales_Model_Order */
-            $order = $orderModel->load($orderId);
-            $store = $order->getStore();
-
-            $numOrdersExported++;
-
-            $ioObject->streamWrite("<Interaction>\n");
-            $ioObject->streamWrite('    <EmailAddress>' . $order->getCustomerEmail() . "</EmailAddress>\n");
-            $ioObject->streamWrite('    <Locale>' . $store->getConfig('bazaarvoice/general/locale') . "</Locale>\n");
-            $ioObject->streamWrite('    <UserName>' . $order->getCustomerName() . "</UserName>\n");
-            $ioObject->streamWrite('    <UserID>' . $order->getCustomerId() . "</UserID>\n");
-            $ioObject->streamWrite('    <TransactionDate>' . $this->getTriggeringEventDate($order, $triggeringEvent) .
-            "</TransactionDate>\n");
-            $ioObject->streamWrite("    <Products>\n");
-            // if families are enabled, get all items
-            if(Mage::getStoreConfig('bazaarvoice/feeds/families')){
-                $items = $order->getAllItems();
-            } else {
-                $items = $order->getAllVisibleItems();
-            }            
-            /* @var $item Mage_Sales_Model_Order_Item */
-            foreach ($items as $item) {
-                // skip configurable items if families are enabled
-                if(Mage::getStoreConfig('bazaarvoice/feeds/families') && $item->getProduct()->getTypeId() == Mage_Catalog_Model_Product_Type::TYPE_CONFIGURABLE) continue;
+            try{
+                /* @var $order Mage_Sales_Model_Order */
+                $order = $orderModel->load($orderId);
+                $store = $order->getStore();
                 
-                $product = $bvHelper->getReviewableProductFromOrderItem($item);
-                if (!is_null($product)) {
-                    $ioObject->streamWrite("        <Product>\n");
-                    $ioObject->streamWrite('            <ExternalId>' . $bvHelper->getProductId($product) .
-                    "</ExternalId>\n");
-                    $ioObject->streamWrite('            <Name>' . htmlspecialchars($product->getName(), ENT_QUOTES, 'UTF-8') .
-                    "</Name>\n");
-                    
-                    $imageUrl = $product->getImageUrl();
-                    $originalPrice = $item->getOriginalPrice();
-                    if(Mage::getStoreConfig('bazaarvoice/feeds/families') && $item->getParentItem()) {
-                        $parentItem = $item->getParentItem();
-                        $parent = Mage::getModel('catalog/product')->load($parentItem->getProductId());
-
-                        if(strpos($imageUrl, "placeholder/image.jpg")){
-                            // if product families are enabled and product has no image, use configurable image
-                            $imageUrl = $parent->getImageUrl();
-                        }
-                        // also get price from parent item
-                        $originalPrice = $parentItem->getOriginalPrice();
-                    }   
-                    
-                    $ioObject->streamWrite('            <ImageUrl>' . $imageUrl . "</ImageUrl>\n");
-                    $ioObject->streamWrite('            <Price>' . number_format((float)$originalPrice, 2) . "</Price>\n");
-                    $ioObject->streamWrite("        </Product>\n");
+                $orderXml = '';
+                
+                $orderXml .= "<Interaction>\n";
+                $orderXml .= '    <EmailAddress>' . $order->getCustomerEmail() . "</EmailAddress>\n";
+                $orderXml .= '    <Locale>' . $store->getConfig('bazaarvoice/general/locale') . "</Locale>\n";
+                $orderXml .= '    <UserName>' . $order->getCustomerName() . "</UserName>\n";
+                $orderXml .= '    <UserID>' . $order->getCustomerId() . "</UserID>\n";
+                $orderXml .= '    <TransactionDate>' . $this->getTriggeringEventDate($order, $triggeringEvent) . "</TransactionDate>\n";
+                $orderXml .= "    <Products>\n";
+                // if families are enabled, get all items
+                if(Mage::getStoreConfig('bazaarvoice/feeds/families')){
+                    $items = $order->getAllItems();
+                } else {
+                    $items = $order->getAllVisibleItems();
                 }
+                $exportedOrders = array();      
+                /* @var $item Mage_Sales_Model_Order_Item */
+                foreach ($items as $item) {
+                    // skip configurable items if families are enabled
+                    if(Mage::getStoreConfig('bazaarvoice/feeds/families') && $item->getProduct()->getTypeId() == Mage_Catalog_Model_Product_Type::TYPE_CONFIGURABLE) continue;
+                    
+                    $product = $bvHelper->getReviewableProductFromOrderItem($item);
+                    if (!is_null($product)) {
+                        $productXml = '';
+                        $productXml .= "        <Product>\n";
+                        $productXml .= '            <ExternalId>' . $bvHelper->getProductId($product) .
+                        "</ExternalId>\n";
+                        $productXml .= '            <Name>' . htmlspecialchars($product->getName(), ENT_QUOTES, 'UTF-8') . "</Name>\n";
+                        
+                        $imageUrl = $product->getImageUrl();
+                        $originalPrice = $item->getOriginalPrice();
+                        if(Mage::getStoreConfig('bazaarvoice/feeds/families') && $item->getParentItem()) {
+                            $parentItem = $item->getParentItem();
+                            $parent = Mage::getModel('catalog/product')->load($parentItem->getProductId());
+    
+                            if(strpos($imageUrl, "placeholder/image.jpg")){
+                                // if product families are enabled and product has no image, use configurable image
+                                $imageUrl = $parent->getImageUrl();
+                            }
+                            // also get price from parent item
+                            $originalPrice = $parentItem->getOriginalPrice();
+                        }   
+                        
+                        $productXml .= '            <ImageUrl>' . $imageUrl . "</ImageUrl>\n";
+                        $productXml .= '            <Price>' . number_format((float)$originalPrice, 2) . "</Price>\n";
+                        $productXml .= "        </Product>\n";
+                        
+                        $orderXml .= $productXml;
+                    }
+                }
+                $orderXml .= "    </Products>\n";
+                $orderXml .= "</Interaction>\n";
+                $ioObject->streamWrite($orderXml);
+                $exportedOrders[] = $orderId;
+            } Catch (Exception $e) {
+                $this->flagOrders(array($orderId), 2);
+            	Mage::log($e->getMessage()."\n".$e->getTraceAsString());
             }
-            $ioObject->streamWrite("    </Products>\n");
-            $ioObject->streamWrite("</Interaction>\n");
-
-            $order->setData(self::ALREADY_SENT_IN_FEED_FLAG, 1);
-            $order->save();
-            $order->reset(); // Forces a reload of various collections that the object caches internally so that the next time we load from the orderModel, we'll get a completely new object.
 
         }
-        Mage::log("    BV - Exported " . $numOrdersExported . " orders.", Zend_Log::DEBUG, Bazaarvoice_Connector_Helper_Data::LOG_FILE);
+        Mage::log("    BV - Exported " . count($exportedOrders) . " orders.", Zend_Log::DEBUG, Bazaarvoice_Connector_Helper_Data::LOG_FILE);
 
-        return $numOrdersExported;
+        return $exportedOrders;
+    }
+    
+    private function flagOrders($orders, $flag)
+    {
+        $resource = Mage::getSingleton('core/resource');
+        $writeConnection = $resource->getConnection('core_write');
+        $writeConnection->query("UPDATE `" . $resource->getTableName('sales/order') . "` SET `" . self::ALREADY_SENT_IN_FEED_FLAG . "` = " . $flag . " WHERE `entity_id` IN(" . implode(',', $orders) . ");");
     }
 
     private function orderToString(Mage_Sales_Model_Order $order)
