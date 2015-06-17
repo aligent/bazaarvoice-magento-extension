@@ -256,6 +256,28 @@ class Bazaarvoice_Connector_Model_ProductFeed_Product extends Mage_Core_Model_Ab
         // Generate product external ID from SKU, this is the same for all groups / stores / views
         $productExternalId = $bvHelper->getProductId($productDefault);
 
+        /* Make sure that CategoryExternalId is one written to Category section */
+        if($productDefault->getData("product_families") && $productDefault->getVisibility() == Mage_Catalog_Model_Product_Visibility::VISIBILITY_NOT_VISIBLE){
+            // if families are enabled and product is not visible, use parent categories
+            $parentId = array_pop($productDefault->getData("product_families"));
+            $parentProduct = $bvHelper->getProductFromProductExternalId($parentId);
+            
+            // skip product if parent is disabled
+            if($parentProduct->getVisiblity() == Mage_Catalog_Model_Product_Visibility::VISIBILITY_NOT_VISIBLE || $parentProduct->getStatus() == Mage_Catalog_Model_Product_Status::STATUS_DISABLED) {
+                Mage::log("        Skipping ".$productDefault->getSku()." because it is not visible and its parent product " . $parentProduct->getSku() . " is disabled.", Zend_Log::DEBUG, Bazaarvoice_Connector_Helper_Data::LOG_FILE);
+                return true;
+            }
+            
+            if (!is_null($parentProduct->getCategoryIds())){
+            	$parentCategories = $parentProduct->getCategoryIds();
+            	Mage::log("        Product ".$productDefault->getSku()." using parent categories from ".$parentProduct->getSku(), Zend_Log::DEBUG, Bazaarvoice_Connector_Helper_Data::LOG_FILE);
+	        }
+        } else {
+            // normal behavior
+            $parentCategories = $productDefault->getCategoryIds();
+            Mage::log("        Product ".$productDefault->getSku()." using its own categories", Zend_Log::DEBUG, Bazaarvoice_Connector_Helper_Data::LOG_FILE);
+        }
+
         $ioObject->streamWrite("<Product>\n" .
             '    <ExternalId>' . $productExternalId . "</ExternalId>\n" .
             '    <Name><![CDATA[' . htmlspecialchars($productDefault->getName(), ENT_QUOTES, 'UTF-8') . "]]></Name>\n" .
@@ -267,20 +289,6 @@ class Bazaarvoice_Connector_Model_ProductFeed_Product extends Mage_Core_Model_Ab
             $ioObject->streamWrite('    <BrandExternalId>' . $brandId . "</BrandExternalId>\n");
         }
 
-        /* Make sure that CategoryExternalId is one written to Category section */
-        if($productDefault->getData("product_families") && $productDefault->getVisibility() == Mage_Catalog_Model_Product_Visibility::VISIBILITY_NOT_VISIBLE){
-            // if families are enabled and product is not visible, use parent categories
-            $parentId = array_pop($productDefault->getData("product_families"));
-            $parentProduct = $bvHelper->getProductFromProductExternalId($parentId);
-	    if (!is_null($parentCategories)){
-            	$parentCategories = $parentProduct->getCategoryIds();
-            	Mage::log("Product ".$productDefault->getSku()." using parent categories from ".$parentProduct->getSku(), Zend_Log::DEBUG, Bazaarvoice_Connector_Helper_Data::LOG_FILE);
-	    }
-        } else {
-            // normal behavior
-            $parentCategories = $productDefault->getCategoryIds();
-            Mage::log("Product ".$productDefault->getSku()." using its own categories", Zend_Log::DEBUG, Bazaarvoice_Connector_Helper_Data::LOG_FILE);
-        }
         if (!is_null($parentCategories) && count($parentCategories) > 0) {
             foreach ($parentCategories as $parentCategoryId) {
                 $parentCategory = Mage::getModel('catalog/category')->setStoreId($productDefault->getStoreId())->load($parentCategoryId);
@@ -291,7 +299,7 @@ class Bazaarvoice_Connector_Model_ProductFeed_Product extends Mage_Core_Model_Ab
                             "</CategoryExternalId>\n");
                         break;
                     } else {
-                        Mage::log("NOT FOUND $categoryExternalId", Zend_Log::DEBUG, Bazaarvoice_Connector_Helper_Data::LOG_FILE);
+                        Mage::log("        Category $categoryExternalId not found", Zend_Log::DEBUG, Bazaarvoice_Connector_Helper_Data::LOG_FILE);
                     }
                 }
             }
