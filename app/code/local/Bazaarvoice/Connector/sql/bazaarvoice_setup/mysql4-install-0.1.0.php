@@ -9,7 +9,7 @@ $installer->startSetup();
 * As this is a flat table, it adds the column to the table (SALES_FLAT_ORDER).
 **/
 
-Mage::log("BV: Installing v0.1.0");
+Mage::log("BV: Installing v0.1.0", Zend_Log::INFO, Bazaarvoice_Connector_Helper_Data::LOG_FILE);
 $installer->addAttribute('order', Bazaarvoice_Connector_Model_ExportPurchaseFeed::ALREADY_SENT_IN_FEED_FLAG, array('type'=>'int'));
 
 $installer->endSetup();

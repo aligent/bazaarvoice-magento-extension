@@ -284,7 +284,7 @@ class Bazaarvoice_Connector_Model_ProductFeed_Category extends Mage_Core_Model_A
             $rewrite->loadByIdPath($idPath);
 
             if ($rewrite->getId()) {
-                Mage::log('request path: ' . $rewrite->getRequestPath());
+                Mage::log('request path: ' . $rewrite->getRequestPath(), Zend_Log::DEBUG, Bazaarvoice_Connector_Helper_Data::LOG_FILE);
                 $category->setData('url', $urlInstance->getDirectUrl($rewrite->getRequestPath()));
                 Varien_Profiler::stop('REWRITE: '.__METHOD__);
                 return $category->getData('url');
