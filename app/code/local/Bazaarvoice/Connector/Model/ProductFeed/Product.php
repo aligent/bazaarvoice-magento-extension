@@ -255,23 +255,30 @@ class Bazaarvoice_Connector_Model_ProductFeed_Product extends Mage_Core_Model_Ab
 
         // Generate product external ID from SKU, this is the same for all groups / stores / views
         $productExternalId = $bvHelper->getProductId($productDefault);
-
+        
         /* Make sure that CategoryExternalId is one written to Category section */
-        if($productDefault->getData("product_families") && $productDefault->getVisibility() == Mage_Catalog_Model_Product_Visibility::VISIBILITY_NOT_VISIBLE){
-            // if families are enabled and product is not visible, use parent categories
-            $parentId = array_pop($productDefault->getData("product_families"));
-            $parentProduct = $bvHelper->getProductFromProductExternalId($parentId);
-            
-            // skip product if parent is disabled
-            if($parentProduct->getVisiblity() == Mage_Catalog_Model_Product_Visibility::VISIBILITY_NOT_VISIBLE || $parentProduct->getStatus() == Mage_Catalog_Model_Product_Status::STATUS_DISABLED) {
-                Mage::log("        Skipping ".$productDefault->getSku()." because it is not visible and its parent product " . $parentProduct->getSku() . " is disabled.", Zend_Log::DEBUG, Bazaarvoice_Connector_Helper_Data::LOG_FILE);
-                return true;
+        if($productDefault->getVisibility() == Mage_Catalog_Model_Product_Visibility::VISIBILITY_NOT_VISIBLE) {
+            if($productDefault->getData("product_families")){
+                // if families are enabled and product is not visible, use parent categories
+                $parentId = array_pop($productDefault->getData("product_families"));
+                $parentProduct = $bvHelper->getProductFromProductExternalId($parentId);
+                
+                // skip product if parent is disabled
+    			if (is_object($parentProduct)){
+    				if($parentProduct->getVisiblity() == Mage_Catalog_Model_Product_Visibility::VISIBILITY_NOT_VISIBLE || $parentProduct->getStatus() == Mage_Catalog_Model_Product_Status::STATUS_DISABLED) {
+    					Mage::log("        Skipping ".$productDefault->getSku()." because it is not visible and its parent product " . $parentProduct->getSku() . " is disabled.", Zend_Log::DEBUG, Bazaarvoice_Connector_Helper_Data::LOG_FILE);
+    					return true;
+    				}
+    				
+    				if (!is_null($parentProduct->getCategoryIds())){
+    					$parentCategories = $parentProduct->getCategoryIds();
+    					Mage::log("        Product ".$productDefault->getSku()." using parent categories from ".$parentProduct->getSku(), Zend_Log::DEBUG, Bazaarvoice_Connector_Helper_Data::LOG_FILE);
+    				}
+    			}
+            } else {
+				Mage::log("        Skipping ".$productDefault->getSku()." because it is not visible and has no parent product.", Zend_Log::DEBUG, Bazaarvoice_Connector_Helper_Data::LOG_FILE);
+				return true;
             }
-            
-            if (!is_null($parentProduct->getCategoryIds())){
-            	$parentCategories = $parentProduct->getCategoryIds();
-            	Mage::log("        Product ".$productDefault->getSku()." using parent categories from ".$parentProduct->getSku(), Zend_Log::DEBUG, Bazaarvoice_Connector_Helper_Data::LOG_FILE);
-	        }
         } else {
             // normal behavior
             $parentCategories = $productDefault->getCategoryIds();
@@ -408,20 +415,27 @@ class Bazaarvoice_Connector_Model_ProductFeed_Product extends Mage_Core_Model_Ab
             $storeId = $product->getStoreId();
             // Get image url from helper (this is for the default store
             $defaultStoreImageUrl = Mage::getModel('catalog/product_media_config')->getMediaUrl($product->getImage());
+
+            if($product->getImage() == '' || $product->getImage() == 'no_selection') {
+
+				$defaultStoreImageUrl = '';
+
+                if($product->getData("product_families")) {
+                    // if product families are enabled and product has no image, use configurable image
+                    $parents = $product->getData("product_families");
+                    $parentId = array_pop($parents);
+                    $parent = Mage::helper("bazaarvoice")->getProductFromProductExternalId($parentId);
+    				if (is_object($parent) && $parent->getImage() != '' && $parent->getImage() != 'no_selection'){
+        				$parent = Mage::getModel('catalog/product')->load($parent->getId());
+    					$parent->setStore($storeId);
+    					$defaultStoreImageUrl = Mage::getModel('catalog/product_media_config')->getMediaUrl($parent->getImage());
+    				}
+                }
+                if($defaultStoreImageUrl == '')
+                    $defaultStoreImageUrl = Mage::getBaseUrl('media') . 'catalog/product/placeholder/' . Mage::getStoreConfig('catalog/placeholder/image_placeholder', $storeId);
                 
-            if($product->getData("product_families") && ($product->getImage() == '' || $product->getImage() == 'no_selection')){
-                // if product families are enabled and product has no image, use configurable image
-                $parents = $product->getData("product_families");
-                $parentId = array_pop($parents);
-                $parent = Mage::helper("bazaarvoice")->getProductFromProductExternalId($parentId);
-				if (is_object($parent)){
-    				$parent = Mage::getModel('catalog/product')->load($parent->getId());
-					$parent->setStore($storeId);
-					$defaultStoreImageUrl = Mage::getModel('catalog/product_media_config')->getMediaUrl($parent->getImage());
-				}
             }
-            if(strpos($defaultStoreImageUrl, 'no_selection'))
-                $defaultStoreImageUrl = Mage::helper('catalog/image')->init($product, 'image');
+                
             // Get media base url for correct store
             $mediaBaseUrl = Mage::app()->getStore($storeId)->getBaseUrl('media');
             // Get default media base url
