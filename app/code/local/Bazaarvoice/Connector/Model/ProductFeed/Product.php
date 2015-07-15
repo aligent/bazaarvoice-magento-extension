@@ -248,6 +248,7 @@ class Bazaarvoice_Connector_Model_ProductFeed_Product extends Mage_Core_Model_Ab
      */
     protected function writeProduct(Varien_Io_File $ioObject, Mage_Catalog_Model_Product $productDefault,
         array $productsByLocale)
+
     {
         // Get ref to BV helper
         /* @var $bvHelper Bazaarvoice_Connector_Helper_Data */
@@ -255,6 +256,8 @@ class Bazaarvoice_Connector_Model_ProductFeed_Product extends Mage_Core_Model_Ab
 
         // Generate product external ID from SKU, this is the same for all groups / stores / views
         $productExternalId = $bvHelper->getProductId($productDefault);
+        
+        $website = $productDefault->getStore()->getWebsite()->getId();
         
         /* Make sure that CategoryExternalId is one written to Category section */
         if($productDefault->getVisibility() == Mage_Catalog_Model_Product_Visibility::VISIBILITY_NOT_VISIBLE) {
@@ -265,7 +268,7 @@ class Bazaarvoice_Connector_Model_ProductFeed_Product extends Mage_Core_Model_Ab
                 
                 // skip product if parent is disabled
     			if (is_object($parentProduct)){
-    				if($parentProduct->getVisiblity() == Mage_Catalog_Model_Product_Visibility::VISIBILITY_NOT_VISIBLE || $parentProduct->getStatus() == Mage_Catalog_Model_Product_Status::STATUS_DISABLED) {
+    				if($parentProduct->getVisiblity() == Mage_Catalog_Model_Product_Visibility::VISIBILITY_NOT_VISIBLE || $parentProduct->getStatus() == Mage_Catalog_Model_Product_Status::STATUS_DISABLED || !in_array($website, $parentProduct->getWebsiteIds())) {
     					Mage::log("        Skipping ".$productDefault->getSku()." because it is not visible and its parent product " . $parentProduct->getSku() . " is disabled.", Zend_Log::DEBUG, Bazaarvoice_Connector_Helper_Data::LOG_FILE);
     					return true;
     				}
