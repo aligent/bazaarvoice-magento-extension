@@ -6,7 +6,7 @@ class Bazaarvoice_Connector_Model_ExportPurchaseFeed extends Mage_Core_Model_Abs
     const TRIGGER_EVENT_PURCHASE = 'purchase';
     const TRIGGER_EVENT_SHIP = 'ship';
 
-    const NUM_DAYS_LOOKBACK = 30;
+    const NUM_DAYS_LOOKBACK = 3000;
 
     const DEBUG_OUTPUT = false;
 
@@ -488,10 +488,16 @@ class Bazaarvoice_Connector_Model_ExportPurchaseFeed extends Mage_Core_Model_Abs
                 $orderXml = '';
                 
                 $orderXml .= "<Interaction>\n";
+//                $orderXml .= '    <OrderID>' . $order->getIncrementId() . "</OrderID>\n";
                 $orderXml .= '    <EmailAddress>' . $order->getCustomerEmail() . "</EmailAddress>\n";
                 $orderXml .= '    <Locale>' . $store->getConfig('bazaarvoice/general/locale') . "</Locale>\n";
                 $orderXml .= '    <UserName>' . $order->getCustomerName() . "</UserName>\n";
-                $orderXml .= '    <UserID>' . $order->getCustomerId() . "</UserID>\n";
+                if($order->getCustomerId()) {
+                    $userId = $order->getCustomerId();
+                } else {
+                    $userId = md5($order->getCustomerEmail());
+                }
+                $orderXml .= '    <UserID>' . $userId . "</UserID>\n";
                 $orderXml .= '    <TransactionDate>' . $this->getTriggeringEventDate($order, $triggeringEvent) . "</TransactionDate>\n";
                 $orderXml .= "    <Products>\n";
                 // if families are enabled, get all items
@@ -506,6 +512,10 @@ class Bazaarvoice_Connector_Model_ExportPurchaseFeed extends Mage_Core_Model_Abs
                     if(Mage::getStoreConfig('bazaarvoice/feeds/families') && $item->getProduct()->getTypeId() == Mage_Catalog_Model_Product_Type::TYPE_CONFIGURABLE) continue;
                     
                     $product = $bvHelper->getReviewableProductFromOrderItem($item);
+                    
+                    // skip disabled products
+                    //if($product->getStatus() != Mage_Catalog_Model_Product_Status::STATUS_ENABLED) continue;
+                    
                     if (!is_null($product)) {
                         $productXml = '';
                         $productXml .= "        <Product>\n";

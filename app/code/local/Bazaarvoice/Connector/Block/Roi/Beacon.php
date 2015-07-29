@@ -78,8 +78,13 @@ class Bazaarvoice_Connector_Block_Roi_Beacon extends Mage_Core_Block_Template
                     
                     array_push($orderDetails['items'], $itemDetails);
                 }
-
-                $orderDetails['userId'] = $order->getCustomerId();
+                
+                if($order->getCustomerId()) {
+                    $userId = $order->getCustomerId();
+                } else {
+                    $userId = md5($order->getCustomerEmail());
+                }
+                $orderDetails['userId'] = $userId;
                 $orderDetails['email'] = $order->getCustomerEmail();
                 $orderDetails['nickname'] = $order->getCustomerEmail();
                 // There is no 'deliveryDate' yet
