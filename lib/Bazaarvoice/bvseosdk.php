@@ -191,7 +191,7 @@ class Base{
             //}
 
             $pay_load = $page_number;
-            $pay_load .= $seo_content;
+            $pay_load = $seo_content;
         }
         else
         {
