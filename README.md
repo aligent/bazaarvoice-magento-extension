@@ -9,3 +9,5 @@
 * [Bazaarvoice UI Resources](https://github.com/bazaarvoice/HostedUIResources)
 * [Bazaarvoice API Docs](https://developer.bazaarvoice.com/docs)
 * [Bazaarvoice Implementation Guide](http://labsbp-docsportal.aws.bazaarvoice.com/)
+* [Bazaarvoice Prod Workbench](https://workbench.bazaarvoice.com/)
+* [Bazaarvoice Staging Workbench](https://workbench-staging.bazaarvoice.com/)
