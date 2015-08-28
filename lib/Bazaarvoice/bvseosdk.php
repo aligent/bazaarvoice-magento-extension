@@ -86,8 +86,8 @@ class BV {
     // check to make sure we have the required parameters.
     if (empty($params['bv_root_folder']) || empty($params['subject_id'])) {
       throw new Exception(
-        'BV class constructor argument $params is missing required keys. An ' +
-        'array containing bv_root_folder (string) and subject_id (string) is ' +
+        'BV class constructor argument $params is missing required keys. An ' .
+        'array containing bv_root_folder (string) and subject_id (string) is ' .
         'expected.'
       );
     }
@@ -731,7 +731,7 @@ class Base {
       // contents.
       htmlspecialchars(
         $this->config['base_url'] . $page_url_query_prefix,
-        ENT_QUOTES | ENT_HTML5,
+        ENT_QUOTES | 'ENT_HTML5',
         $this->config['charset'],
         // Don't double-encode.
         false
