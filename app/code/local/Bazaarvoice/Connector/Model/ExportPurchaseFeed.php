@@ -330,7 +330,7 @@ class Bazaarvoice_Connector_Model_ExportPurchaseFeed extends Mage_Core_Model_Abs
      * @param Mage_Core_Model_Website $website
      * @return int
      */
-    private function processOrdersForWebsite(Varien_Io_File $ioObject, Mage_Core_Model_Website $website)
+    protected function processOrdersForWebsite(Varien_Io_File $ioObject, Mage_Core_Model_Website $website)
     {
         // Get a collection of all the orders
         $orders = Mage::getModel('sales/order')->getCollection();
@@ -370,7 +370,7 @@ class Bazaarvoice_Connector_Model_ExportPurchaseFeed extends Mage_Core_Model_Abs
      * @param Mage_Core_Model_Store_Group $group
      * @return int
      */
-    private function processOrdersForGroup(Varien_Io_File $ioObject, Mage_Core_Model_Store_Group $group)
+    protected function processOrdersForGroup(Varien_Io_File $ioObject, Mage_Core_Model_Store_Group $group)
     {
         // Get a collection of all the orders
         $orders = Mage::getModel('sales/order')->getCollection();
@@ -410,7 +410,7 @@ class Bazaarvoice_Connector_Model_ExportPurchaseFeed extends Mage_Core_Model_Abs
      * @param Mage_Core_Model_Store $store
      * @return int
      */
-    private function processOrdersForStore(Varien_Io_File $ioObject, Mage_Core_Model_Store $store)
+    protected function processOrdersForStore(Varien_Io_File $ioObject, Mage_Core_Model_Store $store)
     {
         // Get a collection of all the orders
         $orders = Mage::getModel('sales/order')->getCollection();
@@ -446,7 +446,7 @@ class Bazaarvoice_Connector_Model_ExportPurchaseFeed extends Mage_Core_Model_Abs
      * @param $orders
      * @return int
      */
-    private function writeOrdersToFile(Varien_Io_File $ioObject, $orders)
+    protected function writeOrdersToFile(Varien_Io_File $ioObject, $orders)
     {
         // Get ref to BV helper
         /* @var $bvHelper Bazaarvoice_Connector_Helper_Data */
@@ -568,7 +568,7 @@ class Bazaarvoice_Connector_Model_ExportPurchaseFeed extends Mage_Core_Model_Abs
         }
     }
 
-    private function orderToString(Mage_Sales_Model_Order $order)
+    protected function orderToString(Mage_Sales_Model_Order $order)
     {
         return "\nOrder {Id: " . $order->getIncrementId()
         . "\n\tCustomerId: " . $order->getCustomerId()
@@ -583,7 +583,7 @@ class Bazaarvoice_Connector_Model_ExportPurchaseFeed extends Mage_Core_Model_Abs
         . "\n}";
     }
 
-    private function getTriggeringEventDate(Mage_Sales_Model_Order $order, $triggeringEvent)
+    protected function getTriggeringEventDate(Mage_Sales_Model_Order $order, $triggeringEvent)
     {
         $timestamp = strtotime($order->getCreatedAtDate());
 
@@ -594,17 +594,17 @@ class Bazaarvoice_Connector_Model_ExportPurchaseFeed extends Mage_Core_Model_Abs
         return date('c', $timestamp);
     }
 
-    private function getNumDaysLookbackStartDate()
+    protected function getNumDaysLookbackStartDate()
     {
         return date('Y-m-d', strtotime(date('Y-m-d', time()) . ' -' . self::NUM_DAYS_LOOKBACK . ' days'));
     }
 
-    private function getDelayDaysThresholdTimestamp($delayDaysSinceEvent)
+    protected function getDelayDaysThresholdTimestamp($delayDaysSinceEvent)
     {
         return time() - (24 * 60 * 60 * $delayDaysSinceEvent);
     }
 
-    private function shouldIncludeOrder(Mage_Sales_Model_Order $order, $triggeringEvent, $delayDaysSinceEvent)
+    protected function shouldIncludeOrder(Mage_Sales_Model_Order $order, $triggeringEvent, $delayDaysSinceEvent)
     {
         // Have we already included this order in a previous feed?
         if ($order->getData(self::ALREADY_SENT_IN_FEED_FLAG) === '1') {
@@ -681,7 +681,7 @@ class Bazaarvoice_Connector_Model_ExportPurchaseFeed extends Mage_Core_Model_Abs
         return true;
     }
 
-    private function hasOrderCompletelyShipped(Mage_Sales_Model_Order $order)
+    protected function hasOrderCompletelyShipped(Mage_Sales_Model_Order $order)
     {
         $hasOrderCompletelyShipped = true;
         $items = $order->getAllItems();
@@ -696,7 +696,7 @@ class Bazaarvoice_Connector_Model_ExportPurchaseFeed extends Mage_Core_Model_Abs
         return $hasOrderCompletelyShipped;
     }
 
-    private function getLatestShipmentDate(Mage_Sales_Model_Order $order)
+    protected function getLatestShipmentDate(Mage_Sales_Model_Order $order)
     {
         $latestShipmentTimestamp = 0;
 
