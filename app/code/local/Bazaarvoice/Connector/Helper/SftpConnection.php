@@ -213,6 +213,9 @@ class Bazaarvoice_Connector_Helper_SftpConnection extends Mage_Core_Helper_Abstr
 
             // Get filename
             $filename = basename($remoteFilePath);
+    
+            if(dirname($remoteFilePath))
+                $this->changeDir(dirname($remoteFilePath));
 
             // Transfer
             $success = $this->_oConnection->get($filename, $localFilePath);
