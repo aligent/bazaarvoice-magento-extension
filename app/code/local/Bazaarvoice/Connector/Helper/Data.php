@@ -155,7 +155,7 @@ class Bazaarvoice_Connector_Helper_Data extends Mage_Core_Helper_Abstract
      */
     public function downloadFile($localFilePath, $localFileName, $remoteFile, $store = null)
     {
-        Mage::log('    BV - starting download from Bazaarvoice server', Zend_Log::DEBUG, self::LOG_FILE);
+        Mage::log('    BV - starting download from Bazaarvoice server', Zend_Log::INFO, self::LOG_FILE);
 
         // Create the directory if it doesn't already exist.
         $ioObject = new Varien_Io_File();
@@ -171,7 +171,7 @@ class Bazaarvoice_Connector_Helper_Data extends Mage_Core_Helper_Abstract
 
         // Make sure directory is writable
         if (!$ioObject->isWriteable($localFilePath)) {
-            Mage::log("    BV - local directory '".$localFilePath."' is not writable.", Zend_Log::DEBUG, self::LOG_FILE);
+            Mage::log("    BV - local directory '".$localFilePath."' is not writable.", Zend_Log::ERR, self::LOG_FILE);
             return false;
         }
 
@@ -185,12 +185,12 @@ class Bazaarvoice_Connector_Helper_Data extends Mage_Core_Helper_Abstract
             // Download the file
             $sftp->getFile($remoteFile, $localFilePath . DS . $localFileName);
         } catch (Exception $ex) {
-            Mage::log('    BV - Exception downloading file: ' . $ex->getTraceAsString(), Zend_Log::DEBUG, self::LOG_FILE);
+            Mage::log('    BV - Exception downloading file: ' . $ex->getTraceAsString(), Zend_Log::ERR, self::LOG_FILE);
         }
 
         // Validate file was downloaded
         if (!$ioObject->fileExists($localFilePath . DS . $localFileName, true)) {
-            Mage::log("    BV - unable to download file '" . $localFilePath . DS . $localFileName . "'", Zend_Log::DEBUG, self::LOG_FILE);
+            Mage::log("    BV - unable to download file '" . $localFilePath . DS . $localFileName . "'", Zend_Log::ERR, self::LOG_FILE);
             return false;
         }
 
@@ -200,14 +200,14 @@ class Bazaarvoice_Connector_Helper_Data extends Mage_Core_Helper_Abstract
 
     public function uploadFile($localFileName, $remoteFile, $store)
     {
-        Mage::log('    BV - starting upload to Bazaarvoice server', Zend_Log::DEBUG, self::LOG_FILE);
+        Mage::log('    BV - starting upload to Bazaarvoice server', Zend_Log::INFO, self::LOG_FILE);
         
         try {
             $sftp = $this->connectSFTP($store);
             // Download the file
             $sftp->putAndDeleteFile($localFileName, $remoteFile);
         } catch (Exception $ex) {
-            Mage::log('    BV - Exception uploading file: ' . $ex->getTraceAsString(), Zend_Log::DEBUG, self::LOG_FILE);
+            Mage::log('    BV - Exception uploading file: ' . $ex->getTraceAsString(), Zend_Log::ERR, self::LOG_FILE);
         }
 
         return true;
