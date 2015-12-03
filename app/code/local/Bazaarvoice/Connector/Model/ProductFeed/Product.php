@@ -290,8 +290,8 @@ class Bazaarvoice_Connector_Model_ProductFeed_Product extends Mage_Core_Model_Ab
 
         $ioObject->streamWrite("<Product>\n" .
             '    <ExternalId>' . $productExternalId . "</ExternalId>\n" .
-            '    <Name><![CDATA[' . htmlspecialchars($productDefault->getName(), ENT_QUOTES, 'UTF-8') . "]]></Name>\n" .
-            '    <Description><![CDATA[' . htmlspecialchars($productDefault->getData('short_description'), ENT_QUOTES, 'UTF-8') .
+            '    <Name><![CDATA[' . htmlspecialchars($productDefault->getName(), ENT_QUOTES, 'UTF-8', false) . "]]></Name>\n" .
+            '    <Description><![CDATA[' . htmlspecialchars($productDefault->getData('short_description'), ENT_QUOTES, 'UTF-8', false) .
             "]]></Description>\n");
 
         $brandId = $productDefault->getData('brand');
@@ -336,14 +336,14 @@ class Bazaarvoice_Connector_Model_ProductFeed_Product extends Mage_Core_Model_Ab
         $ioObject->streamWrite("    <Names>\n");
         foreach ($productsByLocale as $curLocale => $curProduct) {
             $ioObject->streamWrite('        <Name locale="' . $curLocale . '"><![CDATA[' .
-                htmlspecialchars($curProduct->getData('name'), ENT_QUOTES, 'UTF-8') . "]]></Name>\n");
+                htmlspecialchars($curProduct->getData('name'), ENT_QUOTES, 'UTF-8', false) . "]]></Name>\n");
         }
         $ioObject->streamWrite("    </Names>\n");
         // Write out localized <Descriptions>
         $ioObject->streamWrite("    <Descriptions>\n");
         foreach ($productsByLocale as $curLocale => $curProduct) {
             $ioObject->streamWrite('         <Description locale="' . $curLocale . '"><![CDATA[' .
-                htmlspecialchars($curProduct->getData('short_description'), ENT_QUOTES, 'UTF-8') . "]]></Description>\n");
+                htmlspecialchars($curProduct->getData('short_description'), ENT_QUOTES, 'UTF-8', false) . "]]></Description>\n");
         }
         $ioObject->streamWrite("    </Descriptions>\n");
         // Write out localized <ProductPageUrls>
