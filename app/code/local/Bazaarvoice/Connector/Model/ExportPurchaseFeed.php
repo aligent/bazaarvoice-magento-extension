@@ -6,7 +6,7 @@ class Bazaarvoice_Connector_Model_ExportPurchaseFeed extends Mage_Core_Model_Abs
     const TRIGGER_EVENT_PURCHASE = 'purchase';
     const TRIGGER_EVENT_SHIP = 'ship';
 
-    const NUM_DAYS_LOOKBACK = 3000;
+    const NUM_DAYS_LOOKBACK = 30;
 
     const DEBUG_OUTPUT = false;
 
@@ -521,7 +521,7 @@ class Bazaarvoice_Connector_Model_ExportPurchaseFeed extends Mage_Core_Model_Abs
                         $productXml .= "        <Product>\n";
                         $productXml .= '            <ExternalId>' . $bvHelper->getProductId($product) .
                         "</ExternalId>\n";
-                        $productXml .= '            <Name>' . htmlspecialchars($product->getName(), ENT_QUOTES, 'UTF-8') . "</Name>\n";
+                        $productXml .= '            <Name>' . htmlspecialchars($product->getName(), ENT_QUOTES, 'UTF-8', false) . "</Name>\n";
                         
                         $imageUrl = $product->getImageUrl();
                         $originalPrice = $item->getOriginalPrice();
