@@ -1,0 +1,10 @@
+app/code/local/Bazaarvoice                                      app/code/local/Bazaarvoice
+app/design/frontend/enterprise/default/layout/bazaarvoice.xml   app/design/frontend/enterprise/default/layout/bazaarvoice.xml
+app/design/frontend/enterprise/default/template/bazaarvoice     app/design/frontend/enterprise/default/template/bazaarvoice
+app/etc/modules/Bazaarvoice_Connector.xml                       app/etc/modules/Bazaarvoice_Connector.xml
+app/locale/un_US/template/email./bazaarvoice_notification.html  locale/un_US/template/email./bazaarvoice_notification.html
+lib/Bazaarvoice                                                 lib/Bazaarvoice
+shell/bv_export_order_feed.php                                  shell/bv_export_order_feed.php
+shell/bv_export_product_feed.php                                shell/bv_export_product_feed.php
+skin/frontend/base/default/images/bazaarvoice                   skin/frontend/base/default/images/bazaarvoice
+var/connect/Bazaarvoice_Connector.xml                           var/connect/Bazaarvoice_Connector.xml

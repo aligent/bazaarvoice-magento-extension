@@ -1,0 +1,17 @@
+{
+  "name": "sfc/bazaarvoice_ext",
+  "type": "magento-module",
+  "description": "Bazaarvoice Connector",
+  "homepage": "https://bitbucket.org/SFC2/bazaarvoice_ext",
+  "require": {
+    "php": ">=5.3",
+    "magento-hackathon/magento-composer-installer": "*"
+  },
+  "authors": [
+    {
+      "name": "SFC",
+      "email": "chris@storefrontconsulting.com",
+      "role": "Author/Maintainer"
+    }
+  ]
+}
