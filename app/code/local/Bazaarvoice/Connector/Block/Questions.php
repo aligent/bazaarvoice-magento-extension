@@ -38,16 +38,22 @@ class Bazaarvoice_Connector_Block_Questions extends Mage_Core_Block_Template
                     str_replace(' ', '_', Mage::getStoreConfig('bazaarvoice/general/deployment_zone')) .
                     '-' . Mage::getStoreConfig('bazaarvoice/general/locale');
             }
-            $product = Mage::registry('current_product');
-            $bv = new BV(array(
+            $product = Mage::registry('current_product');                
+            $params = array(
+                'seo_sdk_enabled' => TRUE,
                 'bv_root_folder' => $deploymentZoneId, // replace with your display code (BV provided)
                 'subject_id' => Mage::helper('bazaarvoice')->getProductId($product), // replace with product id 
                 'cloud_key' => Mage::getStoreConfig('bazaarvoice/general/cloud_seo_key'), // BV provided value
                 'base_url' => $product->getProductUrl(),
                 'page_url' => $product->getProductUrl(),
                 'staging' => (Mage::getStoreConfig('bazaarvoice/general/environment') == "staging" ? TRUE : FALSE)
-            ));
+            );
+            if($this->getRequest()->getParam('bvreveal') == 'debug')
+                $params['bvreveal'] = 'debug';
+            
+            $bv = new BV($params);
             $seoContent = $bv->questions->getContent();
+            $seoContent .= '<!-- BV Questions Parameters: ' . print_r($params, 1) . '-->';
         }
         
         return $seoContent;
