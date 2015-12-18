@@ -6,7 +6,7 @@ class Bazaarvoice_Connector_Model_ExportPurchaseFeed extends Mage_Core_Model_Abs
     const TRIGGER_EVENT_PURCHASE = 'purchase';
     const TRIGGER_EVENT_SHIP = 'ship';
 
-    const NUM_DAYS_LOOKBACK = 3000;
+    const NUM_DAYS_LOOKBACK = 30;
 
     const DEBUG_OUTPUT = false;
 
@@ -17,7 +17,7 @@ class Bazaarvoice_Connector_Model_ExportPurchaseFeed extends Mage_Core_Model_Abs
     public function exportPurchaseFeed()
     {
         // Log
-        Mage::log('Start Bazaarvoice purchase feed generation', Zend_Log::INFO, Bazaarvoice_Connector_Helper_Data::LOG_FILE);
+        Mage::log('    BV - Start purchase feed generation', Zend_Log::INFO, Bazaarvoice_Connector_Helper_Data::LOG_FILE);
         // Check global setting to see what at which scope / level we should generate feeds
         $feedGenScope = Mage::getStoreConfig('bazaarvoice/feeds/generation_scope');
         switch ($feedGenScope) {
@@ -32,7 +32,7 @@ class Bazaarvoice_Connector_Model_ExportPurchaseFeed extends Mage_Core_Model_Abs
                 break;
         }
         // Log
-        Mage::log('End Bazaarvoice purchase feed generation', Zend_Log::INFO, Bazaarvoice_Connector_Helper_Data::LOG_FILE);
+        Mage::log('    BV - End purchase feed generation', Zend_Log::INFO, Bazaarvoice_Connector_Helper_Data::LOG_FILE);
     }
 
     /**
@@ -41,7 +41,7 @@ class Bazaarvoice_Connector_Model_ExportPurchaseFeed extends Mage_Core_Model_Abs
     public function exportPurchaseFeedByWebsite()
     {
         // Log
-        Mage::log('Exporting purchase feed file for each website...', Zend_Log::INFO, Bazaarvoice_Connector_Helper_Data::LOG_FILE);
+        Mage::log('    BV - Exporting purchase feed file for each website...', Zend_Log::INFO, Bazaarvoice_Connector_Helper_Data::LOG_FILE);
         // Iterate through all websites in this instance
         // (Not the 'admin' website / store / view, which represents admin panel)
         $websites = Mage::app()->getWebsites(false);
@@ -64,8 +64,8 @@ class Bazaarvoice_Connector_Model_ExportPurchaseFeed extends Mage_Core_Model_Abs
                 }
             }
             catch (Exception $e) {
-                Mage::log('    BV - Failed to export daily purchase feed for website: ' . $website->getName(), Zend_Log::ERR, Bazaarvoice_Connector_Helper_Data::LOG_FILE);
-                Mage::log('    BV - Error message: ' . $e->getMessage(), Zend_Log::ERR, Bazaarvoice_Connector_Helper_Data::LOG_FILE);
+                Mage::log('     BV - Failed to export daily purchase feed for website: ' . $website->getName(), Zend_Log::ERR, Bazaarvoice_Connector_Helper_Data::LOG_FILE);
+                Mage::log('     BV - Error message: ' . $e->getMessage(), Zend_Log::ERR, Bazaarvoice_Connector_Helper_Data::LOG_FILE);
                 Mage::logException($e);
                 // Continue processing other websites
             }
@@ -78,7 +78,7 @@ class Bazaarvoice_Connector_Model_ExportPurchaseFeed extends Mage_Core_Model_Abs
     public function exportPurchaseFeedByGroup()
     {
         // Log
-        Mage::log('Exporting purchase feed file for each store group...', Zend_Log::INFO, Bazaarvoice_Connector_Helper_Data::LOG_FILE);
+        Mage::log('    BV - Exporting purchase feed file for each store group...', Zend_Log::INFO, Bazaarvoice_Connector_Helper_Data::LOG_FILE);
         // Iterate through all stores / groups in this instance
         // (Not the 'admin' store view, which represents admin panel)
         $groups = Mage::app()->getGroups(false);
@@ -115,7 +115,7 @@ class Bazaarvoice_Connector_Model_ExportPurchaseFeed extends Mage_Core_Model_Abs
     public function exportPurchaseFeedByStore()
     {
         // Log
-        Mage::log('Exporting purchase feed file for each store...', Zend_Log::INFO, Bazaarvoice_Connector_Helper_Data::LOG_FILE);
+        Mage::log('    BV - Exporting purchase feed file for each store...', Zend_Log::INFO, Bazaarvoice_Connector_Helper_Data::LOG_FILE);
         // Iterate through all stores in this instance
         // (Not the 'admin' store view, which represents admin panel)
         $stores = Mage::app()->getStores(false);
@@ -192,10 +192,10 @@ class Bazaarvoice_Connector_Model_ExportPurchaseFeed extends Mage_Core_Model_Abs
             }
 
             if (!$upload) {
-                Mage::log('    Bazaarvoice SFTP upload failed! [filename = ' . $purchaseFeedFileName . ']', Zend_Log::ERR, Bazaarvoice_Connector_Helper_Data::LOG_FILE);
+                Mage::log('     BVSFTP - upload failed! [filename = ' . $purchaseFeedFileName . ']', Zend_Log::ERR, Bazaarvoice_Connector_Helper_Data::LOG_FILE);
             }
             else {
-                Mage::log('    Bazaarvoice SFTP upload success! [filename = ' . $purchaseFeedFileName . ']', Zend_Log::INFO, Bazaarvoice_Connector_Helper_Data::LOG_FILE);
+                Mage::log('    BVSFTP - upload success! [filename = ' . $purchaseFeedFileName . ']', Zend_Log::INFO, Bazaarvoice_Connector_Helper_Data::LOG_FILE);
                 $ioObject->rm($purchaseFeedFileName);
             }
 
@@ -254,10 +254,10 @@ class Bazaarvoice_Connector_Model_ExportPurchaseFeed extends Mage_Core_Model_Abs
             }
 
             if (!$upload) {
-                Mage::log('    Bazaarvoice SFTP upload failed! [filename = ' . $purchaseFeedFileName . ']', Zend_Log::ERR, Bazaarvoice_Connector_Helper_Data::LOG_FILE);
+                Mage::log('     BVSFTP - upload failed! [filename = ' . $purchaseFeedFileName . ']', Zend_Log::ERR, Bazaarvoice_Connector_Helper_Data::LOG_FILE);
             }
             else {
-                Mage::log('    Bazaarvoice SFTP upload success! [filename = ' . $purchaseFeedFileName . ']', Zend_Log::INFO, Bazaarvoice_Connector_Helper_Data::LOG_FILE);
+                Mage::log('    BVSFTP - upload success! [filename = ' . $purchaseFeedFileName . ']', Zend_Log::INFO, Bazaarvoice_Connector_Helper_Data::LOG_FILE);
                 $ioObject->rm($purchaseFeedFileName);
             }
 
@@ -315,10 +315,10 @@ class Bazaarvoice_Connector_Model_ExportPurchaseFeed extends Mage_Core_Model_Abs
             }
 
             if (!$upload) {
-                Mage::log('    Bazaarvoice SFTP upload failed! [filename = ' . $purchaseFeedFileName . ']', Zend_Log::ERR, Bazaarvoice_Connector_Helper_Data::LOG_FILE);
+                Mage::log('     BVSFTP - upload failed! [filename = ' . $purchaseFeedFileName . ']', Zend_Log::ERR, Bazaarvoice_Connector_Helper_Data::LOG_FILE);
             }
             else {
-                Mage::log('    Bazaarvoice SFTP upload success! [filename = ' . $purchaseFeedFileName . ']', Zend_Log::INFO, Bazaarvoice_Connector_Helper_Data::LOG_FILE);
+                Mage::log('    BVSFTP - upload success! [filename = ' . $purchaseFeedFileName . ']', Zend_Log::INFO, Bazaarvoice_Connector_Helper_Data::LOG_FILE);
                 $ioObject->rm($purchaseFeedFileName);
             }
 

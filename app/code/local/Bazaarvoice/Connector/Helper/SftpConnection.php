@@ -50,8 +50,8 @@ class Bazaarvoice_Connector_Helper_SftpConnection extends Mage_Core_Helper_Abstr
             $password = ($password ? trim($password) : '');
             
             // Log
-            Mage::log('     BVSFTP - Host: ' . $server, Zend_Log::INFO, Bazaarvoice_Connector_Helper_Data::LOG_FILE);
-            Mage::log('     BVSFTP - Username: ' . $username, Zend_Log::INFO, Bazaarvoice_Connector_Helper_Data::LOG_FILE);
+            Mage::log('    BVSFTP - Host: ' . $server, Zend_Log::INFO, Bazaarvoice_Connector_Helper_Data::LOG_FILE);
+            Mage::log('    BVSFTP - Username: ' . $username, Zend_Log::INFO, Bazaarvoice_Connector_Helper_Data::LOG_FILE);
 //            Mage::log('Password: ' . $password, Zend_Log::INFO, Bazaarvoice_Connector_Helper_Data::LOG_FILE);
 
             // Check credentials
@@ -204,7 +204,7 @@ class Bazaarvoice_Connector_Helper_SftpConnection extends Mage_Core_Helper_Abstr
      */
     public function getFile($remoteFilePath, $localFilePath)
     {
-        Mage::log("     BVSFTP - Get remote file $remoteFilePath => $localFilePath", Zend_Log::INFO, Bazaarvoice_Connector_Helper_Data::LOG_FILE);
+        Mage::log("    BVSFTP - Get remote file $remoteFilePath => $localFilePath", Zend_Log::INFO, Bazaarvoice_Connector_Helper_Data::LOG_FILE);
         try {
             // Close connection
             if (!$this->isConnected()) {
@@ -248,7 +248,7 @@ class Bazaarvoice_Connector_Helper_SftpConnection extends Mage_Core_Helper_Abstr
         if(!$remoteFile)
             $remoteFile = basename($localFilePath);
             
-        Mage::log("     BVSFTP - Put local file $localFilePath as $remoteFile", Zend_Log::INFO, Bazaarvoice_Connector_Helper_Data::LOG_FILE);
+        Mage::log("    BVSFTP - Put local file $localFilePath as $remoteFile", Zend_Log::INFO, Bazaarvoice_Connector_Helper_Data::LOG_FILE);
         try {
             // Close connection
             if (!$this->isConnected()) {
