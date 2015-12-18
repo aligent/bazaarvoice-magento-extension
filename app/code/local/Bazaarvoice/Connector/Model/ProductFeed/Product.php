@@ -269,23 +269,23 @@ class Bazaarvoice_Connector_Model_ProductFeed_Product extends Mage_Core_Model_Ab
                 // skip product if parent is disabled
     			if (is_object($parentProduct)){
     				if($parentProduct->getVisiblity() == Mage_Catalog_Model_Product_Visibility::VISIBILITY_NOT_VISIBLE || $parentProduct->getStatus() == Mage_Catalog_Model_Product_Status::STATUS_DISABLED || !in_array($website, $parentProduct->getWebsiteIds())) {
-    					Mage::log("        Skipping ".$productDefault->getSku()." because it is not visible and its parent product " . $parentProduct->getSku() . " is disabled.", Zend_Log::DEBUG, Bazaarvoice_Connector_Helper_Data::LOG_FILE);
+    					Mage::log("   BV - Skipping ".$productDefault->getSku()." because it is not visible and its parent product " . $parentProduct->getSku() . " is disabled.", Zend_Log::DEBUG, Bazaarvoice_Connector_Helper_Data::LOG_FILE);
     					return true;
     				}
     				
     				if (!is_null($parentProduct->getCategoryIds())){
     					$parentCategories = $parentProduct->getCategoryIds();
-    					Mage::log("        Product ".$productDefault->getSku()." using parent categories from ".$parentProduct->getSku(), Zend_Log::DEBUG, Bazaarvoice_Connector_Helper_Data::LOG_FILE);
+    					Mage::log("   BV - Product ".$productDefault->getSku()." using parent categories from ".$parentProduct->getSku(), Zend_Log::DEBUG, Bazaarvoice_Connector_Helper_Data::LOG_FILE);
     				}
     			}
             } else {
-				Mage::log("        Skipping ".$productDefault->getSku()." because it is not visible and has no parent product.", Zend_Log::DEBUG, Bazaarvoice_Connector_Helper_Data::LOG_FILE);
+				Mage::log("   BV - Skipping ".$productDefault->getSku()." because it is not visible and has no parent product.", Zend_Log::DEBUG, Bazaarvoice_Connector_Helper_Data::LOG_FILE);
 				return true;
             }
         } else {
             // normal behavior
             $parentCategories = $productDefault->getCategoryIds();
-            Mage::log("        Product ".$productDefault->getSku()." using its own categories", Zend_Log::DEBUG, Bazaarvoice_Connector_Helper_Data::LOG_FILE);
+            Mage::log("   BV - Product ".$productDefault->getSku()." using its own categories", Zend_Log::DEBUG, Bazaarvoice_Connector_Helper_Data::LOG_FILE);
         }
 
         $ioObject->streamWrite("<Product>\n" .
@@ -309,7 +309,7 @@ class Bazaarvoice_Connector_Model_ProductFeed_Product extends Mage_Core_Model_Ab
                             "</CategoryExternalId>\n");
                         break;
                     } else {
-                        Mage::log("        Category $categoryExternalId not found", Zend_Log::DEBUG, Bazaarvoice_Connector_Helper_Data::LOG_FILE);
+                        Mage::log("   BV - Category $categoryExternalId not found", Zend_Log::DEBUG, Bazaarvoice_Connector_Helper_Data::LOG_FILE);
                     }
                 }
             }
@@ -401,9 +401,9 @@ class Bazaarvoice_Connector_Model_ProductFeed_Product extends Mage_Core_Model_Ab
             }
         }
         catch (Exception $e) {
-            Mage::log('Failed to get families for product sku: ' . $product->getSku(), Zend_Log::DEBUG, Bazaarvoice_Connector_Helper_Data::LOG_FILE);
+            Mage::log('   BV - Failed to get families for product sku: ' . $product->getSku(), Zend_Log::DEBUG, Bazaarvoice_Connector_Helper_Data::LOG_FILE);
             Mage::log($e->getMessage()."\n".$e->getTraceAsString(), Zend_Log::DEBUG, Bazaarvoice_Connector_Helper_Data::LOG_FILE);
-            Mage::log('Continuing generating feed.', Zend_Log::DEBUG, Bazaarvoice_Connector_Helper_Data::LOG_FILE);
+            Mage::log('   BV - Continuing generating feed.', Zend_Log::DEBUG, Bazaarvoice_Connector_Helper_Data::LOG_FILE);
         }
         return $families;
     }
@@ -449,8 +449,8 @@ class Bazaarvoice_Connector_Model_ProductFeed_Product extends Mage_Core_Model_Ab
             return $imageUrl;
         }
         catch (Exception $e) {
-            Mage::log('Failed to get image URL for product sku: ' . $product->getSku(), Zend_Log::DEBUG, Bazaarvoice_Connector_Helper_Data::LOG_FILE);
-            Mage::log('Continuing generating feed.', Zend_Log::DEBUG, Bazaarvoice_Connector_Helper_Data::LOG_FILE);
+            Mage::log('   BV - Failed to get image URL for product sku: ' . $product->getSku(), Zend_Log::DEBUG, Bazaarvoice_Connector_Helper_Data::LOG_FILE);
+            Mage::log('   BV - Continuing generating feed.', Zend_Log::DEBUG, Bazaarvoice_Connector_Helper_Data::LOG_FILE);
 
             return '';
         }
