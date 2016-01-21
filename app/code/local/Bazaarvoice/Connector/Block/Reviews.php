@@ -39,13 +39,22 @@ class Bazaarvoice_Connector_Block_Reviews extends Mage_Core_Block_Template
                     '-' . Mage::getStoreConfig('bazaarvoice/general/locale');
             }
             $product = Mage::registry('current_product');
+            $productUrl = Mage::helper('core/url')->getCurrentUrl();
+            $parts = parse_url($productUrl);
+            if(isset($parts['query'])) {
+                parse_str($parts['query'], $query);
+                unset($query['bvrrp']);
+                $baseUrl = $parts['scheme'] . '://' . $parts['host'] . $parts['path'] . '?' . http_build_query($query);
+            } else {
+                $baseUrl = $productUrl;
+            }
             $params = array(
                 'seo_sdk_enabled' => TRUE,
                 'bv_root_folder' => $deploymentZoneId, // replace with your display code (BV provided)
                 'subject_id' => Mage::helper('bazaarvoice')->getProductId($product), // replace with product id 
                 'cloud_key' => Mage::getStoreConfig('bazaarvoice/general/cloud_seo_key'), // BV provided value
-                'base_url' => $product->getProductUrl(),
-                'page_url' => $product->getProductUrl(),
+                'base_url' => $baseUrl,
+                'page_url' => $productUrl,
                 'staging' => (Mage::getStoreConfig('bazaarvoice/general/environment') == "staging" ? TRUE : FALSE)
             );         
             if($this->getRequest()->getParam('bvreveal') == 'debug')
