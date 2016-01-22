@@ -38,13 +38,31 @@ class Bazaarvoice_Connector_Block_Reviews extends Mage_Core_Block_Template
                     str_replace(' ', '_', Mage::getStoreConfig('bazaarvoice/general/deployment_zone')) .
                     '-' . Mage::getStoreConfig('bazaarvoice/general/locale');
             }
-            $bv = new BV(array(
-                'deployment_zone_id' => $deploymentZoneId, // replace with your display code (BV provided)
-                'product_id' => Mage::helper('bazaarvoice')->getProductId(Mage::registry('current_product')), // replace with product id 
+            $product = Mage::registry('current_product');
+            $productUrl = Mage::helper('core/url')->getCurrentUrl();
+            $parts = parse_url($productUrl);
+            if(isset($parts['query'])) {
+                parse_str($parts['query'], $query);
+                unset($query['bvrrp']);
+                $baseUrl = $parts['scheme'] . '://' . $parts['host'] . $parts['path'] . '?' . http_build_query($query);
+            } else {
+                $baseUrl = $productUrl;
+            }
+            $params = array(
+                'seo_sdk_enabled' => TRUE,
+                'bv_root_folder' => $deploymentZoneId, // replace with your display code (BV provided)
+                'subject_id' => Mage::helper('bazaarvoice')->getProductId($product), // replace with product id 
                 'cloud_key' => Mage::getStoreConfig('bazaarvoice/general/cloud_seo_key'), // BV provided value
+                'base_url' => $baseUrl,
+                'page_url' => $productUrl,
                 'staging' => (Mage::getStoreConfig('bazaarvoice/general/environment') == "staging" ? TRUE : FALSE)
-            ));    
-            $seoContent = $bv->reviews->renderSeo();
+            );         
+            if($this->getRequest()->getParam('bvreveal') == 'debug')
+                $params['bvreveal'] = 'debug';
+            
+            $bv = new BV($params);
+            $seoContent = $bv->reviews->getContent();
+            $seoContent .= '<!-- BV Reviews Parameters: ' . print_r($params, 1) . '-->';
         }
         
         return $seoContent;
