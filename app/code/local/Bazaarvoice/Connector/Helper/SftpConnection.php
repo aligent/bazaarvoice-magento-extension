@@ -80,7 +80,7 @@ class Bazaarvoice_Connector_Helper_SftpConnection extends Mage_Core_Helper_Abstr
             // Log
             Mage::logException($e);
             Mage::log('     BVSFTP - '.$e->getMessage(), Zend_Log::ERR, Bazaarvoice_Connector_Helper_Data::LOG_FILE);
-            Mage::getSingleton('adminhtml/session')->addError('Could not connect to FTP server');
+            Mage::getSingleton('adminhtml/session')->addError('Could not connect to SFTP server');
         }
 
         return false;

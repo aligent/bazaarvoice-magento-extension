@@ -53,7 +53,7 @@ class Bazaarvoice_Connector_Model_ExportProductFeed extends Mage_Core_Model_Abst
 
     /**
      *
-     * process daily feed for the Bazaarvoice. The feed will be FTPed to the BV FTP server
+     * process daily feed for the Bazaarvoice. The feed will be SFTPed to the BV SFTP server
      *
      * Product & Catalog Feed to BV
      *
@@ -187,7 +187,7 @@ class Bazaarvoice_Connector_Model_ExportProductFeed extends Mage_Core_Model_Abst
     }
 
     /**
-     * process daily feed for the Bazaarvoice. The feed will be FTPed to the BV FTP server
+     * process daily feed for the Bazaarvoice. The feed will be SFTPed to the BV SFTP server
      *
      * Product & Catalog Feed to BV
      *
@@ -229,7 +229,7 @@ class Bazaarvoice_Connector_Model_ExportProductFeed extends Mage_Core_Model_Abst
     }
 
     /**
-     * process daily feed for the Bazaarvoice. The feed will be FTPed to the BV FTP server
+     * process daily feed for the Bazaarvoice. The feed will be SFTPed to the BV SFTP server
      *
      * Product & Catalog Feed to BV
      *
@@ -271,7 +271,7 @@ class Bazaarvoice_Connector_Model_ExportProductFeed extends Mage_Core_Model_Abst
     }
 
     /**
-     * process daily feed for the Bazaarvoice. The feed will be FTPed to the BV FTP server
+     * process daily feed for the Bazaarvoice. The feed will be SFTPed to the BV SFTP server
      *
      * Product & Catalog Feed to BV
      * @param Mage_Core_Model_Store $store
