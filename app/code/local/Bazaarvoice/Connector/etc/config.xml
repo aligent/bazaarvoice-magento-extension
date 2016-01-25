@@ -8,7 +8,7 @@
 <config>
     <modules>
         <Bazaarvoice_Connector>
-            <version>6.3.0</version>
+            <version>6.3.1</version>
             <depends>
                 <!-- no dependencies -->
             </depends>
@@ -126,7 +126,7 @@
             <feeds>
                 <enable_product_feed>1</enable_product_feed>
                 <families>0</families>
-                <enable_purchase_feed>1</enable_purchase_feed>
+                <enable_purchase_feed>0</enable_purchase_feed>
                 <triggering_event>shipping</triggering_event>
                 <generation_scope>website</generation_scope>
             </feeds>
@@ -152,9 +152,9 @@
                 <!-- If true, use Magento category URL path as category id, otherwise use Mage category entity primary key -->
                 <category_id_use_url_path>true</category_id_use_url_path>
 
-                <!-- FTP Connection Host Name.  If this is not specified, the standard ftp-stg.bazaarvoice.com and
-                    ftp.bazaarvoice.com will be used -->
-                <ftp_host_name></ftp_host_name>
+                <!-- SFTP Connection Host Name.  If this is not specified, the standard sftp-stg.bazaarvoice.com and
+                    sftp.bazaarvoice.com will be used -->
+                <sftp_host_name></sftp_host_name>
 
                 <!-- Display code - We still need this for some clients -->
                 <display_code></display_code>

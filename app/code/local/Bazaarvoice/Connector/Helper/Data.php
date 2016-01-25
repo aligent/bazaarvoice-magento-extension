@@ -133,7 +133,7 @@ class Bazaarvoice_Connector_Helper_Data extends Mage_Core_Helper_Abstract
         // Get credentials for SFTP Connection
         $sftpHost = $this->getSFTPHost();
         $sftpUser = strtolower(Mage::getStoreConfig('bazaarvoice/general/client_name', $store));
-        $sftpPw = Mage::getStoreConfig('bazaarvoice/general/ftp_password', $store);
+        $sftpPw = Mage::getStoreConfig('bazaarvoice/general/sftp_password', $store);
         $sftp = Mage::helper('bazaarvoice/sftpConnection');
 
         if (!$sftp->connect($sftpHost, 22, $sftpUser, $sftpPw)) {
@@ -208,6 +208,7 @@ class Bazaarvoice_Connector_Helper_Data extends Mage_Core_Helper_Abstract
             $sftp->putAndDeleteFile($localFileName, $remoteFile);
         } catch (Exception $ex) {
             Mage::log('    BV - Exception uploading file: ' . $ex->getTraceAsString(), Zend_Log::ERR, self::LOG_FILE);
+            return false;
         }
 
         return true;
@@ -354,9 +355,9 @@ class Bazaarvoice_Connector_Helper_Data extends Mage_Core_Helper_Abstract
     public function getSFTPHost($store = null)
     {
         $environment = Mage::getStoreConfig('bazaarvoice/general/environment', $store);
-        $ftpHostOverride = trim(Mage::getStoreConfig('bazaarvoice/bv_config/ftp_host_name', $store));
-        if(strlen($ftpHostOverride)) {
-            $sftpHost = $ftpHostOverride;
+        $sftpHostOverride = trim(Mage::getStoreConfig('bazaarvoice/bv_config/sftp_host_name', $store));
+        if(strlen($sftpHostOverride)) {
+            $sftpHost = $sftpHostOverride;
         }
         else if ($environment == 'staging') {
             $sftpHost = 'sftp-stg.bazaarvoice.com';
