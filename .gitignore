@@ -11,12 +11,14 @@
 /*
 !/sfcrel/
 !/app/
+!/docs/
 !/js/
 !/lib/
 !/var/
 !/shell/
 !/.gitignore
-
+!/composer.json
+!/modman
 # Don't ignore build scripts
 !/build.xml
 !/phpunit.xml*

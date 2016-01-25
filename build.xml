@@ -140,6 +140,9 @@
 		<copy todir="${basedir}/build/encoded/lib">
 			<fileset dir="${basedir}/lib" erroronmissingdir="false" />
 		</copy>
+                <copy todir="${basedir}/build/encoded/docs">
+                        <fileset dir="${basedir}/docs" erroronmissingdir="false" />
+                </copy>
 	</target>
 
 	<target name="package" description="Package extension using Magento instance Magento Connect packager.  (Magento instance expected at: /var/www/packager)"
