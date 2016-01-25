@@ -208,6 +208,7 @@ class Bazaarvoice_Connector_Helper_Data extends Mage_Core_Helper_Abstract
             $sftp->putAndDeleteFile($localFileName, $remoteFile);
         } catch (Exception $ex) {
             Mage::log('    BV - Exception uploading file: ' . $ex->getTraceAsString(), Zend_Log::ERR, self::LOG_FILE);
+            return false;
         }
 
         return true;
