@@ -35,7 +35,6 @@ class Bazaarvoice_Connector_Model_ProductFeed_Category extends Mage_Core_Model_A
         // Filter category collection based on Magento store
         // Do this by filtering on 'path' attribute, based on root category path found above
         // Include the root category itself in the feed
-        
         $categoryIds
             ->addAttributeToFilter('level', array('gt' => 1))
             ->addAttributeToFilter('is_active', 1)
