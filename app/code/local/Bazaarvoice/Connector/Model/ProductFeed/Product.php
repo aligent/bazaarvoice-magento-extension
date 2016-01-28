@@ -300,18 +300,22 @@ class Bazaarvoice_Connector_Model_ProductFeed_Product extends Mage_Core_Model_Ab
         }
 
         if (!is_null($parentCategories) && count($parentCategories) > 0) {
+            $validCategories = array();
             foreach ($parentCategories as $parentCategoryId) {
                 $parentCategory = Mage::getModel('catalog/category')->setStoreId($productDefault->getStoreId())->load($parentCategoryId);
                 if ($parentCategory != null) {
                     $categoryExternalId = $bvHelper->getCategoryId($parentCategory, $productDefault->getStoreId());
                     if (in_array($categoryExternalId, $this->_categoryIdList)) {
-                        $ioObject->streamWrite('    <CategoryExternalId>' . $categoryExternalId .
-                            "</CategoryExternalId>\n");
-                        break;
-                    } else {
-                        Mage::log("   BV - Category $categoryExternalId not found", Zend_Log::DEBUG, Bazaarvoice_Connector_Helper_Data::LOG_FILE);
+                        $validCategories[$parentCategory->getLevel()] = $categoryExternalId;
                     }
                 }
+            }
+            krsort($validCategories);
+            if(count($validCategories)){
+                $ioObject->streamWrite('    <CategoryExternalId>' . array_pop($validCategories) .
+                    "</CategoryExternalId>\n");
+            } else {
+                Mage::log("   BV - Category $categoryExternalId not found", Zend_Log::DEBUG, Bazaarvoice_Connector_Helper_Data::LOG_FILE);
             }
         }
         
