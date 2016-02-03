@@ -310,7 +310,7 @@ class Bazaarvoice_Connector_Model_ProductFeed_Product extends Mage_Core_Model_Ab
                     }
                 }
             }
-            krsort($validCategories);
+            ksort($validCategories);
             if(count($validCategories)){
                 $ioObject->streamWrite('    <CategoryExternalId>' . array_pop($validCategories) .
                     "</CategoryExternalId>\n");
