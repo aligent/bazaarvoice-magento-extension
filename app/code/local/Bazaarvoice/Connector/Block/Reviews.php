@@ -60,9 +60,14 @@ class Bazaarvoice_Connector_Block_Reviews extends Mage_Core_Block_Template
             if($this->getRequest()->getParam('bvreveal') == 'debug')
                 $params['bvreveal'] = 'debug';
             
-            $bv = new BV($params);
-            $seoContent = $bv->reviews->getContent();
-            $seoContent .= '<!-- BV Reviews Parameters: ' . print_r($params, 1) . '-->';
+            try{
+                $bv = new BV($params);
+                $seoContent = $bv->reviews->getContent();
+                $seoContent .= '<!-- BV Reviews Parameters: ' . print_r($params, 1) . '-->';
+            } Catch (Exception $e) {
+                Mage::logException($e);
+                return;
+            }
         }
         
         return $seoContent;
