@@ -490,6 +490,7 @@ class Bazaarvoice_Connector_Model_ExportPurchaseFeed extends Mage_Core_Model_Abs
                 $orderXml .= "<Interaction>\n";
 //                $orderXml .= '    <OrderID>' . $order->getIncrementId() . "</OrderID>\n";
                 $orderXml .= '    <EmailAddress>' . $order->getCustomerEmail() . "</EmailAddress>\n";
+                $orderXml .= '    <Nickname>' . $order->getCustomerFirstname() . "</Nickname>\n";
                 $orderXml .= '    <Locale>' . $store->getConfig('bazaarvoice/general/locale') . "</Locale>\n";
                 $orderXml .= '    <UserName>' . $order->getCustomerName() . "</UserName>\n";
                 if($order->getCustomerId()) {

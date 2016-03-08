@@ -86,7 +86,7 @@ class Bazaarvoice_Connector_Block_Roi_Beacon extends Mage_Core_Block_Template
                 }
                 $orderDetails['userId'] = $userId;
                 $orderDetails['email'] = $order->getCustomerEmail();
-                $orderDetails['nickname'] = $order->getCustomerEmail();
+                $orderDetails['nickname'] = $order->getCustomerFirstname();
                 // There is no 'deliveryDate' yet
                 $orderDetails['locale'] = Mage::getStoreConfig('bazaarvoice/general/locale', $order->getStoreId());
 
