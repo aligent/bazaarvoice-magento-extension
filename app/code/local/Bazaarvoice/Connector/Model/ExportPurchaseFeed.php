@@ -452,9 +452,6 @@ class Bazaarvoice_Connector_Model_ExportPurchaseFeed extends Mage_Core_Model_Abs
         /* @var $bvHelper Bazaarvoice_Connector_Helper_Data */
         $bvHelper = Mage::helper('bazaarvoice');
 
-        // Initialize references to the object model accessors
-        $orderModel = Mage::getModel('sales/order');
-
         // Gather settings for how this feed should be generated
         $triggeringEvent = Mage::getStoreConfig('bazaarvoice/feeds/triggering_event') ===
         Bazaarvoice_Connector_Model_Source_TriggeringEvent::SHIPPING ? self::TRIGGER_EVENT_SHIP : self::TRIGGER_EVENT_PURCHASE;
@@ -468,7 +465,7 @@ class Bazaarvoice_Connector_Model_ExportPurchaseFeed extends Mage_Core_Model_Abs
         
         $ordersToExport = array();
         foreach ($orders->getAllIds() as $orderId) {
-            $order = $orderModel->load($orderId);
+            $order = Mage::getModel('sales/order')->load($orderId);
             if (!$this->shouldIncludeOrder($order, $triggeringEvent, $delayDaysSinceEvent)) {
                 continue;
             }
@@ -481,7 +478,7 @@ class Bazaarvoice_Connector_Model_ExportPurchaseFeed extends Mage_Core_Model_Abs
         foreach ($ordersToExport as $orderId) {
             try{
                 /* @var $order Mage_Sales_Model_Order */
-                $order = $orderModel->load($orderId);
+                $order = Mage::getModel('sales/order')->load($orderId);
                 $store = $order->getStore();
                 
                 
