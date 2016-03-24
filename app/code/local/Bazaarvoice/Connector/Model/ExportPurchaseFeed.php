@@ -452,9 +452,6 @@ class Bazaarvoice_Connector_Model_ExportPurchaseFeed extends Mage_Core_Model_Abs
         /* @var $bvHelper Bazaarvoice_Connector_Helper_Data */
         $bvHelper = Mage::helper('bazaarvoice');
 
-        // Initialize references to the object model accessors
-        $orderModel = Mage::getModel('sales/order');
-
         // Gather settings for how this feed should be generated
         $triggeringEvent = Mage::getStoreConfig('bazaarvoice/feeds/triggering_event') ===
         Bazaarvoice_Connector_Model_Source_TriggeringEvent::SHIPPING ? self::TRIGGER_EVENT_SHIP : self::TRIGGER_EVENT_PURCHASE;
@@ -468,7 +465,7 @@ class Bazaarvoice_Connector_Model_ExportPurchaseFeed extends Mage_Core_Model_Abs
         
         $ordersToExport = array();
         foreach ($orders->getAllIds() as $orderId) {
-            $order = $orderModel->load($orderId);
+            $order = Mage::getModel('sales/order')->load($orderId);
             if (!$this->shouldIncludeOrder($order, $triggeringEvent, $delayDaysSinceEvent)) {
                 continue;
             }
@@ -481,7 +478,7 @@ class Bazaarvoice_Connector_Model_ExportPurchaseFeed extends Mage_Core_Model_Abs
         foreach ($ordersToExport as $orderId) {
             try{
                 /* @var $order Mage_Sales_Model_Order */
-                $order = $orderModel->load($orderId);
+                $order = Mage::getModel('sales/order')->load($orderId);
                 $store = $order->getStore();
                 
                 
@@ -490,9 +487,8 @@ class Bazaarvoice_Connector_Model_ExportPurchaseFeed extends Mage_Core_Model_Abs
                 $orderXml .= "<Interaction>\n";
 //                $orderXml .= '    <OrderID>' . $order->getIncrementId() . "</OrderID>\n";
                 $orderXml .= '    <EmailAddress>' . $order->getCustomerEmail() . "</EmailAddress>\n";
-                $orderXml .= '    <Nickname>' . $order->getCustomerFirstname() . "</Nickname>\n";
                 $orderXml .= '    <Locale>' . $store->getConfig('bazaarvoice/general/locale') . "</Locale>\n";
-                $orderXml .= '    <UserName>' . $order->getCustomerName() . "</UserName>\n";
+                $orderXml .= '    <UserName>' . $order->getCustomerFirstname() . "</UserName>\n";
                 if($order->getCustomerId()) {
                     $userId = $order->getCustomerId();
                 } else {
@@ -522,7 +518,7 @@ class Bazaarvoice_Connector_Model_ExportPurchaseFeed extends Mage_Core_Model_Abs
                         $productXml .= "        <Product>\n";
                         $productXml .= '            <ExternalId>' . $bvHelper->getProductId($product) .
                         "</ExternalId>\n";
-                        $productXml .= '            <Name>' . htmlspecialchars($product->getName(), ENT_QUOTES, 'UTF-8', false) . "</Name>\n";
+                        $productXml .= '            <Name><![CDATA[' . htmlspecialchars($product->getName(), ENT_QUOTES, 'UTF-8', false) . "]]></Name>\n";
                         
                         $imageUrl = $product->getImageUrl();
                         $originalPrice = $item->getOriginalPrice();
