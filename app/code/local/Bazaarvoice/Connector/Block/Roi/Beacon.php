@@ -95,7 +95,7 @@ class Bazaarvoice_Connector_Block_Roi_Beacon extends Mage_Core_Block_Template
             }
         }
         Mage::log($orderDetails, Zend_Log::DEBUG, Bazaarvoice_Connector_Helper_Data::LOG_FILE);
-        $orderDetailsJson = Mage::helper('core')->jsonEncode($orderDetails);
-        return urldecode(stripslashes($orderDetailsJson));
+        $orderDetailsJson = json_encode( $orderDetails, JSON_UNESCAPED_UNICODE );
+        return (stripslashes($orderDetailsJson));
     }
 }
