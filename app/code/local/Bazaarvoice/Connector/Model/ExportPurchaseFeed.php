@@ -519,7 +519,7 @@ class Bazaarvoice_Connector_Model_ExportPurchaseFeed extends Mage_Core_Model_Abs
                         $productXml .= "        <Product>\n";
                         $productXml .= '            <ExternalId>' . $bvHelper->getProductId($product) .
                         "</ExternalId>\n";
-                        $productXml .= '            <Name>' . htmlspecialchars($product->getName(), ENT_QUOTES, 'UTF-8', false) . "</Name>\n";
+                        $productXml .= '            <Name><![CDATA[' . htmlspecialchars($product->getName(), ENT_QUOTES, 'UTF-8', false) . "]]></Name>\n";
                         
                         $imageUrl = $product->getImageUrl();
                         $originalPrice = $item->getOriginalPrice();
