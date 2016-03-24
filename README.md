@@ -11,3 +11,4 @@
 * [Bazaarvoice Implementation Guide](http://labsbp-docsportal.aws.bazaarvoice.com/)
 * [Bazaarvoice Prod Workbench](https://workbench.bazaarvoice.com/)
 * [Bazaarvoice Staging Workbench](https://workbench-staging.bazaarvoice.com/)
+* [Bazaarvoice Release & Documentation](http://knowledge.bazaarvoice.com/partner-integrations/#magento)
