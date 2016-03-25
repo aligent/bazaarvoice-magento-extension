@@ -8,7 +8,7 @@
 <config>
     <modules>
         <Bazaarvoice_Connector>
-            <version>6.3.3</version>
+            <version>6.3.4</version>
             <depends>
                 <!-- no dependencies -->
             </depends>
@@ -52,6 +52,18 @@
             </bazaarvoice_setup>
         </resources>
     </global>
+    
+    <admin>
+        <routers>
+            <adminhtml>
+                <args>
+                    <modules>
+                        <bazaarvoice after="Mage_Adminhtml">Bazaarvoice_Connector</bazaarvoice>
+                    </modules>
+                </args>
+            </adminhtml>
+        </routers>
+    </admin>
 
     <frontend>
         <product>
@@ -127,6 +139,7 @@
                 <enable_product_feed>1</enable_product_feed>
                 <families>0</families>
                 <enable_purchase_feed>0</enable_purchase_feed>
+                <lookback>30</lookback>
                 <triggering_event>shipping</triggering_event>
                 <generation_scope>website</generation_scope>
             </feeds>
