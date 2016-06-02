@@ -42,7 +42,7 @@ echo sprintf('var children = %s;', json_encode($bvIds));
 
 (function ($) {
     
-    jQuery('.super-attribute-select').live("change", function(){
+    jQuery('.super-attribute-select').on("change", function(){
         options = spConfig.config.attributes[jQuery(this).attr('id').replace(/attribute/, '')].options;
         for(var i in options){
             if(options[i].id == jQuery(this).val() && children[options[i].products[0]] != undefined){
