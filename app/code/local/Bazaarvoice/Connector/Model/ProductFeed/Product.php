@@ -384,12 +384,6 @@ class Bazaarvoice_Connector_Model_ProductFeed_Product extends Mage_Core_Model_Ab
 
         // Close this product
         $ioObject->streamWrite("</Product>\n");
-
-        $productDefault->clearInstance();
-        foreach($productsByLocale as $localeProduct) {
-            $localeProduct->clearInstance();
-        }
-        return true;
     }
     
     protected function getProductFamilies(Mage_Catalog_Model_Product $product)
