@@ -310,15 +310,10 @@ class Bazaarvoice_Connector_Helper_Data extends Mage_Core_Helper_Abstract
         // Build protocol based on current page
         $protocol = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != '') ? 'https' : 'http';
         // Build hostname based on environment setting
-        $environment = Mage::getStoreConfig('bazaarvoice/general/environment', $store);
-        if ($environment == 'staging') {
-            $apiHostname =  'display-stg.ugc.bazaarvoice.com';
-        }
-        else {
-            $apiHostname =  'display.ugc.bazaarvoice.com';
-        }
+        $apiHostname =  'display.ugc.bazaarvoice.com';
+
         // Build static dir name based on param
-        if($isStatic) {
+        if ($isStatic) {
             $static = 'static/';
         }
         else {
@@ -330,8 +325,11 @@ class Bazaarvoice_Connector_Helper_Data extends Mage_Core_Helper_Abstract
         // Get locale code from BV config, 
         // Note that this doesn't use Magento's locale, this will allow clients to override this and map it as they see fit
         $localeCode = Mage::getStoreConfig('bazaarvoice/general/locale', $store);
+
+        $staging = $this->getBvStaging();
+
         // Build url string
-        $url = $protocol . '://' . $apiHostname . '/' . $static . $clientName . '/' . urlencode($deploymnetZoneName) . '/' . $localeCode;
+        $url = $protocol . '://' . $apiHostname . $staging . $static . $clientName . '/' . urlencode($deploymnetZoneName) . '/' . $localeCode;
         // Return final url
         return $url;
     }
