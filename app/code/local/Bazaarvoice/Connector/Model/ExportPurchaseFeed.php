@@ -488,7 +488,7 @@ class Bazaarvoice_Connector_Model_ExportPurchaseFeed extends Mage_Core_Model_Abs
 //                $orderXml .= '    <OrderID>' . $order->getIncrementId() . "</OrderID>\n";
                 $orderXml .= '    <EmailAddress>' . $order->getCustomerEmail() . "</EmailAddress>\n";
                 $orderXml .= '    <Locale>' . $store->getConfig('bazaarvoice/general/locale') . "</Locale>\n";
-                $orderXml .= '    <UserName>' . $order->getCustomerFirstname() . "</UserName>\n";
+                $orderXml .= '    <UserName><![CDATA[' . $order->getCustomerFirstname() . "]]></UserName>\n";
                 if($order->getCustomerId()) {
                     $userId = $order->getCustomerId();
                 } else {
@@ -516,8 +516,7 @@ class Bazaarvoice_Connector_Model_ExportPurchaseFeed extends Mage_Core_Model_Abs
                     if (!is_null($product)) {
                         $productXml = '';
                         $productXml .= "        <Product>\n";
-                        $productXml .= '            <ExternalId>' . $bvHelper->getProductId($product) .
-                        "</ExternalId>\n";
+                        $productXml .= '            <ExternalId>' . $bvHelper->getProductId($product) . "</ExternalId>\n";
                         $productXml .= '            <Name><![CDATA[' . htmlspecialchars($product->getName(), ENT_QUOTES, 'UTF-8', false) . "]]></Name>\n";
                         
                         $imageUrl = $product->getImageUrl();
