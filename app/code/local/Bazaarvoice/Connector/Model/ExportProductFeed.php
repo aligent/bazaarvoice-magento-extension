@@ -362,7 +362,7 @@ class Bazaarvoice_Connector_Model_ExportProductFeed extends Mage_Core_Model_Abst
         }
 
         $ioObject->streamWrite("<?xml version=\"1.0\" encoding=\"UTF-8\"?>" .
-        "<Feed xmlns=\"http://www.bazaarvoice.com/xs/PRR/ProductFeed/5.2\"" .
+        "<Feed xmlns=\"http://www.bazaarvoice.com/xs/PRR/ProductFeed/14.4\"" .
         " generator=\"Magento Extension r" . $bvHelper->getExtensionVersion() . "\"" .
         "  name=\"" . $clientName . "\"" .
         "  incremental=\"false\"" .
