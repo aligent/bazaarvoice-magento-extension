@@ -320,9 +320,10 @@ class Bazaarvoice_Connector_Model_ProductFeed_Product extends Mage_Core_Model_Ab
         }
 
         foreach(array('UPC', 'ManufacturerPartNumber', 'EAN', 'ISBN', 'ModelNumber') as $customAttribute) {
-            $attributeCode = Mage::getStoreConfig("bazaarvoice/bv_config/product_feed_{$customAttribute}_attribute_code");
+            $settingCode = strtolower($customAttribute);
+            $attributeCode = Mage::getStoreConfig("bazaarvoice/bv_config/product_feed_{$settingCode}_attribute_code");
             if ($attributeCode && $productDefault->getData($attributeCode)) {
-                $ioObject->streamWrite('    <'.$customAttribute.'s><'.$customAttribute.'>' . $productDefault->getData($attributeCode) . "</'.$customAttribute.'></'.$customAttribute.'s>\n");
+                $ioObject->streamWrite('    <'.$customAttribute.'s><'.$customAttribute.'>' . $productDefault->getData($attributeCode) . '</'.$customAttribute.'></'.$customAttribute."s>\n");
             }
         }
 
