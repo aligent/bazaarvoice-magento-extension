@@ -785,7 +785,7 @@ class Base {
       // contents.
       htmlspecialchars(
         $this->config['base_url'] . $page_url_query_prefix,
-        ENT_QUOTES | ENT_HTML5,
+        ENT_QUOTES,
         $this->config['charset'],
         // Don't double-encode.
         false
