@@ -318,15 +318,13 @@ class Bazaarvoice_Connector_Model_ProductFeed_Product extends Mage_Core_Model_Ab
                 Mage::log("   BV - Category $categoryExternalId not found", Zend_Log::DEBUG, Bazaarvoice_Connector_Helper_Data::LOG_FILE);
             }
         }
-        
-        $upcAttribute = Mage::getStoreConfig("bazaarvoice/bv_config/product_feed_upc_attribute_code");
-        if($upcAttribute && $productDefault->getData($upcAttribute)) {
-            $ioObject->streamWrite('    <UPCs><UPC>' . $productDefault->getData($upcAttribute) . "</UPC></UPCs>\n");            
-        }
-        
-        $eanAttribute = Mage::getStoreConfig("bazaarvoice/bv_config/product_feed_ean_attribute_code");
-        if($eanAttribute && $productDefault->getData($eanAttribute)) {
-            $ioObject->streamWrite('    <EANs><EAN>' . $productDefault->getData($eanAttribute) . "</EAN></EANs>\n");            
+
+        foreach(array('UPC', 'ManufacturerPartNumber', 'EAN', 'ISBN', 'ModelNumber') as $customAttribute) {
+            $settingCode = strtolower($customAttribute);
+            $attributeCode = Mage::getStoreConfig("bazaarvoice/bv_config/product_feed_{$settingCode}_attribute_code");
+            if ($attributeCode && $productDefault->getData($attributeCode)) {
+                $ioObject->streamWrite('    <'.$customAttribute.'s><'.$customAttribute.'>' . $productDefault->getData($attributeCode) . '</'.$customAttribute.'></'.$customAttribute."s>\n");
+            }
         }
 
         $ioObject->streamWrite('    <ProductPageUrl>' . "<![CDATA[" . $this->getProductUrl($productDefault) . "]]>" . "</ProductPageUrl>\n");

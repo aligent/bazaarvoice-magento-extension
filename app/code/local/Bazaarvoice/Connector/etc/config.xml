@@ -8,7 +8,7 @@
 <config>
     <modules>
         <Bazaarvoice_Connector>
-            <version>6.3.5</version>
+            <version>6.3.6</version>
             <depends>
                 <!-- no dependencies -->
             </depends>
@@ -158,6 +158,9 @@
                 <product_feed_brand_attribute_code></product_feed_brand_attribute_code>
                 <product_feed_upc_attribute_code></product_feed_upc_attribute_code>
                 <product_feed_ean_attribute_code></product_feed_ean_attribute_code>
+                <product_feed_isbn_attribute_code></product_feed_isbn_attribute_code>
+                <product_feed_manufacturerpartnumber_attribute_code></product_feed_manufacturerpartnumber_attribute_code>
+                <product_feed_modelnumber_attribute_code></product_feed_modelnumber_attribute_code>
                 <!-- Setting to determine whether simple products show reviews and ratings 
                      for their entire product family -->
                 <product_feed_export_bvfamilies_expand>true</product_feed_export_bvfamilies_expand>
