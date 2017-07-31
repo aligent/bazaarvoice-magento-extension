@@ -779,16 +779,23 @@ class Base {
       }
     }
 
+    // ENT_HTML5 is only defined in PHP 5.4 or higher
+    if (version_compare(phpversion(), '5.4.0', '>=')) {
+      $flags = ENT_QUOTES | ENT_HTML5;
+    } else {
+      $flags = ENT_QUOTES;
+    }
+
     $content = mb_ereg_replace(
       '{INSERT_PAGE_URI}',
       // Make sure someone doesn't sneak in "><script>...<script> in the URL
       // contents.
       htmlspecialchars(
-        $this->config['base_url'] . $page_url_query_prefix,
-        ENT_QUOTES | ENT_HTML5,
-        $this->config['charset'],
-        // Don't double-encode.
-        false
+          $this->config['base_url'] . $page_url_query_prefix,
+          $flags,
+          $this->config['charset'],
+          // Don't double-encode.
+          false
       ),
       $content
     );
